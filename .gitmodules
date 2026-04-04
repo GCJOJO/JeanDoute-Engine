@@ -1,0 +1,28 @@
+[submodule "GamingEngine/vendor/spdlog"]
+	path = GamingEngine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "GamingEngine/vendor/GLFW"]
+	path = GamingEngine/vendor/GLFW
+	url = https://github.com/TheCherno/GLFW
+[submodule "GamingEngine/vendor/bgfx"]
+	path = GamingEngine/vendor/bgfx
+	url = https://github.com/GCJOJO/bgfx.git
+[submodule "GamingEngine/vendor/bx"]
+	path = GamingEngine/vendor/bx
+	url = https://github.com/GCJOJO/bx.git
+[submodule "GamingEngine/vendor/bimg"]
+	path = GamingEngine/vendor/bimg
+	url = https://github.com/GCJOJO/bimg.git
+[submodule "GamingEngine/vendor/glm"]
+	path = GamingEngine/vendor/glm
+	url = https://github.com/g-truc/glm
+[submodule "GamingEngine/vendor/imgui"]
+	path = GamingEngine/vendor/imgui
+	url = https://github.com/GCJOJO/imgui
+	branch = master
+[submodule "GamingEngine/vendor/ImGuizmo"]
+	path = GamingEngine/vendor/ImGuizmo
+	url = https://github.com/TheCherno/ImGuizmo.git
+[submodule "GamingEngine/vendor/yaml-cpp"]
+	path = GamingEngine/vendor/yaml-cpp
+	url = https://github.com/TheCherno/yaml-cpp.git
