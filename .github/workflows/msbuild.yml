@@ -1,0 +1,87 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: MSBuild
+
+on:
+  push:
+    branches: [ "Dev" ]
+  pull_request:
+    branches: [ "Dev" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: JeanDoute-Engine.sln
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast : false
+      matrix:
+        build_config: [Debug, Release, Dist]
+    continue-on-error: true
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+
+    - uses: actions/cache@v3
+      with:
+        path: |
+          C:\hostedtoolcache\windows\Python
+          GamingEngine/vendor
+          vendor/
+        key: ${{ github.event.repository.name }}-windows-x64-${{ github.sha }}
+        restore-keys: |
+          ${{ github.event.repository.name }}-windows-x64-
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5.6.0
+      with:
+        python-version: "3.10.9"
+    
+    - name: Install Vulkan SDK
+      uses: jakoch/install-vulkan-sdk-action@v1.4.0
+      with:
+       # You can set the Vulkan SDK version to download.
+       # Defaults to latest version, if version not set.
+        vulkan_version: 1.4.328.1
+        optional_components: com.lunarg.vulkan.sdl2, com.lunarg.vulkan.glm, com.lunarg.vulkan.volk, com.lunarg.vulkan.vma, com.lunarg.vulkan.debug, com.lunarg.vulkan.arm64
+        install_runtime: true
+        cache: true
+        stripdown: true
+    
+    - name: Setup
+      run: | 
+        cd scripts/
+        python Setup.py --skip-confirmation --skip-vulkan
+      shell: cmd
+          
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore NuGet packages
+      working-directory: ./
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Build
+      working-directory: ./
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{matrix.build_config}} ${{env.SOLUTION_FILE_PATH}}
+       
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.6.2
+      with:
+        # Artifact name
+        name: JeanDoute-Engine_${{matrix.build_config}}_win64 # optional, default is artifact
+        # A file, directory or wildcard pattern that describes what to upload
+        path: bin/${{matrix.build_config}}-windows-x86_64
+        # The desired behavior if no files are found using the provided path.
