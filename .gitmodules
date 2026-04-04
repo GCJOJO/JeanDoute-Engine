@@ -26,3 +26,30 @@
 [submodule "GamingEngine/vendor/yaml-cpp"]
 	path = GamingEngine/vendor/yaml-cpp
 	url = https://github.com/TheCherno/yaml-cpp.git
+[submodule "Engine/vendor/GLFW"]
+	path = Engine/vendor/GLFW
+	url = https://github.com/TheCherno/GLFW/
+[submodule "Engine/vendor/ImGuizmo"]
+	path = Engine/vendor/ImGuizmo
+	url = https://github.com/TheCherno/ImGuizmo
+[submodule "Engine/vendor/bgfx"]
+	path = Engine/vendor/bgfx
+	url = https://github.com/GCJOJO/bgfx
+[submodule "Engine/vendor/bimg"]
+	path = Engine/vendor/bimg
+	url = https://github.com/GCJOJO/bimg/
+[submodule "Engine/vendor/bx"]
+	path = Engine/vendor/bx
+	url = https://github.com/GCJOJO/bx
+[submodule "Engine/vendor/glm"]
+	path = Engine/vendor/glm
+	url = https://github.com/g-truc/glm
+[submodule "Engine/vendor/imgui"]
+	path = Engine/vendor/imgui
+	url = https://github.com/GCJOJO/imgui
+[submodule "Engine/vendor/spdlog"]
+	path = Engine/vendor/spdlog
+	url = https://github.com/gabime/spdlog/
+[submodule "Engine/vendor/yaml-cpp"]
+	path = Engine/vendor/yaml-cpp
+	url = https://github.com/TheCherno/yaml-cpp/
