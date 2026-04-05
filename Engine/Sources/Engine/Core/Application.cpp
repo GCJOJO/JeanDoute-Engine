@@ -3,9 +3,9 @@
 
 #include "Layer.h"
 #include "Log.h"
-#include "PlatformUtils.h"
 #include "Profiler.h"
 #include "Timestep.h"
+#include "Engine/Utils/PlatformUtils.h"
 #include "Engine/ImGui/ImGuiLayer.h"
 
 namespace Engine
@@ -88,7 +88,7 @@ namespace Engine
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResized));
 
-		ENGINE_CORE_TRACE("{}", ev);
+		ENGINE_CORE_TRACE("{}", ev.ToString());
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{

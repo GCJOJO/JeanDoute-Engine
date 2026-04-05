@@ -38,9 +38,9 @@ project "Editor"
 	}
 
 	postbuildcommands { 
-		"{COPYDIR} %[%{prj.location}/assets] %[%{cfg.buildtarget.directory}/assets]",
-		"{COPYDIR} %[%{prj.location}/Binaries] %[%{cfg.buildtarget.directory}/Binaries]",
-		"{COPYFILE} %[%{prj.location}/imgui.ini] %[%{cfg.buildtarget.directory}/imgui.ini]",
+		--"{COPYDIR} %[%{prj.location}/assets] %[%{cfg.buildtarget.directory}/assets]",
+		--"{COPYDIR} %[%{prj.location}/Binaries] %[%{cfg.buildtarget.directory}/Binaries]",
+		--"{COPYFILE} %[%{prj.location}/imgui.ini] %[%{cfg.buildtarget.directory}/imgui.ini]",
 	}
 
 	filter "system:windows"
@@ -49,6 +49,11 @@ project "Editor"
 		defines
 		{
 			"ENGINE_PLATFORM_WINDOWS"
+		}
+
+		buildoptions
+		{
+			"/utf-8"
 		}
 
 	filter "configurations:Debug"

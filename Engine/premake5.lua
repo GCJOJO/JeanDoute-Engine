@@ -3,6 +3,7 @@ project "Engine"
 	language "C++"
 	cppdialect "C++20"
 	staticruntime "off"
+	characterset "Unicode"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -31,6 +32,8 @@ project "Engine"
 		"Sources",
 		"vendor/spdlog/include",
 		"%{IncludeDir.bgfx}",
+		"%{IncludeDir.bimg}",
+		"%{IncludeDir.bx}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.glm}",
@@ -66,19 +69,30 @@ project "Engine"
 			"CURL_STATICLIB",
 		}
 
-		links
+		--[[links
 		{
 			"%{Library.WinSock}",
 			"%{Library.WinMM}",
 			"%{Library.WinVersion}",
 			"%{Library.BCrypt}",
-			"%{Library.OpenAL_Win64}",
+		}]]--
+
+		buildoptions
+		{
+			"/utf-8",
+			"/Zc:__cplusplus",
+			"/Zc:preprocessor"
 		}
 
 	filter "configurations:Debug"
 		defines "ENGINE_DEBUG"
 		runtime "Debug"
 		symbols "on"
+
+		defines
+		{
+			"BX_CONFIG_DEBUG"
+		}
 
 		links
 		{
