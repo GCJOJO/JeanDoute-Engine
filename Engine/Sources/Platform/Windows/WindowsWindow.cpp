@@ -49,6 +49,8 @@ namespace Engine
 			glfwSetErrorCallback(GLFWErrorCallback);
 		}
 
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
 		{
 			ENGINE_PROFILE_SCOPE("glfwCreateWindow");
 

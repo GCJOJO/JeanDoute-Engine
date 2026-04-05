@@ -1,12 +1,13 @@
 #include "enginepch.h"
-#include "Application.h"
+#include "Engine/Core/Application.h"
 
-#include "Layer.h"
-#include "Log.h"
-#include "Profiler.h"
-#include "Timestep.h"
+#include "Engine/Core/Layer.h"
+#include "Engine/Core/Log.h"
+#include "Engine/Core/Profiler.h"
+#include "Engine/Core/Timestep.h"
 #include "Engine/Utils/PlatformUtils.h"
 #include "Engine/ImGui/ImGuiLayer.h"
+#include "Engine/Rendering/Renderer.h"
 
 namespace Engine
 {
@@ -28,7 +29,7 @@ namespace Engine
 		m_Window = Window::Create(WindowProps(m_Specification.Name));
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
-		//Renderer::Init();
+		Renderer::Init(RenderingAPI::Vulkan, m_Window.get());
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -39,7 +40,7 @@ namespace Engine
 		ENGINE_PROFILE_FUNCTION();
 
 		//ScriptEngine::Shutdown();
-		//Renderer::Shutdown();
+		Renderer::Shutdown();
 	}
 
 	void Application::Run()
@@ -140,7 +141,7 @@ namespace Engine
 
 		m_Minimized = false;
 
-		//Renderer::OnWindowResize(ev.GetWidth(), ev.GetHeight());
+		Renderer::OnWindowResize(ev.GetWidth(), ev.GetHeight());
 
 		return false;
 	}

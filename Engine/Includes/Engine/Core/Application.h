@@ -3,6 +3,9 @@
 #include "Event.h"
 #include "Window.h"
 #include "LayerStack.h"
+#include "Engine/Events/ApplicationEvent.h"
+#include "Engine/Events/KeyEvent.h"
+#include "Engine/Events/MouseEvent.h"
 #include "Engine/ImGui/ImGuiLayer.h"
 
 namespace Engine

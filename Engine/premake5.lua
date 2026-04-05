@@ -13,7 +13,7 @@ project "Engine"
 
 	files
 	{
-		"Sources/**.h",
+		"Includes/**.h",
 		"Sources/**.cpp",
 		"vendor/stb_image/**.h",
 		"vendor/stb_image/**.cpp",
@@ -29,7 +29,7 @@ project "Engine"
 
 	includedirs 
 	{
-		"Sources",
+		"Includes",
 		"vendor/spdlog/include",
 		"%{IncludeDir.bgfx}",
 		"%{IncludeDir.bimg}",
@@ -47,11 +47,14 @@ project "Engine"
 
 	links 
 	{
+		"bgfx",
 		"GLFW",
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
-
+		
+		"opengl32.lib",
+		"%{LibraryDir.VulkanSDK}/vulkan-1.lib",
 	}
 
 	filter "files:vendor/ImGuizmo/**.cpp"
@@ -85,12 +88,12 @@ project "Engine"
 		}
 
 	filter "configurations:Debug"
-		defines "ENGINE_DEBUG"
 		runtime "Debug"
 		symbols "on"
 
 		defines
 		{
+			"ENGINE_DEBUG",
 			"BX_CONFIG_DEBUG"
 		}
 

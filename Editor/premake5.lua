@@ -19,11 +19,10 @@ project "Editor"
 
 	includedirs
 	{
-		"Sources",
-		"%{wks.location}/Engine/Sources",
+		"%{wks.location}/%{prj.name}/Sources",
+		"%{wks.location}/Engine/Includes",
 		"%{wks.location}/Engine/vendor/spdlog/include",
 		"%{wks.location}/Engine/vendor",
-		"%{IncludeDir.bgfx}",
 		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGuizmo}",
@@ -53,13 +52,20 @@ project "Editor"
 
 		buildoptions
 		{
-			"/utf-8"
+			"/utf-8",
+			"/Zc:__cplusplus",
+			"/Zc:preprocessor"
 		}
 
 	filter "configurations:Debug"
-		defines "ENGINE_DEBUG"
 		runtime "Debug"
 		symbols "on"
+
+		defines
+		{
+			"ENGINE_DEBUG",
+			"BX_CONFIG_DEBUG"
+		}
 
 	filter "configurations:Release"
 		defines "ENGINE_RELEASE"

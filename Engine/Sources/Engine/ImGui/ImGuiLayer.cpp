@@ -6,7 +6,7 @@
 #include "imgui_internal.h"
 
 #include "examples/imgui_impl_glfw.h"
-#include "examples/imgui_impl_opengl3.h"
+#include "Platform/bgfx/imgui_impl_bgfx.h"
 
 // Temporary
 #include <GLFW/glfw3.h>
@@ -15,10 +15,12 @@
 #include <ImGuizmo.h>
 #include "Engine/Core/Profiler.h"
 #include "Engine/Core/Event.h"
+#include "Engine/Rendering/Renderer.h"
 #include "Engine/Events/ApplicationEvent.h"
 #include "Engine/Events/MouseEvent.h"
 #include "Engine/Events/KeyEvent.h"
 #include "Engine/Events/MouseEvent.h"
+#include <examples\imgui_impl_glfw.cpp>
 
 namespace Engine 
 {
@@ -62,8 +64,8 @@ namespace Engine
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
 
 		// Setup Platform/Renderer bindings
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL3_Init("#version 410");
+		ImGui_ImplGlfw_Init(window, true, GlfwClientApi::GlfwClientApi_Unknown);
+		ImGui_Implbgfx_Init(0);		
 
 		io.SetClipboardTextFn = [](void* user_data, const char* text) 
 		{
@@ -79,7 +81,7 @@ namespace Engine
 	{
 		ENGINE_PROFILE_FUNCTION();
 
-		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_Implbgfx_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
@@ -100,7 +102,7 @@ namespace Engine
 	{
 		ENGINE_PROFILE_FUNCTION();
 
-		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_Implbgfx_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		ImGuizmo::BeginFrame();
@@ -116,7 +118,7 @@ namespace Engine
 
 		// Rendering
 		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		ImGui_Implbgfx_RenderDrawLists(ImGui::GetDrawData());
 
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
