@@ -5,9 +5,18 @@
 
 namespace Engine
 {
+	Ref<VertexArray> m_VertexArray = CreateRef<VertexArray>();
+	Ref<VertexBuffer> m_TriangleBuffer = CreateRef<VertexBuffer>();
+	int m_VertexCount;
+
 	void EditorLayer::OnAttach()
 	{
+		m_TriangleBuffer->clear();
+		m_TriangleBuffer->push_back(Vertex(0, 0.5, 0, glm::vec4(1, 1, 1, 1)));
+		m_TriangleBuffer->push_back(Vertex(0.5, 0, 0, glm::vec4(1, 1, 1, 1)));
+		m_TriangleBuffer->push_back(Vertex(-0.5, 0, 0, glm::vec4(1, 1, 1, 1)));
 
+		m_VertexArray->AddVertexBuffer(m_TriangleBuffer);
 	}
 
 	void EditorLayer::OnDetach()
@@ -37,6 +46,7 @@ namespace Engine
 			, stats->textHeight
 		);
 
+		RenderCommand::DrawIndexed(m_VertexArray, m_VertexCount);
 	}
 
 	void EditorLayer::OnImGuiRender()

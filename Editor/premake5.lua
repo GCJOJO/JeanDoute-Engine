@@ -23,6 +23,7 @@ project "Editor"
 		"%{wks.location}/Engine/Includes",
 		"%{wks.location}/Engine/vendor/spdlog/include",
 		"%{wks.location}/Engine/vendor",
+		"%{IncludeDir.bgfx}",
 		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGuizmo}",
