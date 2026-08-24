@@ -36,7 +36,13 @@ if is_admin():
 
     from SetupPremake import PremakeConfiguration as PremakeRequirements
     from SetupVulkan import VulkanConfiguration as VulkanRequirements
+
     os.chdir('./../') # Change from devtools/scripts directory to root
+
+    if platform.system() == "Windows":
+        from SetupWindows import WindowsConfiguration as WindowsRequirements
+
+        WindowsRequirements.validate(args.skip)
 
     premakeInstalled = PremakeRequirements.Validate(args.skip)
     if not args.skipVk:
@@ -48,6 +54,7 @@ if is_admin():
     if premakeInstalled:
         if platform.system() == "Windows":
             print("\nRunning premake...")
+            subprocess.call([os.path.abspath("./scripts/Build-shaderc.bat"), "nopause"])
             subprocess.call([os.path.abspath("./scripts/Win-GenProjects.bat"), "nopause"])
             engine_dir = Path(os.getcwd()).resolve()
             print("\nSetting Environment Variable JEANDOUTEENGINE_DIR to", engine_dir)

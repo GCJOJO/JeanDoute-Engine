@@ -9,6 +9,12 @@ namespace Engine
 	public:
 		static bool ChangeDirectory(const std::filesystem::path& newPath);
 		static std::filesystem::path GetCurrentDir();
+		static std::filesystem::path GetExecutablePath();
+
+		static inline std::filesystem::path GetExecutableDir()
+		{
+			return GetExecutablePath().parent_path();
+		}
 	};
 
 	/*class Download
@@ -38,6 +44,6 @@ namespace Engine
 	class Process
 	{
 	public:
-		static void StartProcess(const char* commandLine, const char* currentDirectory = nullptr, bool waitForProcess = true);
+		static int StartProcess(const char* commandLine, const char* currentDirectory = nullptr, bool waitForProcess = true);
 	};
 }

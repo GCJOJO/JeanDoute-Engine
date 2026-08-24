@@ -9,6 +9,7 @@
 #endif
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
+#include "Engine/Rendering/ShaderCompiler.h"
 
 namespace Engine
 {
@@ -60,9 +61,11 @@ namespace Engine
 		bgfx::init(init);
 
 		bgfx::setDebug(BGFX_DEBUG_TEXT);
+		ShaderCompiler::CompileShaders("Shaders");
 
 		bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0);
 
+		RenderCommand::Init();
 		RenderCommand::SetClearColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
 	}
 

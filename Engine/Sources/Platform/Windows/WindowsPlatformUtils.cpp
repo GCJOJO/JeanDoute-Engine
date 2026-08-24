@@ -29,6 +29,14 @@ namespace Engine
 	{
 		return std::filesystem::current_path();
 	}
+
+	std::filesystem::path OS::GetExecutablePath()
+	{
+		wchar_t path[MAX_PATH] = { 0 };
+		GetModuleFileNameW(NULL, path, MAX_PATH);
+		return path;
+	}
+
 	/*
 	void Download::DownloadFile(const std::string& url, const std::filesystem::path& outFilePath)
 	{
@@ -192,17 +200,24 @@ namespace Engine
 		return "";
 	}
 
-	void Process::StartProcess(const char* commandLine, const char* currentDirectory /*= nullptr*/, bool waitForProcess/* = true*/)
+	int Process::StartProcess(const char* commandLine, const char* currentDirectory /*= nullptr*/, bool waitForProcess/* = true*/)
 	{
 		STARTUPINFOA info = { sizeof(info) };
 		PROCESS_INFORMATION processInfo;
 
 		if (CreateProcessA(nullptr, (LPSTR)commandLine, NULL, NULL, TRUE, 0, NULL, currentDirectory, &info, &processInfo))
 		{
+			DWORD exitCode = 0;
 			if (waitForProcess)
-				::WaitForSingleObject(processInfo.hProcess, INFINITE);
+			{
+				WaitForSingleObject(processInfo.hProcess, INFINITE);
+				GetExitCodeProcess(processInfo.hProcess, &exitCode);
+			}
 			CloseHandle(processInfo.hProcess); // Cleanup since you don't need this
 			CloseHandle(processInfo.hThread); // Cleanup since you don't need this
+			return (int)exitCode;
 		}
+
+		return -1;
 	}
 }

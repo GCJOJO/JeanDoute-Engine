@@ -38,7 +38,7 @@ project "Editor"
 	}
 
 	postbuildcommands { 
-		--"{COPYDIR} %[%{prj.location}/assets] %[%{cfg.buildtarget.directory}/assets]",
+		"{COPYDIR} %[%{wks.location}/Engine/Shaders] %[%{prj.location}/Shaders]",
 		--"{COPYDIR} %[%{prj.location}/Binaries] %[%{cfg.buildtarget.directory}/Binaries]",
 		--"{COPYFILE} %[%{prj.location}/imgui.ini] %[%{cfg.buildtarget.directory}/imgui.ini]",
 	}
@@ -56,6 +56,10 @@ project "Editor"
 			"/utf-8",
 			"/Zc:__cplusplus",
 			"/Zc:preprocessor"
+		}
+
+		postbuildcommands { 
+			"{COPYFILE} %[%{wks.location}/vendor/shaderc.exe] %[%{cfg.buildtarget.directory}/shaderc.exe]",
 		}
 
 	filter "configurations:Debug"
