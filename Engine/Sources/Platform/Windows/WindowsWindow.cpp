@@ -9,6 +9,8 @@
 #include "Engine/Events/KeyEvent.h"
 #include "Engine/Events/MouseEvent.h"
 
+#include <bgfx/bgfx.h>
+
 //#include "Platform/OpenGL/OpenGLContext.h"
 //#include "Platform/bgfx/bgfxContext.h"
 
@@ -63,7 +65,6 @@ namespace Engine
 		// ^
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-		SetVSync(true);
 
 		// Set GLFW Callbacks
 
@@ -191,12 +192,13 @@ namespace Engine
 	{
 		ENGINE_PROFILE_FUNCTION();
 
-		if (enabled)
-			glfwSwapInterval(1);
-		else
-			glfwSwapInterval(0);
-
 		m_Data.VSync = enabled;
+
+		int flags = BGFX_RESET_HIDPI;
+		if (enabled)
+			flags |= BGFX_RESET_VSYNC;
+
+		bgfx::reset(GetWidth(), GetHeight(), flags);
 	}
 
 	bool WindowsWindow::IsVSync() const { return m_Data.VSync; }

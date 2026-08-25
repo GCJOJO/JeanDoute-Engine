@@ -89,7 +89,7 @@ namespace Engine
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResized));
 
-		ENGINE_CORE_TRACE("{}", ev.ToString());
+		//ENGINE_CORE_TRACE("{}", ev.ToString());
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{

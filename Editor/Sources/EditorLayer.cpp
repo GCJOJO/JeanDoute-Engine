@@ -1,5 +1,8 @@
 #include "EditorLayer.h"
-#include "Engine\Rendering\RenderCommand.h"
+#include "Engine/Core/Application.h"
+#include "Engine/Rendering/RenderCommand.h"
+#include "Engine/Rendering/VertexArray.h"
+
 #include <bgfx\include\bgfx\bgfx.h>
 #include <bx\include\bx\bx.h>
 
@@ -46,7 +49,10 @@ namespace Engine
 			, stats->textHeight
 		);
 
-		RenderCommand::DrawIndexed(m_VertexArray, m_VertexCount);
+		Application& app = Application::Get();
+
+		RenderCommand::SetViewport(0, 0, app.GetWindow().GetWidth(), app.GetWindow().GetHeight());
+		RenderCommand::DrawTestCubes(ts);
 	}
 
 	void EditorLayer::OnImGuiRender()

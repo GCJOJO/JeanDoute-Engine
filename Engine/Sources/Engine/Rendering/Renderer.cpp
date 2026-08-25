@@ -56,7 +56,7 @@ namespace Engine
 		init.resolution.width = window->GetWidth();
 		init.resolution.height = window->GetHeight();
 
-		init.resolution.reset = BGFX_RESET_VSYNC;
+		init.resolution.reset = BGFX_RESET_VSYNC | BGFX_RESET_HIDPI;
 
 		bgfx::init(init);
 
@@ -64,6 +64,7 @@ namespace Engine
 		ShaderCompiler::CompileShaders("Shaders");
 
 		bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0);
+		bgfx::setViewRect(0, 0, 0, init.resolution.width, init.resolution.height);
 
 		RenderCommand::Init();
 		RenderCommand::SetClearColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));

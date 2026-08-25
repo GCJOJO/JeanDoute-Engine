@@ -1,5 +1,5 @@
 #pragma once
-#include "VertexArray.h"
+#include "Engine/Core/Timestep.h"
 
 namespace Engine
 {
@@ -15,7 +15,7 @@ namespace Engine
 		static void BeginFrame();
 		static void EndFrame();
 		
-		static void DrawIndexed(Ref<VertexArray>& vertexArray, uint32_t vertexCount);
+		static void DrawTestCubes(Timestep ts);
 		//static void DrawLines();
 		//static void SetLinesWidth(float width);
 		

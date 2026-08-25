@@ -15,6 +15,5 @@ namespace Engine
 
 
 		void OnEvent(Event& event) override;
-
 	};
 }

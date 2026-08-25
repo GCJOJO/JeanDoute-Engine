@@ -10,9 +10,13 @@
 #include <fstream>
 #include <limits>
 #include <iosfwd>
+#include "Engine/Core/Timestep.h"
 
 namespace Engine
 {
+	float time = 0.0f;
+
+#pragma pack(push, 1)
 	struct PosColorVertex
 	{
 		float m_x;
@@ -31,6 +35,7 @@ namespace Engine
 
 		static bgfx::VertexLayout ms_layout;
 	};
+#pragma pack(pop)
 
 	bgfx::VertexLayout PosColorVertex::ms_layout;
 
@@ -209,7 +214,7 @@ namespace Engine
 			fsh = loadShader(_fsName);
 		}
 
-		return bgfx::createProgram(vsh, fsh, true /* destroy shaders when program is destroyed */);
+		return bgfx::createProgram(vsh, fsh, false /* destroy shaders when program is destroyed */);
 	}
 
 	void RenderCommand::Init()
@@ -255,7 +260,7 @@ namespace Engine
 
 
 		// Create program from shaders.
-		bgfx::ProgramHandle s_program = loadProgram("vs_cubes", "fs_cubes");
+		s_program = loadProgram("vs_cubes", "fs_cubes");
 	}
 
 	void RenderCommand::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
@@ -289,23 +294,9 @@ namespace Engine
 		bgfx::frame();
 	}
 
-	void RenderCommand::DrawIndexed(Ref<VertexArray>& vertexArray, uint32_t vertexCount)
+	void RenderCommand::DrawTestCubes(Timestep ts)
 	{
-		/*std::vector<bgfx::VertexBufferHandle> vertexBuffers{};
-		for (auto& buffer : vertexArray->GetVertexBuffers())
-		{
-			bgfx::VertexBufferHandle bufferHandle = bgfx::createVertexBuffer(
-				bgfx::makeRef(buffer->data(), sizeof(VertexBuffer) * buffer->size()),
-				vertexArray->GetLayout());
-
-			vertexBuffers.push_back(bufferHandle);
-			bgfx::setVertexBuffer(0, bufferHandle);
-		}
-
-		IndexBuffer* indexBuffer = vertexArray->GetIndexBuffer().get();
-
-		bgfx::IndexBufferHandle indexBufferHandle = bgfx::createIndexBuffer(bgfx::makeRef(indexBuffer, sizeof(IndexBuffer)));
-		bgfx::setIndexBuffer(indexBufferHandle);*/
+		time += ts.GetSeconds();
 
 		const bx::Vec3 at = { 0.0f, 0.0f,   0.0f };
 		const bx::Vec3 eye = { 0.0f, 0.0f, -35.0f };
@@ -320,11 +311,18 @@ namespace Engine
 			bx::mtxLookAt(view, eye, at);
 
 			float proj[16];
-			bx::mtxProj(proj, 60.0f, float(width) / float(height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
+			bx::mtxProj(proj, 60.0f, float(width) / float(height), 0.1f, 10000.0f, bgfx::getCaps()->homogeneousDepth);
 			bgfx::setViewTransform(0, view, proj);
 
 			// Set view 0 default viewport.
 			bgfx::setViewRect(0, 0, 0, uint16_t(width), uint16_t(height));
+
+			float vpMtx[16];
+			float vpMtx_inv[16];
+			bx::mtxMul(vpMtx, proj, view);
+			bx::mtxInverse(vpMtx_inv, vpMtx);
+
+			bgfx::setViewMode(0, bgfx::ViewMode::Default);
 		}
 
 
@@ -345,7 +343,7 @@ namespace Engine
 			for (uint32_t xx = 0; xx < 11; ++xx)
 			{
 				float mtx[16];
-				bx::mtxRotateXY(mtx, xx * 0.21f, yy * 0.37f);
+				bx::mtxRotateXY(mtx, time + xx * 0.21f, time + yy * 0.37f);
 				mtx[12] = -15.0f + float(xx) * 3.0f;
 				mtx[13] = -15.0f + float(yy) * 3.0f;
 				mtx[14] = 0.0f;
