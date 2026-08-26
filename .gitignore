@@ -8,6 +8,7 @@
 **/bin/
 **/bin-int/
 **/Binaries/
+vendor/**.exe
 scripts/.idea
 Editor/assets/export_templates/
 Editor/Resources/Scripts/**/*.dll
