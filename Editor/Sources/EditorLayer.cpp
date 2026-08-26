@@ -15,7 +15,7 @@ namespace Engine
 		Window& window = app.GetWindow();
 
 		m_EditorCamera = EditorCamera(90.0f, (float)window.GetWidth() / (float)window.GetHeight(), 0.01f, 10000.0f);
-		m_EditorCamera.SetDistance(10.0f);
+		m_EditorCamera.SetDistance(50.0f);
 		
 	}
 

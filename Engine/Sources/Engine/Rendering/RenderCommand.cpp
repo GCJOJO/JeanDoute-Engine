@@ -7,18 +7,14 @@
 #include <bgfx/bgfx.h>
 #include "bx/bx.h"
 #include "bx/readerwriter.h"
-#include <bx/file.h>
 #include <glm/gtc/type_ptr.hpp>
 
 #include <fstream>
-#include <limits>
-#include <iosfwd>
 
 namespace Engine
 {
 	float time = 0.0f;
 
-//#pragma pack(push, 1)
 	struct PosColorVertex
 	{
 		float m_x;
@@ -37,7 +33,6 @@ namespace Engine
 
 		static bgfx::VertexLayout ms_layout;
 	};
-//#pragma pack(pop)
 
 	bgfx::VertexLayout PosColorVertex::ms_layout;
 

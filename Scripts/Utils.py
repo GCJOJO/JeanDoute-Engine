@@ -1,3 +1,4 @@
+from platform import platform
 import sys
 import os
 import winreg
@@ -10,19 +11,25 @@ from zipfile import ZipFile
 
 
 def GetSystemEnvironmentVariable(name):
-    key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, r"System\CurrentControlSet\Control\Session Manager\Environment")
-    try:
-        return winreg.QueryValueEx(key, name)[0]
-    except:
-        return None
+    if platform.system() == "Windows":
+        key = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, r"System\CurrentControlSet\Control\Session Manager\Environment")
+        try:
+            return winreg.QueryValueEx(key, name)[0]
+        except:
+            return None
+    if platform.system() == "Linux" or platform.system() == "Darwin" or platform.system() == "macOS":
+        return os.environ.get(name)
 
 
 def GetUserEnvironmentVariable(name):
-    key = winreg.CreateKey(winreg.HKEY_CURRENT_USER, r"Environment")
-    try:
-        return winreg.QueryValueEx(key, name)[0]
-    except:
-        return None
+    if platform.system() == "Windows":
+        key = winreg.CreateKey(winreg.HKEY_CURRENT_USER, r"Environment")
+        try:
+            return winreg.QueryValueEx(key, name)[0]
+        except:
+            return None
+    if platform.system() == "Linux" or platform.system() == "Darwin" or platform.system() == "macOS":
+        return os.environ.get(name)
 
 
 def DownloadFile(url, filepath):

@@ -41,7 +41,6 @@ if is_admin():
 
     if platform.system() == "Windows":
         from SetupWindows import WindowsConfiguration as WindowsRequirements
-
         WindowsRequirements.validate(args.skip)
 
     premakeInstalled = PremakeRequirements.Validate(args.skip)
@@ -57,7 +56,7 @@ if is_admin():
             subprocess.call([os.path.abspath("./scripts/Build-shaderc.bat"), "nopause"])
             subprocess.call([os.path.abspath("./scripts/Win-GenProjects.bat"), "nopause"])
             engine_dir = Path(os.getcwd()).resolve()
-            print("\nSetting Environment Variable JEANDOUTEENGINE_DIR to", engine_dir)
+            print("\nSetting Environment Variable JEANDOUTEENGINE_DIR to", engine_dir)²
             os.system("SETX {0} {1} /M".format("JEANDOUTEENGINE_DIR", engine_dir.__str__()))
 
         print("\nSetup completed!")

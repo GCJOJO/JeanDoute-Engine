@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import platform
 from pathlib import Path
 
 import Utils
@@ -53,11 +54,30 @@ class VulkanConfiguration:
                 return
             permissionGranted = (reply == 'y')
 
-        vulkanInstallURL = f"https://sdk.lunarg.com/sdk/download/{cls.installVulkanVersion}/windows/vulkansdk-windows-X64-{cls.installVulkanVersion}.exe"
-        vulkanPath = f"{cls.vulkanDirectory}/vulkansdk-windows-X64-{cls.installVulkanVersion}.exe"
-        print("Downloading {0:s} to {1:s}".format(vulkanInstallURL, vulkanPath))
-        Utils.DownloadFile(vulkanInstallURL, vulkanPath)
-        print("Running Vulkan SDK installer...")
+        if platform.system() == "Windows":
+            vulkanInstallURL = f"https://sdk.lunarg.com/sdk/download/{cls.installVulkanVersion}/windows/vulkansdk-windows-X64-{cls.installVulkanVersion}.exe"
+            vulkanPath = f"{cls.vulkanDirectory}/vulkansdk-windows-X64-{cls.installVulkanVersion}.exe"
+            print("Downloading {0:s} to {1:s}".format(vulkanInstallURL, vulkanPath))
+            Utils.DownloadFile(vulkanInstallURL, vulkanPath)
+            print("Running Vulkan SDK installer...")
+            subprocess.call([os.path.abspath(vulkanPath), "--accept-licenses", "--default-answer", "--confirm-command", "install", "com.lunarg.vulkan.sdl2", "com.lunarg.vulkan.glm", "com.lunarg.vulkan.volk", "com.lunarg.vulkan.vma", "com.lunarg.vulkan.debug", "com.lunarg.vulkan.arm64"])
+            
+        if platform.system() == "Linux":
+            # https://sdk.lunarg.com/sdk/download/1.4.357.1/linux/vulkansdk-linux-x86_64-1.4.357.1.tar.xz
+            #vulkanInstallURL = f"https://sdk.lunarg.com/sdk/download/{cls.installVulkanVersion}/linux/vulkansdk-linux-x86_64-{cls.installVulkanVersion}.tar.xz"
+            #vulkanPath = f"{cls.vulkanDirectory}/vulkansdk-linux-x86_64-{cls.installVulkanVersion}.tar.xz"
+            #print("Downloading {0:s} to {1:s}".format(vulkanInstallURL, vulkanPath))
+            #Utils.DownloadFile(vulkanInstallURL, vulkanPath)
+            #print("Running Vulkan SDK installer...")
+            #subprocess.call(["tar", "-xf", os.path.abspath(vulkanPath), "-C", os.path.abspath(cls.vulkanDirectory)])
+            print(f"Please install Vulkan SDK manually from https://sdk.lunarg.com/sdk/download/{cls.installVulkanVersion}/linux/vulkansdk-linux-x86_64-{cls.installVulkanVersion}.tar.xz")
+            return
+
+        if platform.system() == "Darwin" or platform.system() == "Mac":
+            print(f"Please install Vulkan SDK manually from https://sdk.lunarg.com/sdk/download/{cls.installVulkanVersion}/mac/vulkansdk-macos-{cls.installVulkanVersion}.zip")
+            return
+
+        
         #subprocess.call(os.path.abspath(vulkanPath), arguments="--accept-licenses --default-answer --confirm-command install com.lunarg.vulkan.sdl2 com.lunarg.vulkan.glm com.lunarg.vulkan.volk com.lunarg.vulkan.vma com.lunarg.vulkan.debug com.lunarg.vulkan.arm64")
         # installDir = f"{os.path.abspath(cls.vulkanDirectory)}/{cls.installVulkanVersion}"
         # if not skipConfirmation:
@@ -73,7 +93,7 @@ class VulkanConfiguration:
 
 
         #os.system("SETX {0} {1} /M".format("VULKAN_SDK", installDir))
-        subprocess.call([os.path.abspath(vulkanPath), "--accept-licenses", "--default-answer", "--confirm-command", "install", "com.lunarg.vulkan.sdl2", "com.lunarg.vulkan.glm", "com.lunarg.vulkan.volk", "com.lunarg.vulkan.vma", "com.lunarg.vulkan.debug", "com.lunarg.vulkan.arm64"])
+       
         print("Vulkan is installed !")
         print("Restart to finish")
         if not skipConfirmation:
