@@ -21,15 +21,22 @@ if is_admin():
     parser = argparse.ArgumentParser()
     skip_parser = parser.add_mutually_exclusive_group(required=False)
     skip_parser.add_argument(
-            "-y", "--skip-confirmation", help="Skips all install confirmation", dest="skip", action="store_true"
-        )
+        "-y", "--skip-confirmation", help="Skips all install confirmation", dest="skip", action="store_true"
+    )
 
     skip_vulkan = parser.add_mutually_exclusive_group(required=False)
     skip_vulkan.add_argument(
         "-v", "--skip-vulkan", help="Skips all vulkan installation", dest="skipVk", action="store_true"
     )
+
+    skip_shaderc = parser.add_mutually_exclusive_group(required=False)
+    skip_shaderc.add_argument(
+        "-s", "--skip-shaderc", help="Skips shaderc building", dest="skipShaderc", action="store_true"
+    )
+
     parser.set_defaults(skip=False)
     parser.set_defaults(skipVk=False)
+    parser.set_defaults(skipShaderc=False)
     args = parser.parse_args()
 
     # Make sure everything we need for the setup is installed
@@ -61,7 +68,9 @@ if is_admin():
     if premakeInstalled:
         if platform.system() == "Windows":
             print("\nRunning premake...")
-            subprocess.call([os.path.abspath("./scripts/Build-shaderc.bat"), "nopause"])
+            if(not args.skipShaderc):
+                subprocess.call([os.path.abspath("./scripts/Build-shaderc.bat"), "nopause"])
+
             subprocess.call([os.path.abspath("./scripts/Win-GenProjects.bat"), "nopause"])
             engine_dir = Path(os.getcwd()).resolve()
             print("\nSetting Environment Variable JEANDOUTEENGINE_DIR to", engine_dir)

@@ -61,7 +61,7 @@ jobs:
     - name: Setup
       run: | 
         cd scripts/
-        python Setup.py --skip-confirmation --skip-vulkan
+        python Setup.py --skip-confirmation --skip-vulkan --skip-shaderc
       shell: cmd
           
     - name: Add MSBuild to PATH
