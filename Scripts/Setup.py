@@ -18,8 +18,6 @@ def is_admin():
         return os.geteuid() == 0
 
 if is_admin():
-    # Code of your program here
-
     parser = argparse.ArgumentParser()
     skip_parser = parser.add_mutually_exclusive_group(required=False)
     skip_parser.add_argument(
