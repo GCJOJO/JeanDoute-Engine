@@ -53,6 +53,6 @@
 [submodule "Engine/vendor/yaml-cpp"]
 	path = Engine/vendor/yaml-cpp
 	url = https://github.com/TheCherno/yaml-cpp/
-[submodule "Engine/Vendor/Assimp"]
-	path = Engine/Vendor/Assimp
+[submodule "Engine/vendor/Assimp"]
+	path = Engine/vendor/Assimp
 	url = https://github.com/GCJOJO/assimp.git
