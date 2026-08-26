@@ -31,7 +31,7 @@ namespace Engine
 		try {
 			std::filesystem::create_directories(outPath.parent_path());
 
-			std::string cmd = std::format(R"("{}" -f "{}" -o "{}" --type {} --platform {} --varyingdef {} -p {} -O 3)", 
+			std::string cmd = std::format(R"("{}" -f "{}" -o "{}" --type {} --platform {} --varying {} -p {} -O 3)", 
 				shadercExecutable.string(),
 				shaderFile.string(),
 				outPath.string(),

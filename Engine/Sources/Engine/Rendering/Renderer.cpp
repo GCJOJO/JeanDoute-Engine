@@ -37,7 +37,7 @@ namespace Engine
 			break;
 		}
 
-		init.vendorId = BGFX_PCI_ID_NVIDIA;
+		init.vendorId = BGFX_PCI_ID_NONE;
 		
 #	if ENGINE_PLATFORM_LINUX || ENGINE_PLATFORM_BSD
 		if (glfwGetPlatform() == GLFW_PLATFORM_WAYLAND)
@@ -60,14 +60,18 @@ namespace Engine
 
 		bgfx::init(init);
 
-		bgfx::setDebug(BGFX_DEBUG_TEXT);
+		bgfx::setDebug(BGFX_DEBUG_STATS | BGFX_DEBUG_TEXT | BGFX_DEBUG_PROFILER);
 		ShaderCompiler::CompileShaders("Shaders");
 
-		bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0);
 		bgfx::setViewRect(0, 0, 0, init.resolution.width, init.resolution.height);
+		bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0);
 
 		RenderCommand::Init();
 		RenderCommand::SetClearColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+	}
+
+	void Renderer::Update()
+	{
 	}
 
 	void Renderer::Shutdown()

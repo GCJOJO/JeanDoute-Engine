@@ -15,6 +15,7 @@ namespace Engine
 		static void BeginFrame();
 		static void EndFrame();
 		
+		static void SetCamera(glm::mat4 cameraViewMatrix, glm::mat4 cameraProjectionMatrix);
 		static void DrawTestCubes(Timestep ts);
 		//static void DrawLines();
 		//static void SetLinesWidth(float width);

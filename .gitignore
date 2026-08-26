@@ -62,3 +62,4 @@ Runtime/*.pdb
 *.config
 /Engine/vendor/curl/obj
 /Editor/Intermediates
+/Editor/temp

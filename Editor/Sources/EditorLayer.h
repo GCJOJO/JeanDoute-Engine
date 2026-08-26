@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/Core/Layer.h"
+#include "EditorCamera.h"
 
 namespace Engine
 {
@@ -15,5 +16,7 @@ namespace Engine
 
 
 		void OnEvent(Event& event) override;
+	private:
+		EditorCamera m_EditorCamera;
 	};
 }

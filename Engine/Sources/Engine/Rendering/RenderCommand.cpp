@@ -2,21 +2,23 @@
 #include "Engine/Rendering/RenderCommand.h"
 #include "Engine/Core/Window.h"
 #include "Engine/Core/Application.h"
+#include "Engine/Core/Timestep.h"
 
-#include <bgfx\bgfx.h>
+#include <bgfx/bgfx.h>
 #include "bx/bx.h"
 #include "bx/readerwriter.h"
-#include <bx\file.h>
+#include <bx/file.h>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <fstream>
 #include <limits>
 #include <iosfwd>
-#include "Engine/Core/Timestep.h"
 
 namespace Engine
 {
 	float time = 0.0f;
 
-#pragma pack(push, 1)
+//#pragma pack(push, 1)
 	struct PosColorVertex
 	{
 		float m_x;
@@ -29,13 +31,13 @@ namespace Engine
 			ms_layout
 				.begin()
 				.add(bgfx::Attrib::Position, 3, bgfx::AttribType::Float)
-				.add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Uint8, true)
+				.add(bgfx::Attrib::Color0,   4, bgfx::AttribType::Uint8, true)
 				.end();
 		};
 
 		static bgfx::VertexLayout ms_layout;
 	};
-#pragma pack(pop)
+//#pragma pack(pop)
 
 	bgfx::VertexLayout PosColorVertex::ms_layout;
 
@@ -270,7 +272,7 @@ namespace Engine
 
 	void RenderCommand::SetWindowSize(uint32_t width, uint32_t height)
 	{
-		bgfx::reset(width, height, BGFX_RESET_VSYNC, bgfx::TextureFormat::RGBA8);
+		bgfx::reset(width, height, BGFX_RESET_VSYNC | BGFX_RESET_HIDPI, bgfx::TextureFormat::RGBA8);
 	}
 
 	void RenderCommand::SetClearColor(const glm::vec4& color)
@@ -281,7 +283,7 @@ namespace Engine
 			(uint8_t(color.b * 255.0f) << 8) |
 			(uint8_t(color.a * 255.0f));
 
-		bgfx::setViewClear(0, BGFX_CLEAR_COLOR, bgfxColor, 1.0, 0);
+		bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, bgfxColor, 1.0f, 0);
 	}
 
 	void RenderCommand::BeginFrame()
@@ -294,37 +296,16 @@ namespace Engine
 		bgfx::frame();
 	}
 
+	void RenderCommand::SetCamera(glm::mat4 cameraViewMatrix, glm::mat4 cameraProjectionMatrix)
+	{
+		float* view = glm::value_ptr(cameraViewMatrix);
+		float* proj = glm::value_ptr(cameraProjectionMatrix);
+		bgfx::setViewTransform(0, view, proj);
+	}
+
 	void RenderCommand::DrawTestCubes(Timestep ts)
 	{
 		time += ts.GetSeconds();
-
-		const bx::Vec3 at = { 0.0f, 0.0f,   0.0f };
-		const bx::Vec3 eye = { 0.0f, 0.0f, -35.0f };
-
-		Window& window = Application::Get().GetWindow();
-		uint32_t width = window.GetWidth();
-		uint32_t height = window.GetHeight();
-
-		// Set view and projection matrix for view 0.
-		{
-			float view[16];
-			bx::mtxLookAt(view, eye, at);
-
-			float proj[16];
-			bx::mtxProj(proj, 60.0f, float(width) / float(height), 0.1f, 10000.0f, bgfx::getCaps()->homogeneousDepth);
-			bgfx::setViewTransform(0, view, proj);
-
-			// Set view 0 default viewport.
-			bgfx::setViewRect(0, 0, 0, uint16_t(width), uint16_t(height));
-
-			float vpMtx[16];
-			float vpMtx_inv[16];
-			bx::mtxMul(vpMtx, proj, view);
-			bx::mtxInverse(vpMtx_inv, vpMtx);
-
-			bgfx::setViewMode(0, bgfx::ViewMode::Default);
-		}
-
 
 		uint64_t state = 0
 			| BGFX_STATE_WRITE_R
@@ -333,31 +314,23 @@ namespace Engine
 			| BGFX_STATE_WRITE_A
 			| BGFX_STATE_WRITE_Z
 			| BGFX_STATE_DEPTH_TEST_LESS
-			| BGFX_STATE_CULL_CW
+			| BGFX_STATE_CULL_CCW
 			| BGFX_STATE_MSAA
 			| s_ptState[0];
 
-		// Submit 11x11 cubes.
-		for (uint32_t yy = 0; yy < 11; ++yy)
-		{
-			for (uint32_t xx = 0; xx < 11; ++xx)
-			{
-				float mtx[16];
-				bx::mtxRotateXY(mtx, time + xx * 0.21f, time + yy * 0.37f);
-				mtx[12] = -15.0f + float(xx) * 3.0f;
-				mtx[13] = -15.0f + float(yy) * 3.0f;
-				mtx[14] = 0.0f;
+		float mtx[16];
+		bx::mtxIdentity(mtx);
+ 		bx::mtxTranslate(mtx, 0, 0, 0);
+ 		bx::mtxScale(mtx, 10);
 
-				// Set model matrix for rendering.
-				bgfx::setTransform(mtx);
+		// Set model matrix for rendering.
+		bgfx::setTransform(mtx);
 
-				bgfx::setVertexBuffer(0, s_vbh);
-				bgfx::setIndexBuffer(s_ibh[0]);
+		bgfx::setVertexBuffer(0, s_vbh);
+		bgfx::setIndexBuffer(s_ibh[0]);
 
-				bgfx::setState(state);
-				bgfx::submit(0, s_program);
-			}
-		}
+		bgfx::setState(state);
+		bgfx::submit(0, s_program);
 	}
 
 }
