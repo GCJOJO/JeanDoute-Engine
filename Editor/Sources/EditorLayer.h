@@ -1,5 +1,7 @@
 #pragma once
+#include "Engine/Core/Core.h"
 #include "Engine/Core/Layer.h"
+#include "Engine/Rendering/Shader.h"
 #include "EditorCamera.h"
 
 namespace Engine
@@ -18,5 +20,8 @@ namespace Engine
 		void OnEvent(Event& event) override;
 	private:
 		EditorCamera m_EditorCamera;
+		Ref<Shader> m_VertexShader;
+		Ref<Shader> m_FragmentShader;
+		Ref<ShaderProgram> m_ShaderProgram;
 	};
 }

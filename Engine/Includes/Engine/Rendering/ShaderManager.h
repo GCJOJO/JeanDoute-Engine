@@ -1,22 +1,17 @@
 #pragma once
 #include "Engine/Core/Assert.h"
+#include "Engine/Rendering/Shader.h"
+
+#include "bgfx/bgfx.h"
+#include "bx/string.h"
 
 #include <string>
-#include <bgfx/bgfx.h>
 
 namespace Engine
 {
-	class ShaderCompiler
+	class ShaderManager
 	{
-	public:
-		enum ShaderType
-		{
-			None = 0,
-			Vertex,
-			Fragment,
-			Compute,
-		};
-		
+	public:	
 		struct CommandArguments
 		{
 			std::string platform;
@@ -24,27 +19,27 @@ namespace Engine
 			std::string profileFs;
 		};
 
-		static ShaderType ShaderTypeFromExtension(const std::filesystem::path& path)
+		static Shader::Type ShaderTypeFromExtension(const std::filesystem::path& path)
 		{
 			if (path.extension() == ".vert")
-				return ShaderType::Vertex;
+				return Shader::Type::Vertex;
 			if (path.extension() == ".frag");
-				return ShaderType::Fragment;
+				return Shader::Type::Fragment;
 			if (path.extension() == ".comp")
-				return ShaderType::Compute;
+				return Shader::Type::Compute;
 
-			return ShaderType::None;
+			return Shader::Type::None;
 		}
 
-		static std::string ShaderTypeString(ShaderType type)
+		static std::string ShaderTypeString(Shader::Type type)
 		{
 			switch (type)
 			{
-			case Vertex:
+			case Shader::Type::Vertex:
 				return "vertex";
-			case Fragment:
+			case Shader::Type::Fragment:
 				return "fragment";
-			case Compute:
+			case Shader::Type::Compute:
 				return "compute";
 			}
 
@@ -66,19 +61,29 @@ namespace Engine
 				return { "windows", "440", "440" };
 #elif ENGINE_PLATFORM_LINUX
 				return { "linux", "440", "440" };
+#elif ENGINE_PLATFORM_MACOS
+				return { "osx", "440", "440" };
 #endif
 			case bgfx::RendererType::Vulkan:
 #if ENGINE_PLATFORM_WINDOWS
 				return { "windows", "spirv", "spirv" };
 #elif ENGINE_PLATFORM_LINUX
 				return { "linux", "spirv", "spirv" };
+#elif ENGINE_PLATFORM_MACOS
+				return { "osx", "spirv", "spirv" };
 #endif
 			}
 
 			ENGINE_CORE_ASSERT(false, "Invalid renderer type for runtime compilation");
 		}
 
+		static inline std::filesystem::path GetShadercExecutable();
+
+		static bool CompileShader(const std::filesystem::path& shaderFile);
 		static bool CompileShaders(const std::filesystem::path& shaderDirectory);
+				
+		static bgfx::ShaderHandle LoadShader(const std::string& shaderName);
+		static bgfx::ProgramHandle LoadProgram(const std::string& vertexShaderName, const std::string& fragmentShaderName);
 	};
 
 }

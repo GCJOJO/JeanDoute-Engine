@@ -1,5 +1,7 @@
 #pragma once
 #include "Engine/Core/Timestep.h"
+#include "Engine/Core/Core.h"
+#include "Engine/Rendering/Shader.h"
 
 namespace Engine
 {
@@ -16,7 +18,7 @@ namespace Engine
 		static void EndFrame();
 		
 		static void SetCamera(glm::mat4 cameraViewMatrix, glm::mat4 cameraProjectionMatrix);
-		static void DrawTestCubes(Timestep ts);
+		static void DrawTestCubes(Timestep ts, Ref<ShaderProgram> shaderProgram);
 		//static void DrawLines();
 		//static void SetLinesWidth(float width);
 		

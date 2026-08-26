@@ -1,6 +1,7 @@
 #include "enginepch.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/RenderCommand.h"
+#include "Engine/Rendering/ShaderManager.h"
 
 #include "bgfx/bgfx.h"
 
@@ -9,7 +10,6 @@
 #endif
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
-#include "Engine/Rendering/ShaderCompiler.h"
 
 namespace Engine
 {
@@ -39,17 +39,16 @@ namespace Engine
 
 		init.vendorId = BGFX_PCI_ID_NONE;
 		
-#	if ENGINE_PLATFORM_LINUX || ENGINE_PLATFORM_BSD
+#	if ENGINE_PLATFORM_LINUX
 		if (glfwGetPlatform() == GLFW_PLATFORM_WAYLAND)
-		{
 			init.platformData.nwh = glfwGetWaylandWindow(window->GetNativeWindow());
-		}
-		init.platformData.nwh = (void*)(uintptr_t)glfwGetX11Window(window->GetNativeWindow());
-#	elif ENGINE_PLATFORM_OSX
+		else
+			init.platformData.nwh = (void*)(uintptr_t)glfwGetX11Window(window->GetNativeWindow());
+#	elif ENGINE_PLATFORM_MACOS
 		init.platformData.nwh = glfwGetCocoaWindow(window->GetNativeWindow());
 #	elif ENGINE_PLATFORM_WINDOWS
 		init.platformData.nwh = glfwGetWin32Window((GLFWwindow*)window->GetNativeWindow());
-#	endif // BX_PLATFORM_
+#	endif
 
 		init.platformData.ndt = nullptr;
 		init.platformData.type = bgfx::NativeWindowHandleType::Default;
@@ -61,7 +60,7 @@ namespace Engine
 		bgfx::init(init);
 
 		bgfx::setDebug(BGFX_DEBUG_STATS | BGFX_DEBUG_TEXT | BGFX_DEBUG_PROFILER);
-		ShaderCompiler::CompileShaders("Shaders");
+		ShaderManager::CompileShaders("Shaders");
 
 		bgfx::setViewRect(0, 0, 0, init.resolution.width, init.resolution.height);
 		bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0);
