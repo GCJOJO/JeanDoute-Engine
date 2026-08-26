@@ -8,7 +8,6 @@ namespace Engine
 	{
 		m_ShaderType = shaderType;
 		std::filesystem::path shaderFileName = shaderFile.filename();
-		shaderFileName.replace_extension();
 
 		m_ShaderHandle = ShaderManager::LoadShader(shaderFileName.string());
 	}

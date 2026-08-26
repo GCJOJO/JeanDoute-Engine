@@ -29,8 +29,11 @@ namespace Engine
 			"cs_5_0"; // Compute
 
 		std::filesystem::path shadercExecutable = GetShadercExecutable();
-		std::filesystem::path outPath = shaderFile.parent_path() / profile / shaderFile.filename();
-		const std::filesystem::path binExtension{ ".bin" };
+		std::filesystem::path outPath = 
+			std::filesystem::path{ "Shaders" } / "bin" / profile / shaderFile.filename();
+
+	
+		const std::filesystem::path binExtension{ shaderFile.extension().string() + ".bin" };
 		outPath.replace_extension(binExtension);
 
 		std::filesystem::path varyingPath = shaderFile.parent_path() / "varying.def.sc";
@@ -47,11 +50,11 @@ namespace Engine
 				varyingPath.string(),
 				profile);
 			
-			std::filesystem::path commonFolder = OS::GetCurrentDir() / "Shaders" / "Common";
+			std::filesystem::path includeFolder = OS::GetCurrentDir() / "Shaders";
 
-			cmd += std::format(R"( -i {})", commonFolder.string());
+			cmd += std::format(R"( -i {})", includeFolder.string());
 
-			ENGINE_CORE_WARN("Compiling Shader... Command : \n {} \n", cmd);
+			ENGINE_CORE_INFO("Compiling Shader... Command : \n {} \n", cmd);
 
 			int exitCode = Process::StartProcess(cmd.c_str());
 			return exitCode == 0;
@@ -80,13 +83,20 @@ namespace Engine
 
 		for (auto& file : std::filesystem::directory_iterator(absoluteShaderDirectory))
 		{
-			if (file.is_directory())
+			std::filesystem::path filepath = shaderDirectory / file;
+
+			if (filepath.string().find("Common") != std::string::npos ||
+				filepath.string().find("bin") != std::string::npos ||
+				filepath.extension() == ".sc")
 				continue;
 
-			if(file.path().extension() == ".sc")
+			if (std::filesystem::is_directory(filepath))
+			{
+				CompileShaders(filepath);
 				continue;
+			}
 
-			CompileShader(file);
+			CompileShader(filepath);
 		}
 
 		return true;
@@ -96,6 +106,7 @@ namespace Engine
 	{
 		// Use std::filesystem instead
 		std::filesystem::path filePath("shaders");
+		filePath /= "bin";
 
 		bgfx::RendererType::Enum rdType = bgfx::getRendererType();
 

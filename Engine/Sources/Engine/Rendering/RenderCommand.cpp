@@ -87,7 +87,7 @@ namespace Engine
 		);
 
 		// Create program from shaders.
-		s_program = ShaderManager::LoadProgram("vs_cubes", "fs_cubes");
+		s_program = ShaderManager::LoadProgram("cubes.vert", "cubes.frag");
 	}
 
 	void RenderCommand::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
