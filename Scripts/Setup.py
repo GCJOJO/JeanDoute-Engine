@@ -36,6 +36,7 @@ if is_admin():
     PythonRequirements.Validate(args.skip)
 
     from SetupPremake import PremakeConfiguration as PremakeRequirements
+    from SetupCmake import CmakeConfiguration as CmakeRequirements
     from SetupVulkan import VulkanConfiguration as VulkanRequirements
 
     os.chdir('./../') # Change from devtools/scripts directory to root
@@ -45,6 +46,12 @@ if is_admin():
         WindowsRequirements.validate(args.skip)
 
     premakeInstalled = PremakeRequirements.Validate(args.skip)
+    if not CmakeRequirements.validate(args.skip):
+        print("Gaming Engine requires CMake to generate Assimp project files.")
+        exit(1)
+
+    print("Correct CMake, version :", subprocess.run(["cmake", "--version"], check=True, stdout=subprocess.PIPE).stdout.decode('utf-8').strip())
+
     if not args.skipVk:
         VulkanRequirements.Validate(args.skip)
 
@@ -57,7 +64,7 @@ if is_admin():
             subprocess.call([os.path.abspath("./scripts/Build-shaderc.bat"), "nopause"])
             subprocess.call([os.path.abspath("./scripts/Win-GenProjects.bat"), "nopause"])
             engine_dir = Path(os.getcwd()).resolve()
-            print("\nSetting Environment Variable JEANDOUTEENGINE_DIR to", engine_dir)²
+            print("\nSetting Environment Variable JEANDOUTEENGINE_DIR to", engine_dir)
             os.system("SETX {0} {1} /M".format("JEANDOUTEENGINE_DIR", engine_dir.__str__()))
 
         print("\nSetup completed!")
