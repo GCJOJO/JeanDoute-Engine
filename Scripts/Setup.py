@@ -9,10 +9,13 @@ from SetupPython import PythonConfiguration as PythonRequirements
 import ctypes, sys
 
 def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
+    if platform.system() == "Windows":
+        try:
+            return ctypes.windll.shell32.IsUserAnAdmin()
+        except:
+            return False
+    if platform.system() == "Linux" or platform.system() == "Darwin" or platform.system() == "macOS":
+        return os.geteuid() == 0
 
 if is_admin():
     # Code of your program here
