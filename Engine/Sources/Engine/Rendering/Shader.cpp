@@ -15,7 +15,11 @@ namespace Engine
 
 	Shader::~Shader()
 	{
-		bgfx::destroy(m_ShaderHandle);
+		if(bgfx::isValid(m_ShaderHandle))
+		{
+			bgfx::destroy(m_ShaderHandle);
+			m_ShaderHandle = BGFX_INVALID_HANDLE;
+		}
 	}
 
 	Asset::Type Shader::GetType() const
@@ -31,9 +35,13 @@ namespace Engine
 
 	ShaderProgram::~ShaderProgram()
 	{
+		if(bgfx::isValid(m_ProgramHandle))
+		{
+			bgfx::destroy(m_ProgramHandle);
+			m_ProgramHandle = BGFX_INVALID_HANDLE;
+		}
+
 		m_VertexShader = nullptr;
 		m_FragmentShader = nullptr;
-
-		bgfx::destroy(m_ProgramHandle);
 	}
 }

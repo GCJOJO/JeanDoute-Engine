@@ -19,6 +19,7 @@ namespace Engine
 		
 		static void SetCamera(glm::mat4 cameraViewMatrix, glm::mat4 cameraProjectionMatrix);
 		static void DrawTestCubes(Timestep ts, Ref<ShaderProgram> shaderProgram);
+		static void DrawMesh(bgfx::ViewId view, bgfx::VertexBufferHandle vbh, bgfx::IndexBufferHandle ibh, bgfx::ProgramHandle shaderProgram, const glm::mat4& transforms = glm::identity<glm::mat4>());
 		//static void DrawLines();
 		//static void SetLinesWidth(float width);
 		

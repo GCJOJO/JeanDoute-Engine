@@ -4,6 +4,7 @@ VULKAN_SDK = os.getenv("VULKAN_SDK")
 printf("Vulkan SDK: %s", VULKAN_SDK)
 
 IncludeDir = {}
+IncludeDir["Assimp"] = "%{wks.location}/Engine/vendor/Assimp/include"
 IncludeDir["bgfx"] = "%{wks.location}/Engine/vendor/bgfx/include"
 IncludeDir["bimg"] = "%{wks.location}/Engine/vendor/bimg/include"
 IncludeDir["bx"] = "%{wks.location}/Engine/vendor/bx/include"

@@ -32,6 +32,7 @@ project "Engine"
 	{
 		"Includes",
 		"vendor/spdlog/include",
+		"%{IncludeDir.Assimp}",
 		"%{IncludeDir.bgfx}",
 		"%{IncludeDir.bimg}",
 		"%{IncludeDir.bx}",
@@ -48,6 +49,7 @@ project "Engine"
 
 	links 
 	{
+		"Assimp",
 		"bgfx",
 		"GLFW",
 		"Glad",

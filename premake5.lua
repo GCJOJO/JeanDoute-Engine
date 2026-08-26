@@ -122,6 +122,7 @@ workspace "JeanDoute-Engine"
 	}
 
 group "Dependencies"
+	include "Engine/vendor/Assimp"
 	include "Engine/vendor/bgfx"
 	include "Engine/vendor/bimg"
 	include "Engine/vendor/bx"
