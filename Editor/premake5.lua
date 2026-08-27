@@ -6,7 +6,7 @@ project "Editor"
 	cppdialect "C++20"
 	staticruntime "off"
 	--debuggertype "NativeWithManagedCore"
-	--dependson "GamingEngine-ScriptCore"
+	dependson "CSharp-Core"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -24,6 +24,7 @@ project "Editor"
 		"%{wks.location}/Engine/vendor/spdlog/include",
 		"%{wks.location}/Engine/vendor",
 		"%{IncludeDir.bgfx}",
+		"%{IncludeDir.coral_native}",
 		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGuizmo}",
@@ -45,7 +46,8 @@ project "Editor"
 
 	postbuildcommands { 
 		"{COPYDIR} %[%{wks.location}/Engine/Shaders] %[%{prj.location}/Shaders]",
-		--"{COPYDIR} %[%{prj.location}/Binaries] %[%{cfg.buildtarget.directory}/Binaries]",
+		"{COPYFILE} %[%{wks.location}/CSharp-Core/Coral.Managed.runtimeconfig.json] %[%{cfg.buildtarget.directory}/Coral.Managed.runtimeconfig.json]",
+		"{COPYDIR} %[%{wks.location}/CSharp-Core/bin/%{csharp_outputdir}] %[%{cfg.buildtarget.directory}]",
 		--"{COPYFILE} %[%{prj.location}/imgui.ini] %[%{cfg.buildtarget.directory}/imgui.ini]",
 	}
 

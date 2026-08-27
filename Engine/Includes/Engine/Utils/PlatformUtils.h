@@ -1,12 +1,42 @@
 #pragma once
+#include "Engine/Core/Buffer.h"
 
 #include <string>
+#include <filesystem>
 
 namespace Engine 
 {
 	class Filesystem
 	{
 	public:
+		static Buffer ReadFileBinary(const std::filesystem::path& filepath)
+		{
+			{
+				std::ifstream stream(filepath, std::ios::binary | std::ios::ate);
+
+				if (!stream)
+				{
+					return {};
+				}
+
+				std::streampos end = stream.tellg();
+				stream.seekg(0, std::ios::beg);
+				uint64_t size = end - stream.tellg();
+
+				if (size == 0)
+				{
+					// File is empty
+					return {};
+				}
+
+				Buffer buffer(size);
+				stream.read(buffer.As<char>(), size);
+				stream.close();
+
+				return buffer;
+			}
+		}
+
 		static const std::filesystem::path GetUserDirectory();
 
 		static bool ChangeDirectory(const std::filesystem::path& newPath);

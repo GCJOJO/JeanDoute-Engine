@@ -58,6 +58,7 @@ workspace "JeanDoute-Engine"
 	}
 
 	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+	csharp_outputdir = "%{cfg.buildcfg}-%{cfg.system}"
 
 	newaction {
 		trigger 	= "build-shaderc",
@@ -126,6 +127,8 @@ group "Dependencies"
 	include "Engine/vendor/bgfx"
 	include "Engine/vendor/bimg"
 	include "Engine/vendor/bx"
+	include "Engine/vendor/coral/coral.native"
+	include "Engine/vendor/coral/coral.managed"
 	include "Engine/vendor/GLFW"
 	include "Engine/vendor/Glad"
 	include "Engine/vendor/imgui"
@@ -135,7 +138,7 @@ group ""
 
 group "Core"
 	include "Engine"
-	--include "Engine-ScriptCore"
+	include "CSharp-Core"
 	--include "Runtime"
 group ""
 

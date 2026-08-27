@@ -7,6 +7,8 @@
 #include "Engine/Scene/SceneTree.h"
 #include "Editor/Scene/EditorSceneManager.h"
 #include "Engine/Utils/MathUtils.h"
+#include "Engine/ScriptEngine/ScriptEngine.h"
+#include "Engine/Utils/PlatformUtils.h"
 
 #include <bgfx/include/bgfx/bgfx.h>
 #include <bx/include/bx/bx.h>
@@ -24,6 +26,9 @@ namespace Engine
 
 		SceneManager::Initialize(CreateRef<EditorSceneManager>());
 		SceneManager::NewScene();
+
+		std::filesystem::path coreAssemblyPath = Filesystem::GetExecutableDir() / "CSharp-Core.dll";
+		ScriptEngine::Init(coreAssemblyPath.string());
 
 		m_SceneHierarchyPanel = SceneHierarchyPanel();
 	}

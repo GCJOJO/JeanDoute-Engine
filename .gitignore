@@ -63,3 +63,4 @@ Runtime/*.pdb
 /Engine/vendor/curl/obj
 /Editor/Intermediates
 /Editor/temp
+/CSharp-Core/obj

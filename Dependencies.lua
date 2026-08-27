@@ -8,6 +8,7 @@ IncludeDir["Assimp"] = "%{wks.location}/Engine/vendor/Assimp/include"
 IncludeDir["bgfx"] = "%{wks.location}/Engine/vendor/bgfx/include"
 IncludeDir["bimg"] = "%{wks.location}/Engine/vendor/bimg/include"
 IncludeDir["bx"] = "%{wks.location}/Engine/vendor/bx/include"
+IncludeDir["coral_native"] = "%{wks.location}/Engine/vendor/coral/Coral.Native/include"
 IncludeDir["filewatch"] = "%{wks.location}/Engine/vendor/filewatch"
 IncludeDir["Glad"] = "%{wks.location}/Engine/vendor/Glad/include"
 IncludeDir["GLFW"] = "%{wks.location}/Engine/vendor/GLFW/include"
@@ -24,6 +25,7 @@ IncludeDir["yaml_cpp"] = "%{wks.location}/Engine/vendor/yaml-cpp/include"
 
 LibraryDir = {}
 LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
+LibraryDir["Coral_Managed"] = "%{wks.location}/Engine/vendor/coral/Coral.Managed/Build/%{cfg.buildcfg}/net9.0/"
 
 Library = {}
 
@@ -48,3 +50,5 @@ Library["WinVersion"] = "Version.lib"
 Library["BCrypt"] = "Bcrypt.lib"
 
 --DynamicLibrary = {}
+DynamicLibrary = {}
+DynamicLibrary["Coral_Managed"] = "%{LibraryDir.Coral_Managed}/Coral.Managed.dll"

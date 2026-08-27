@@ -38,6 +38,7 @@ project "Engine"
 		"%{IncludeDir.bgfx}",
 		"%{IncludeDir.bimg}",
 		"%{IncludeDir.bx}",
+		"%{IncludeDir.coral_native}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.glm}",
@@ -55,6 +56,7 @@ project "Engine"
 	{
 		"Assimp",
 		"bgfx",
+		"Coral.Native",
 		"GLFW",
 		"Glad",
 		"ImGui",
