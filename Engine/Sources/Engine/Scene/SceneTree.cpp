@@ -1,18 +1,13 @@
 #include "enginepch.h"
 #include "Engine/Scene/SceneTree.h"
+#include "Engine/Scene/Scene.h"
+#include "Engine/Scene/SceneManager.h"
 
 namespace Engine
 {
-	static SceneTree sceneTree;
-
 	SceneTree& SceneTree::Get()
 	{
-		return sceneTree;
-	}
-
-	SceneTree::SceneTree()
-	{
-		SetRoot(CreateScope<Node>("Root"));
+		return SceneManager::GetCurrentScene()->GetSceneTree();
 	}
 
 	void SceneTree::SetRoot(Scope<Node> newRoot)

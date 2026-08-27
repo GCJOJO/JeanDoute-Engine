@@ -4,11 +4,14 @@
 
 namespace Engine
 {
+	class SceneTree;
+
 	class Node
 	{
 	public:
 		Node();
 		Node(StringName name);
+		Node(StringName name, SceneTree& sceneTree);
 		virtual ~Node();
 
 		void Ready();

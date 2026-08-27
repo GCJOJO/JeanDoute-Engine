@@ -13,11 +13,13 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "Engine/Core/Assert.h"
 #include "Engine/Core/Core.h"
 #include "Engine/Core/Log.h"
 #include "Engine/Core/Assert.h"
-//#include "Engine/Core/Buffer.h"
-//#include "Engine/Debug/Instrumentor.h"
+#include "Engine/Core/Buffer.h"
+#include "Engine/Core/Profiler.h"
+#include "Engine/Core/UUID.h"
 
 #ifdef ENGINE_PLATFORM_WINDOWS
 #include <Windows.h>

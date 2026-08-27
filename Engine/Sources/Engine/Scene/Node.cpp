@@ -17,6 +17,12 @@ namespace Engine
 		SceneTree::Get().RegisterNode(this);
 	}
 
+	Node::Node(StringName name, SceneTree& sceneTree)
+	{
+		m_Name = name;
+		sceneTree.RegisterNode(this);
+	}
+
 	Node::~Node()
 	{
 		SceneTree::Get().UnregisterNode(this);

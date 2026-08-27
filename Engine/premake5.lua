@@ -16,6 +16,7 @@ project "Engine"
 		"Includes/**.h",
 		"Sources/**.cpp",
 		"Shaders/**",
+		"%{IncludeDir.filewatch}/**.h",
 		"vendor/stb_image/**.h",
 		"vendor/stb_image/**.cpp",
 		"vendor/ImGuizmo/ImGuizmo.h",     

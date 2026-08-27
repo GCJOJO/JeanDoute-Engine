@@ -8,7 +8,7 @@ namespace Engine
 	public:
 		static SceneTree& Get();
 
-		SceneTree();
+		SceneTree() { };
 
 		Node* GetRoot() { return m_Root.get(); }
 		void SetRoot(Scope<Node> newRoot);

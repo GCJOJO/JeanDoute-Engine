@@ -4,6 +4,7 @@
 #include "Engine/Assets/AssetImporter.h"
 #include "Engine/Assets/TextureImporter.h"
 #include "Engine/Scene/SceneTree.h"
+#include "Editor/Scene/EditorSceneManager.h"
 
 #include <bgfx/include/bgfx/bgfx.h>
 #include <bx/include/bx/bx.h>
@@ -11,8 +12,13 @@
 namespace Engine
 {
 
+
+
 	void EditorLayer::OnAttach()
 	{
+		SceneManager::Initialize(CreateRef<EditorSceneManager>());
+		SceneManager::NewScene();
+
 		Application& app = Application::Get();
 		Window& window = app.GetWindow();
 
