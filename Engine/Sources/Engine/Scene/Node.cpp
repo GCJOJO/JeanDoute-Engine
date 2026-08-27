@@ -57,7 +57,7 @@ namespace Engine
 		m_Name = newName;
 	}
 
-	void Node::AddChild(Scope<Node> newChild)
+	Node* Node::AddChild(Scope<Node> newChild)
 	{
 		int i = 1;
 		StringName oldName = newChild->GetName();
@@ -69,15 +69,24 @@ namespace Engine
 		}
 
 		newChild->m_ParentId = this->GetId();
-		m_ChildrenNames[newChild->GetName()] = newChild.get();
+		Node* childPtr = newChild.get();
+		m_ChildrenNames[newChild->GetName()] = childPtr;
 		m_Children.push_back(std::move(newChild));
+		return childPtr;
 	}
 
-	std::vector<Node*> Node::GetChildren()
+	std::vector<Node*> Node::GetChildren(bool recursive)
 	{
 		std::vector<Node*> children{ };
 		for (const auto& child : m_Children)
+		{
 			children.push_back(child.get());
+			if (recursive)
+			{
+				const auto& recursiveChildren = child->GetChildren();
+				children.insert(std::end(children), std::begin(recursiveChildren), std::end(recursiveChildren));
+			}
+		}
 		
 		return children;
 	}
@@ -98,6 +107,9 @@ namespace Engine
 
 	Node* Node::GetChild(StringName childName)
 	{
+		if (m_ChildrenNames.empty())
+			return nullptr;
+
 		auto it = m_ChildrenNames.find(childName);
 		return (it != m_ChildrenNames.end()) ? it->second : nullptr;
 	}

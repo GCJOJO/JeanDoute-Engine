@@ -24,8 +24,8 @@ namespace Engine
 
 		void SetName(StringName newName);
 
-		void AddChild(Scope<Node> newChild);
-		std::vector<Node*> GetChildren();
+		Node* AddChild(Scope<Node> newChild);
+		std::vector<Node*> GetChildren(bool recursive = false);
 		Node* GetChild(uint32_t index);
 		const Node* GetChild(uint32_t index) const;
 		Node* GetChild(StringName childName);

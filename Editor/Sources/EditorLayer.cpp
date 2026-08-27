@@ -34,17 +34,22 @@ namespace Engine
 
 		m_TextureUniform = bgfx::createUniform("u_texture", bgfx::UniformType::Sampler);
 
-		SceneTree::Get().ClearSceneTree();
-		Node newNode = Node("NewNode");
+		SceneTree& sceneTree = SceneTree::Get();
+		sceneTree.ClearSceneTree();
+
+		Node* newNode = sceneTree.GetRoot()->AddChild(CreateScope<Node>("NewNode"));
+
 		for (int i = 0; i < 25; i++)
 		{
-			newNode.AddChild(CreateScope<Node>("ChildNode"));
+			newNode->AddChild(CreateScope<Node>("ChildNode"));
 		}
 
-		for (const auto& child : newNode.GetChildren())
+		for (const auto& child : sceneTree.GetRoot()->GetChildren(true))
 		{
 			ENGINE_CORE_INFO(child->GetName());
 		}
+
+
 	}
 
 	void EditorLayer::OnDetach()

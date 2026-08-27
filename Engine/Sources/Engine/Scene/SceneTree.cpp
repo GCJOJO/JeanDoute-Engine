@@ -3,11 +3,21 @@
 
 namespace Engine
 {
+	static SceneTree sceneTree;
 
 	SceneTree& SceneTree::Get()
 	{
-		static SceneTree sceneTree;
 		return sceneTree;
+	}
+
+	SceneTree::SceneTree()
+	{
+		SetRoot(CreateScope<Node>("Root"));
+	}
+
+	void SceneTree::SetRoot(Scope<Node> newRoot)
+	{
+		m_Root = std::move(newRoot);
 	}
 
 	void SceneTree::ClearSceneTree()
