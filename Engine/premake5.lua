@@ -26,7 +26,8 @@ project "Engine"
 	defines
 	{
 		"_CRT_SECURE_NO_WARNINGS",
-		"GLFW_INCLUDE_NONE"
+		"GLFW_INCLUDE_NONE",
+		"BX_CONFIG_DEBUG"
 	}
 
 	includedirs 
@@ -100,8 +101,7 @@ project "Engine"
 
 		defines
 		{
-			"ENGINE_DEBUG",
-			"BX_CONFIG_DEBUG"
+			"ENGINE_DEBUG"
 		}
 
 		links
