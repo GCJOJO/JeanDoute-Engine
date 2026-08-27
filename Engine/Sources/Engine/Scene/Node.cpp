@@ -128,4 +128,14 @@ namespace Engine
 			m_Children.end());
 	}
 
+	void Node::SaveNode(YAML::Emitter& out) const
+	{
+		out << YAML::BeginMap;
+		out << YAML::Key << "Id" << YAML::Value << GetId();
+		//out << YAML::Key << "Type" << YAML::Value << 
+		out << YAML::Key << "Name" << YAML::Value << GetName().ToString();
+
+		out << YAML::EndMap;
+	}
+
 }

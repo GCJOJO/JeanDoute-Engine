@@ -19,6 +19,8 @@ namespace Engine
 		static void OpenScene(const std::filesystem::path& scenePath) { m_SceneManager->OpenSceneImpl(scenePath); }
 		static Ref<Scene> GetCurrentScene() { return m_SceneManager->GetCurrentSceneImpl(); }
 
+		static Ref<SceneManager> Get() { return m_SceneManager; }
+
 	protected:
 		virtual void NewSceneImpl() = 0;
 		virtual void OpenSceneImpl(AssetHandle handle) = 0;

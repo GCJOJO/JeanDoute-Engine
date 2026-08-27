@@ -9,9 +9,11 @@
 #include "Engine/Utils/MathUtils.h"
 #include "Engine/ScriptEngine/ScriptEngine.h"
 #include "Engine/Utils/PlatformUtils.h"
+#include "Engine/Project/Project.h"
+#include "Engine/Assets/AssetManager.h"
+#include "Engine/Assets/SceneImporter.h"
 
 #include <bgfx/include/bgfx/bgfx.h>
-#include <bx/include/bx/bx.h>
 
 #include "imgui/imgui.h"
 
@@ -20,6 +22,8 @@ namespace Engine
 	static Ref<Font> s_Font;
 	static float s_Time = 0.0f;
 
+	static std::filesystem::path s_CoreAssemblyPath;
+
 	EditorLayer::EditorLayer() : Layer("Editor")
 	{
 		s_Font = Font::GetDefault();
@@ -27,20 +31,46 @@ namespace Engine
 		SceneManager::Initialize(CreateRef<EditorSceneManager>());
 		SceneManager::NewScene();
 
-		std::filesystem::path coreAssemblyPath = Filesystem::GetExecutableDir() / "CSharp-Core.dll";
-		ScriptEngine::Init(coreAssemblyPath.string());
+		s_CoreAssemblyPath = Filesystem::GetExecutableDir() / "CSharp-Core.dll";
+		ScriptEngine::Init(s_CoreAssemblyPath.string());
 
 		m_SceneHierarchyPanel = SceneHierarchyPanel();
 	}
 
 	void EditorLayer::OnAttach()
 	{
+		auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
+		if (commandLineArgs.Count > 1)
+		{
+			auto projectFilePath = commandLineArgs[1];
+			OpenProject(projectFilePath);
+		}
+		else
+		{
+			// TODO : Prompt user to select a directory
+			// NewProject();
+
+			// If no project is opened, close Editor
+			// NOTE: this is while we don't have a new project path
+
+			/*EditorConfig::Deserialize();
+
+			if (EditorConfig::LastProjectPath.has_extension() && EditorConfig::LastProjectPath.extension() == ".eproj")
+			{
+				if (OpenProject(EditorConfig::LastProjectPath))
+					return;
+			}*/
+
+			if (!OpenProject())
+				Application::Get().Close();
+		}
+
 		Application& app = Application::Get();
 		Window& window = app.GetWindow();
 
 		m_EditorCamera = EditorCamera(90.0f, (float)window.GetWidth() / (float)window.GetHeight(), 0.01f, 10000.0f);
 		m_EditorCamera.SetDistance(50.0f);
-		
+
 		std::filesystem::path vertexShaderPath = "monkey.vert";
 		std::filesystem::path fragmentShaderPath = "monkey.frag";
 		std::filesystem::path texturePath = "Assets/Textures/Bob.jpg";
@@ -52,7 +82,6 @@ namespace Engine
 
 		m_MonkeyMeshAsset = std::static_pointer_cast<StaticMeshAsset>(AssetImporter::ImportAsset(Asset::Type::StaticMesh, "Assets/Meshes/Monkey.glb"));
 		
-
 		m_TextureUniform = bgfx::createUniform("u_texture", bgfx::UniformType::Sampler);
 
 		SceneTree& sceneTree = SceneTree::Get();
@@ -299,6 +328,105 @@ namespace Engine
 	void EditorLayer::OnEvent(Event& event)
 	{
 		m_EditorCamera.OnEvent(event);
+	}
+
+	void EditorLayer::NewProject()
+	{
+		Project::New();
+	}
+
+	bool EditorLayer::OpenProject(const std::filesystem::path& path)
+	{
+		if (auto project = Project::Load(path))
+		{
+			//EditorConfig::LastProjectPath = path;
+			//EditorConfig::Serialize();
+
+			ScriptEngine::Init(s_CoreAssemblyPath.string());
+			//ScriptEngine::SetStopFunction([this]() { OnSceneStop();	});
+
+			AssetHandle startScene = Project::GetActive()->GetConfig().StartScene;
+			if (!startScene)
+				NewScene();
+			else
+				OpenScene(startScene);
+			//m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>(project);
+			return true;
+		}
+		return false;
+	}
+
+	bool EditorLayer::OpenProject()
+	{
+		std::string filepath = FileDialogs::OpenFile("Engine Project (*.eproj)\0*.eproj\0");
+		if (!filepath.empty())
+			return OpenProject(filepath);
+		return false;
+	}
+
+	void EditorLayer::SaveProject()
+	{
+		//Project::SaveActive();
+	}
+
+	void EditorLayer::NewScene()
+	{
+		SceneManager::NewScene();
+		//m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_SceneHierarchyPanel.SetContext(SceneManager::GetCurrentScene());
+
+		m_EditorScenePath = std::filesystem::path();
+	}
+
+	void EditorLayer::OpenScene()
+	{
+		// 		std::string filepath = FileDialogs::OpenFile("Engine Scene (*.scene)\0*.scene\0");
+		// 		if (!filepath.empty())
+		// 			OpenScene(filepath);
+	}
+
+	void EditorLayer::OpenScene(AssetHandle handle)
+	{
+		ENGINE_CORE_ASSERT(handle);
+
+		/*if (m_SceneState != SceneState::Edit)
+			OnSceneStop();*/
+
+		SceneManager::OpenScene(handle);
+
+		Ref<Scene> readOnlyScene = AssetManager::GetAsset<Scene>(handle);
+		Ref<Scene> newScene = Scene::Copy(readOnlyScene);
+
+		EditorSceneManager* editorSceneManager = (EditorSceneManager*)SceneManager::Get().get();
+		m_SceneHierarchyPanel.SetContext(editorSceneManager->GetEditorScene());
+
+		m_EditorScenePath = Project::GetActive()->GetEditorAssetManager()->GetFilePath(handle);
+
+	}
+
+	void EditorLayer::SaveScene()
+	{
+		EditorSceneManager* editorSceneManager = (EditorSceneManager*)SceneManager::Get().get();
+		if (!m_EditorScenePath.empty())
+			SerializeScene(editorSceneManager->GetEditorScene(), m_EditorScenePath);
+		else
+			SaveSceneAs();
+	}
+
+	void EditorLayer::SaveSceneAs()
+	{
+		EditorSceneManager* editorSceneManager = (EditorSceneManager*)SceneManager::Get().get();
+		std::string filepath = FileDialogs::SaveFile("Engine Scene (*.scene)\0*.scene\0");
+		if (!filepath.empty())
+		{
+			SerializeScene(editorSceneManager->GetEditorScene(), filepath);
+			m_EditorScenePath = filepath;
+		}
+	}
+
+	void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
+	{
+		SceneImporter::SaveScene(scene, path);
 	}
 }
 

@@ -5,6 +5,10 @@
 
 #include <concepts>
 
+#define YAML_CPP_STATIC_DEFINE
+#include <yaml-cpp/yaml.h>
+#include "yaml-cpp/exceptions.h"
+
 namespace Engine
 {
 	class SceneTree;
@@ -43,6 +47,8 @@ namespace Engine
 		const Node* GetChild(uint32_t index) const;
 		Node* GetChild(StringName childName);
 		void RemoveChild(Node* child);
+
+		void SaveNode(YAML::Emitter& out) const;
 
 	protected:
 		UUID m_Id;

@@ -5,7 +5,7 @@
 #include "Engine/Core/Buffer.h"
 #include "Engine/Utils/PlatformUtils.h"
 #include "Engine/ScriptEngine/ScriptGlue.h"
-//#include "Engine/Project/Project.h"
+#include "Engine/Project/Project.h"
 
 #include <Coral/HostInstance.hpp>
 #include <Coral/GC.hpp>
@@ -164,15 +164,15 @@ namespace Engine
 		ScriptGlue::RegisterFunctions(*s_ScriptEngineData->EngineAssembly);
 		ScriptGlue::RegisterNodes();
 
-		/*/auto scriptModulePath = Project::GetActiveAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
+		auto scriptModulePath = Project::GetActiveAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
 		s_ScriptEngineData->AppAssembly = &LoadAssembly(scriptModulePath);
 		if (s_ScriptEngineData->AppAssembly->GetLoadStatus() != Coral::AssemblyLoadStatus::Success)
 		{
 			ENGINE_CORE_ERROR("[Scripting Engine] Couldn't load App Assembly");
 			return;
-		}*/
+		}
 
-		//LoadAssemblyClasses();
+		LoadAssemblyClasses();
 	}
 
 	Coral::ManagedAssembly& ScriptEngine::LoadAssembly(const std::filesystem::path& assemblyPath)
@@ -193,7 +193,6 @@ namespace Engine
 			return;
 		}
 
-		//ShutdownMono();
 		s_ScriptEngineData->hostInstance.UnloadAssemblyLoadContext(s_ScriptEngineData->loadContext);
 		Coral::GC::Collect();
 		s_ScriptEngineData->hostInstance.Shutdown();
@@ -202,10 +201,6 @@ namespace Engine
 
 	void ScriptEngine::InitCoral(const std::filesystem::path& coralDir)
 	{
-		//Application& app = Application::Get();
-		//auto exePath = std::filesystem::path(app.GetExecutablePath());
-		//auto coralDir = std::filesystem::path(exePath.parent_path() / "Resources" / "Scripts").string();
-
 		s_ScriptEngineData->hostSettings.CoralDirectory = coralDir.string();
 		s_ScriptEngineData->hostSettings.MessageCallback = MessageCallback;
 		s_ScriptEngineData->hostSettings.ExceptionCallback = ExceptionCallback;
@@ -223,6 +218,9 @@ namespace Engine
 	void ScriptEngine::LoadAssemblyClasses()
 	{
 		s_ScriptEngineData->NodeClasses.clear();
+
+		if (!s_ScriptEngineData->EngineAssembly || !s_ScriptEngineData->AppAssembly)
+			return;
 
 		auto nodeType = s_ScriptEngineData->EngineAssembly->GetType("Engine.Node");
 

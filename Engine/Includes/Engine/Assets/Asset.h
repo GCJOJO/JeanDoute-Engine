@@ -10,6 +10,7 @@ namespace Engine
 	class Asset
 	{
 	public:
+		AssetHandle Handle;
 
 		enum class Type : uint32_t
 		{
@@ -20,13 +21,12 @@ namespace Engine
 			StaticMesh,
 		};
 
-		const AssetHandle& GetAssetHandle() const { return m_AssetHandle; }
+		const AssetHandle& GetAssetHandle() const { return Handle; }
 
-		static std::string_view AssetTypeToString(Asset::Type& assetType);
-		static Asset::Type StringToAssetType(std::string_view& assetType);
+		static std::string_view AssetTypeToString(const Asset::Type& assetType);
+		static Asset::Type StringToAssetType(const std::string_view& assetType);
 
 		virtual Type GetType() const = 0;
 	private:
-		AssetHandle m_AssetHandle;
 	};
 }

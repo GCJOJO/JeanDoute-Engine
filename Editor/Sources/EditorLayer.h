@@ -27,6 +27,21 @@ namespace Engine
 
 		void OnEvent(Event& event) override;
 	private:
+		void NewProject();
+		bool OpenProject();
+		bool OpenProject(const std::filesystem::path& path);
+		void SaveProject();
+
+		void NewScene();
+		void OpenScene();
+		void OpenScene(AssetHandle handle);
+		void SaveScene();
+		void SaveSceneAs();
+
+		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
+
+	private:
+		std::filesystem::path m_EditorScenePath;
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 
 		EditorCamera m_EditorCamera;

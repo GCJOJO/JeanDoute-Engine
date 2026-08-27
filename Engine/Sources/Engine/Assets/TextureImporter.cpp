@@ -1,7 +1,7 @@
 #include "enginepch.h"
 #include "Engine/Core/Profiler.h"
 #include "Engine/Assets/TextureImporter.h"
-//#include "Engine/Project/Project.h"
+#include "Engine/Project/Project.h"
 
 #include <stb_image.h>
 
@@ -11,8 +11,7 @@ namespace Engine
 	{
 		ENGINE_PROFILE_FUNCTION();
 
-		//return LoadTexture2D(Project::GetActiveAssetDirectory() / metadata.AssetPath);
-		return nullptr;
+		return ImportTexture2D(Project::GetActiveAssetDirectory() / metadata.AssetPath);
 	}
 
 	Ref<Texture2D> TextureImporter::ImportTexture2D(const std::filesystem::path& path)

@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	std::string_view Asset::AssetTypeToString(Asset::Type& assetType)
+	std::string_view Asset::AssetTypeToString(const Asset::Type& assetType)
 	{
 		switch (assetType)
 		{
@@ -16,7 +16,7 @@ namespace Engine
 		return "AssetType::<invalid>";
 	}
 
-	Asset::Type Asset::StringToAssetType(std::string_view& assetType)
+	Asset::Type Asset::StringToAssetType(const std::string_view& assetType)
 	{
 		if (assetType == "AssetType::Scene")		return Asset::Type::Scene;
 		if (assetType == "AssetType::Texture2D")	return Asset::Type::Texture2D;

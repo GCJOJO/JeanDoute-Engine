@@ -1,13 +1,17 @@
 #include "enginepch.h"
 #include "Engine/Assets/AssetImporter.h"
 #include "Engine/Assets/MeshImporter.h"
+#include "Engine/Assets/SceneImporter.h"
+#include "Engine/Assets/TextureImporter.h"
 
 namespace Engine
 {
 	using AssetImportFunction = std::function<Ref<Asset>(const std::filesystem::path&)>;
 	static std::map<Asset::Type, AssetImportFunction> s_AssetImportingFunctions =
 	{
-		{ Asset::Type::StaticMesh, MeshImporter::ImportStaticMesh }
+		{ Asset::Type::StaticMesh, MeshImporter::ImportStaticMesh },
+		{ Asset::Type::Scene, SceneImporter::ImportScene },
+		{ Asset::Type::Texture2D, TextureImporter::ImportTexture2D },
 	};
 
 	Ref<Asset> AssetImporter::ImportAsset(Asset::Type assetType, const std::filesystem::path& path)
@@ -24,9 +28,9 @@ namespace Engine
 	using AssetLoadFunction = std::function<Ref<Asset>(AssetHandle, const AssetMetadata&)>;
 	static std::map<Asset::Type, AssetLoadFunction> s_AssetLoadingFunctions =
 	{
-		//{ Asset::Type::Scene, SceneImporter::ImportScene },
-		//{ Asset::Type::Texture2D, TextureImporter::ImportTexture2D },
-		{ Asset::Type::StaticMesh, MeshImporter::LoadStaticMesh }
+		{ Asset::Type::Texture2D, TextureImporter::LoadTexture2D },
+		{ Asset::Type::StaticMesh, MeshImporter::LoadStaticMesh },
+		{ Asset::Type::Scene, SceneImporter::LoadScene },
 	};
 
 	Ref<Asset> AssetImporter::LoadAsset(AssetHandle handle, const AssetMetadata& metadata)
