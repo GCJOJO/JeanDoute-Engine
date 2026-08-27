@@ -13,7 +13,7 @@ namespace Engine
 {
 	std::filesystem::path ShaderManager::GetShadercExecutable()
 	{
-		return OS::GetExecutableDir() / "shaderc.exe";
+		return Filesystem::GetExecutableDir() / "shaderc.exe";
 	}
 
 	bool ShaderManager::CompileShader(const std::filesystem::path& shaderFile)
@@ -50,7 +50,7 @@ namespace Engine
 				varyingPath.string(),
 				profile);
 			
-			std::filesystem::path includeFolder = OS::GetCurrentDir() / "Shaders";
+			std::filesystem::path includeFolder = Filesystem::GetCurrentDir() / "Shaders";
 
 			cmd += std::format(R"( -i {})", includeFolder.string());
 
@@ -76,7 +76,7 @@ namespace Engine
 
 	bool ShaderManager::CompileShaders(const std::filesystem::path& shaderDirectory)
 	{
-		std::filesystem::path absoluteShaderDirectory = OS::GetCurrentDir() / shaderDirectory;
+		std::filesystem::path absoluteShaderDirectory = Filesystem::GetCurrentDir() / shaderDirectory;
 
 		if (!std::filesystem::is_directory(absoluteShaderDirectory))
 			return false;

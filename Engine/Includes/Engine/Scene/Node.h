@@ -2,6 +2,8 @@
 #include "Engine/Core/UUID.h"
 #include "Engine/Types/StringName.h"
 
+#include <concepts>
+
 namespace Engine
 {
 	class SceneTree;
@@ -27,6 +29,13 @@ namespace Engine
 
 		void SetName(StringName newName);
 
+		template<typename T, typename ... Args>
+		requires DerivedFromNode<T>
+		T* CreateChild(Args&& ...args)
+		{
+			return static_cast<T*>(AddChild(CreateScope<T>(std::forward<Args>(args)...)));
+		}
+
 		Node* AddChild(Scope<Node> newChild);
 		std::vector<Node*> GetChildren(bool recursive = false);
 		Node* GetChild(uint32_t index);
@@ -34,7 +43,7 @@ namespace Engine
 		Node* GetChild(StringName childName);
 		void RemoveChild(Node* child);
 
-	private:
+	protected:
 		UUID m_Id;
 		UUID m_ParentId{ UUID::EmptyHandle() };
 		std::vector<Scope<Node>> m_Children{ };
@@ -42,4 +51,7 @@ namespace Engine
 
 		StringName m_Name = "Node";
 	};
+
+	template<typename T>
+	concept DerivedFromNode = std::derived_from<T, Node>;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneTree.h"
+#include "Engine/Core/Timestep.h"
 
 namespace Engine
 {
@@ -9,6 +10,8 @@ namespace Engine
 		Scene();
 
 		static Ref<Scene> Copy(Ref<Scene> other);
+
+		void UpdateScene(Timestep ts, int viewId);
 
 		SceneTree& GetSceneTree() { return m_SceneTree; }
 	private:

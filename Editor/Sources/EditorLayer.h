@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/Core/Core.h"
 #include "Engine/Core/Layer.h"
+#include "Engine/Scene/Nodes/3D/MeshNode3D.h"
 #include "Engine/Rendering/Shader.h"
 #include "Engine/Rendering/StaticMesh.h"
 #include "Engine/Assets/StaticMeshAsset.h"
@@ -34,7 +35,7 @@ namespace Engine
 		Ref<ShaderProgram> m_ShaderProgram;
 		Ref<Texture2D> m_BobTexture;
 		Ref<StaticMeshAsset> m_MonkeyMeshAsset;
-		Ref<StaticMesh> m_MonkeyMesh;
+		MeshNode3D* m_MonkeyMesh;
 
 		bgfx::UniformHandle m_TextureUniform;
 

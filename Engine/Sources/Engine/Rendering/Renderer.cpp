@@ -2,6 +2,7 @@
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Rendering/RenderCommand.h"
 #include "Engine/Rendering/ShaderManager.h"
+#include "Engine/Rendering/StaticMesh.h"
 
 #include "bgfx/bgfx.h"
 
@@ -70,6 +71,9 @@ namespace Engine
 
 		RenderCommand::Init();
 		RenderCommand::SetClearColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+
+
+		StaticMesh::InitVertexLayout();
 	}
 
 	void Renderer::Update()

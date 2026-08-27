@@ -3,16 +3,18 @@
 #include "Engine/Rendering/MSDFData.h"
 #include "Engine/Serialization/FileStream.h"
 #include "Engine/Serialization/BufferStream.h"
+#include "Engine/Utils/PlatformUtils.h"
 
 #undef INFINITE
 #include "msdf-atlas-gen.h"
 #include "FontGeometry.h"
 #include "GlyphGeometry.h"
 
-constexpr auto FONT_CACHE = "./assets/cache/font.cache";
 
 namespace Engine
 {
+	const auto FONT_CACHE = Filesystem::GetUserDirectory() / "cache" / "font.cache";
+
 	static Ref<Texture2D> LoadCachedAtlas()
 	{
 		ENGINE_CORE_INFO("Loading Font Cache");
@@ -62,6 +64,8 @@ namespace Engine
 		Ref<Texture2D> texture = Texture2D::Create(spec);
 		Buffer textureData = Buffer((void*)bitmap.pixels, bitmap.width * bitmap.height * 3);
 		texture->SetData(textureData);
+
+		std::filesystem::create_directories(FONT_CACHE.parent_path());
 
 		FileStreamWriter writer(FONT_CACHE);
 		writer.WriteRaw<int>(bitmap.width);

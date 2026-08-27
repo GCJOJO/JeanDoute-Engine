@@ -6,6 +6,7 @@
 #include "Engine/Assets/TextureImporter.h"
 #include "Engine/Scene/SceneTree.h"
 #include "Editor/Scene/EditorSceneManager.h"
+#include "Engine/Utils/MathUtils.h"
 
 #include <bgfx/include/bgfx/bgfx.h>
 #include <bx/include/bx/bx.h>
@@ -15,7 +16,7 @@
 namespace Engine
 {
 	static Ref<Font> s_Font;
-
+	static float s_Time = 0.0f;
 
 	EditorLayer::EditorLayer() : Layer("Editor")
 	{
@@ -46,7 +47,6 @@ namespace Engine
 
 		m_MonkeyMeshAsset = std::static_pointer_cast<StaticMeshAsset>(AssetImporter::ImportAsset(Asset::Type::StaticMesh, "Assets/Meshes/Monkey.glb"));
 		
-		m_MonkeyMesh = CreateRef<StaticMesh>(m_MonkeyMeshAsset, m_ShaderProgram);
 
 		m_TextureUniform = bgfx::createUniform("u_texture", bgfx::UniformType::Sampler);
 
@@ -54,6 +54,7 @@ namespace Engine
 		sceneTree.ClearSceneTree();
 
 		Node* newNode = sceneTree.GetRoot()->AddChild(CreateScope<Node>("NewNode"));
+		m_MonkeyMesh = newNode->CreateChild<MeshNode3D>(m_MonkeyMeshAsset, m_ShaderProgram);
 
 		for (int i = 0; i < 25; i++)
 		{
@@ -73,6 +74,10 @@ namespace Engine
 		m_Framebuffer = CreateRef<Framebuffer>(fbSpec);
 
 		m_SceneHierarchyPanel.SetContext(SceneManager::GetCurrentScene());
+
+		m_MonkeyMesh->SetPosition(Vec3(0, 0, 0));
+		m_MonkeyMesh->SetRotation(Vec3(0, 180, 0));
+		m_MonkeyMesh->SetScale(10);
 	}
 
 	void EditorLayer::OnDetach()
@@ -83,6 +88,8 @@ namespace Engine
 
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
+		s_Time += ts.GetSeconds();
+
 		m_EditorCamera.OnUpdate(ts);
 
 		RenderCommand::SetClearColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f), m_Framebuffer->GetViewId());
@@ -105,7 +112,13 @@ namespace Engine
 
 		//RenderCommand::DrawTestCubes(ts, m_ShaderProgram);
 		m_BobTexture->Bind(m_TextureUniform);
-		m_MonkeyMesh->Render(m_Framebuffer->GetViewId());
+
+		m_MonkeyMesh->GetTransform().position = 
+			(Vec3::UP * MathUtils::sin(s_Time * 100) * 10) + 
+			(Vec3::RIGHT * MathUtils::cos(s_Time * 25) * 5) +
+			(Vec3::FORWARD * MathUtils::tan(s_Time * 10) * 7.5f);
+
+		SceneManager::GetCurrentScene()->UpdateScene(ts, m_Framebuffer->GetViewId());
 
 		RenderCommand::EndFrame();
 

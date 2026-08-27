@@ -8,13 +8,13 @@
 
 namespace Engine
 {
-	struct PosNormalUvVertex
+	struct StaticMeshVertex
 	{
 		float x, y, z;
 		float nx, ny, nz;
 		float u, v;
 
-		static void init()
+		static void Init()
 		{
 			ms_layout
 				.begin()
@@ -27,20 +27,17 @@ namespace Engine
 		static bgfx::VertexLayout ms_layout;
 	};
 
-	static bool s_LayoutInit = false;
-	bgfx::VertexLayout PosNormalUvVertex::ms_layout;
+	bgfx::VertexLayout StaticMeshVertex::ms_layout;
 	
+
+	void StaticMesh::InitVertexLayout()
+	{
+		StaticMeshVertex::Init();
+	}
 
 	StaticMesh::StaticMesh(Ref<StaticMeshAsset> meshAsset, Ref<ShaderProgram> shaderProgram)
 		: m_StaticMeshAsset(meshAsset), m_ShaderProgram(shaderProgram)
 	{
-		// Maybe find a better way
-		if(!s_LayoutInit)
-		{
-			PosNormalUvVertex::init();
-			s_LayoutInit = true;
-		}
-
 		RebuildBuffers();
 	}
 
@@ -61,7 +58,7 @@ namespace Engine
 
 		for (const auto& mesh : meshes)
 		{
-			std::vector<PosNormalUvVertex> vertices{ };
+			std::vector<StaticMeshVertex> vertices{ };
 			vertices.reserve(mesh.vertices.size());
 			for (int i = 0; i < mesh.vertices.size(); i++)
 			{
@@ -69,7 +66,7 @@ namespace Engine
 				const auto& normals = mesh.normals[i];
 				const auto& uvs = mesh.uvs[i];
 
-				PosNormalUvVertex newVertex{ };
+				StaticMeshVertex newVertex{ };
 				newVertex.x = vertex.x;
 				newVertex.y = vertex.y;
 				newVertex.z = vertex.z;
@@ -85,8 +82,8 @@ namespace Engine
 			}
 
 			auto vbh = bgfx::createVertexBuffer(
-				bgfx::copy(vertices.data(), (uint32_t)(vertices.size() * sizeof(PosNormalUvVertex))),
-				PosNormalUvVertex::ms_layout);
+				bgfx::copy(vertices.data(), (uint32_t)(vertices.size() * sizeof(StaticMeshVertex))),
+				StaticMeshVertex::ms_layout);
 
 			auto ibh = bgfx::createIndexBuffer(
 				bgfx::copy(mesh.indices.data(), (uint32_t)(mesh.indices.size() * sizeof(uint16_t))));
@@ -95,26 +92,11 @@ namespace Engine
 		}
 	}
 
-	void StaticMesh::Render(bgfx::ViewId viewId)
-	{
-		uint64_t state = 0
-			| BGFX_STATE_WRITE_R
-			| BGFX_STATE_WRITE_G
-			| BGFX_STATE_WRITE_B
-			| BGFX_STATE_WRITE_A
-			| BGFX_STATE_WRITE_Z
-			| BGFX_STATE_DEPTH_TEST_LESS
-			| BGFX_STATE_CULL_CCW
-			| BGFX_STATE_MSAA
-			| BGFX_STATE_PT_TRISTRIP;
-
-		glm::mat4 meshTransforms = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)) *
-			glm::toMat4(glm::quat(glm::vec3(0, glm::radians(180.0f), 0))) *
-			glm::scale(glm::mat4(1.0f), glm::vec3(10.0f));
-		
+	void StaticMesh::Render(const bgfx::ViewId& viewId, glm::mat4& modelMatrix)
+	{		
 		for (const auto& handles : m_MeshHandles)
 		{
-			RenderCommand::DrawMesh(viewId, handles.VerticesHandle, handles.IndicesHandle, m_ShaderProgram->GetProgramHandle(), meshTransforms);
+			RenderCommand::DrawMesh(viewId, handles.VerticesHandle, handles.IndicesHandle, m_ShaderProgram->GetProgramHandle(), modelMatrix);
 		}
 	}
 

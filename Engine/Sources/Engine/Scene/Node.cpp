@@ -62,7 +62,7 @@ namespace Engine
 
 		m_Name = newName;
 	}
-
+	
 	Node* Node::AddChild(Scope<Node> newChild)
 	{
 		int i = 1;

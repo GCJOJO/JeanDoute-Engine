@@ -1,4 +1,5 @@
 #include "enginepch.h"
+#if ENGINE_PLATFORM_WINDOWS
 #include "Engine/Utils/PlatformUtils.h"
 
 #include <commdlg.h>
@@ -20,17 +21,23 @@ namespace Engine
 		return written;
 	}
 
-	bool OS::ChangeDirectory(const std::filesystem::path& newPath)
+	const std::filesystem::path Filesystem::GetUserDirectory()
+	{
+		char* appdata = getenv("APPDATA");
+		return std::filesystem::path(appdata) / "JeanDoute-Engine";
+	}
+
+	bool Filesystem::ChangeDirectory(const std::filesystem::path& newPath)
 	{
 		return _chdir(newPath.string().c_str()) == 0 ? true : false;
 	}
 
-	std::filesystem::path OS::GetCurrentDir()
+	std::filesystem::path Filesystem::GetCurrentDir()
 	{
 		return std::filesystem::current_path();
 	}
 
-	std::filesystem::path OS::GetExecutablePath()
+	std::filesystem::path Filesystem::GetExecutablePath()
 	{
 		wchar_t path[MAX_PATH] = { 0 };
 		GetModuleFileNameW(NULL, path, MAX_PATH);
@@ -221,3 +228,5 @@ namespace Engine
 		return -1;
 	}
 }
+
+#endif

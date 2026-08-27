@@ -4,9 +4,11 @@
 
 namespace Engine 
 {
-	class OS
+	class Filesystem
 	{
 	public:
+		static const std::filesystem::path GetUserDirectory();
+
 		static bool ChangeDirectory(const std::filesystem::path& newPath);
 		static std::filesystem::path GetCurrentDir();
 		static std::filesystem::path GetExecutablePath();
