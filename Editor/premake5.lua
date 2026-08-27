@@ -39,6 +39,10 @@ project "Editor"
 		"yaml-cpp"
 	}
 
+	defines{
+		"BX_CONFIG_DEBUG"
+	}
+
 	postbuildcommands { 
 		"{COPYDIR} %[%{wks.location}/Engine/Shaders] %[%{prj.location}/Shaders]",
 		--"{COPYDIR} %[%{prj.location}/Binaries] %[%{cfg.buildtarget.directory}/Binaries]",
