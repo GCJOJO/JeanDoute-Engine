@@ -20,7 +20,7 @@ namespace Engine
 		const aiScene* scene = importer.ReadFile(assetPath.string(),
 			aiProcess_Triangulate | 
 			aiProcess_GenSmoothNormals |
-			aiProcess_FlipUVs |
+			//aiProcess_FlipUVs |
 			aiProcess_JoinIdenticalVertices |
 			aiProcess_CalcTangentSpace |
 			aiProcess_ConvertToLeftHanded );

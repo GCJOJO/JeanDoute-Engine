@@ -26,7 +26,7 @@ namespace Engine
 		newTexture->m_Specifications = specifications;
 		
 		newTexture->m_TextureHandle = bgfx::createTexture2D(specifications.Width, specifications.Height, 
-			specifications.GenerateMips,
+			false,
 			1, ToBgfxTextureFormat(specifications.Format), 
 			BGFX_TEXTURE_NONE | BGFX_SAMPLER_POINT | BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP);
 
