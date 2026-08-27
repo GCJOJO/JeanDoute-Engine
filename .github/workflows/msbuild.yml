@@ -24,7 +24,7 @@ jobs:
       fail-fast : false
       matrix:
         build_config: [Debug, Release, Dist]
-    continue-on-error: true
+    continue-on-error: false
     runs-on: windows-2022
 
     steps:
