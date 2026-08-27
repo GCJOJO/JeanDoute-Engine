@@ -58,10 +58,8 @@ jobs:
         cache: true
         stripdown: true
 
-    - name: Visual Studio shell
-      # You may pin to the exact commit or the version.
-      # uses: egor-tensin/vs-shell@54e4148eac794e4580591c2e0b7750f14b7891fc
-      uses: egor-tensin/vs-shell@v2
+    - name: Setup MSVC environment
+      uses: ilammy/msvc-dev-cmd@v1
     
     - name: Setup
       run: | 

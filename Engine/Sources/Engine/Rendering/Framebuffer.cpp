@@ -76,9 +76,9 @@ namespace Engine
 
 	void Framebuffer::DestroyHandles()
 	{
+		m_ColorAttachmentHandles.clear();
 		if (bgfx::isValid(m_FramebufferHandle))
 			bgfx::destroy(m_FramebufferHandle);
-		m_ColorAttachmentHandles.clear();
 	}
 
 	void Framebuffer::Bind()
