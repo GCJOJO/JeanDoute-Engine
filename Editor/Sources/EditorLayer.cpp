@@ -3,6 +3,7 @@
 #include "Engine/Rendering/RenderCommand.h"
 #include "Engine/Assets/AssetImporter.h"
 #include "Engine/Assets/TextureImporter.h"
+#include "Engine/Scene/SceneTree.h"
 
 #include <bgfx/include/bgfx/bgfx.h>
 #include <bx/include/bx/bx.h>
@@ -32,6 +33,18 @@ namespace Engine
 		m_MonkeyMesh = CreateRef<StaticMesh>(m_MonkeyMeshAsset, m_ShaderProgram);
 
 		m_TextureUniform = bgfx::createUniform("u_texture", bgfx::UniformType::Sampler);
+
+		SceneTree::Get().ClearSceneTree();
+		Node newNode = Node("NewNode");
+		for (int i = 0; i < 25; i++)
+		{
+			newNode.AddChild(CreateScope<Node>("ChildNode"));
+		}
+
+		for (const auto& child : newNode.GetChildren())
+		{
+			ENGINE_CORE_INFO(child->GetName());
+		}
 	}
 
 	void EditorLayer::OnDetach()
