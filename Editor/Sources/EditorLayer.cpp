@@ -23,6 +23,8 @@ namespace Engine
 
 		SceneManager::Initialize(CreateRef<EditorSceneManager>());
 		SceneManager::NewScene();
+
+		m_SceneHierarchyPanel = SceneHierarchyPanel();
 	}
 
 	void EditorLayer::OnAttach()
@@ -69,6 +71,8 @@ namespace Engine
 		fbSpec.Height = window.GetHeight();
 
 		m_Framebuffer = CreateRef<Framebuffer>(fbSpec);
+
+		m_SceneHierarchyPanel.SetContext(SceneManager::GetCurrentScene());
 	}
 
 	void EditorLayer::OnDetach()
@@ -242,6 +246,8 @@ namespace Engine
 #endif
 
 		ImGui::End();
+
+		m_SceneHierarchyPanel.OnImGuiRender();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 		ImGui::Begin("Viewport");

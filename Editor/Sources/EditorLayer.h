@@ -6,6 +6,7 @@
 #include "Engine/Assets/StaticMeshAsset.h"
 #include "Engine/Rendering/Texture.h"
 #include "Engine/Rendering/Framebuffer.h"
+#include "Editor/Panels/SceneHierarchyPanel.h"
 #include "EditorCamera.h"
 
 namespace Engine
@@ -25,6 +26,8 @@ namespace Engine
 
 		void OnEvent(Event& event) override;
 	private:
+		SceneHierarchyPanel m_SceneHierarchyPanel;
+
 		EditorCamera m_EditorCamera;
 		Ref<Shader> m_VertexShader;
 		Ref<Shader> m_FragmentShader;

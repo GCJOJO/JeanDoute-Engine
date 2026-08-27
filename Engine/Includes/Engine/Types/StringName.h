@@ -13,6 +13,7 @@ namespace Engine
 
 		const std::string& ToString() const;
 		explicit operator std::string() { return ToString(); }
+		explicit operator const char*() const { return ToString().c_str(); }
 
 		bool operator==(const StringName& other) const { return m_Id == other.m_Id; }
 		bool operator!=(const StringName& other) const { return m_Id != other.m_Id; }
