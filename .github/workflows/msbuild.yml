@@ -61,15 +61,15 @@ jobs:
     - name: Setup MSVC environment
       uses: ilammy/msvc-dev-cmd@v1
     
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
     - name: Setup
       run: | 
         cd scripts/
         python Setup.py --skip-confirmation --skip-vulkan --skip-shaderc
       shell: cmd
           
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
-
     - name: Restore NuGet packages
       working-directory: ./
       run: nuget restore ${{env.SOLUTION_FILE_PATH}}
