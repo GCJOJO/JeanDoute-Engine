@@ -30,7 +30,9 @@ namespace Engine
 			1, ToBgfxTextureFormat(specifications.Format), 
 			BGFX_TEXTURE_NONE | BGFX_SAMPLER_POINT | BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP);
 
-		newTexture->SetData(data);
+		if(data.Size > 0)
+			newTexture->SetData(data);
+
 		return newTexture;
 	}
 

@@ -3,6 +3,8 @@
 #include "Engine/Core/Core.h"
 #include "Engine/Core/Window.h"
 
+#include "bgfx/bgfx.h"
+
 namespace Engine
 {
 	enum class RenderingAPI
@@ -25,6 +27,8 @@ namespace Engine
 
 		static const RenderingAPI GetRenderingAPI() { return m_RenderingAPI; }
 		
+		static bgfx::ViewId AllocateViewId();
+
 	private:
 		 static RenderingAPI m_RenderingAPI;
 	};

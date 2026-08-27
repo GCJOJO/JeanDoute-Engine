@@ -13,6 +13,9 @@
 
 namespace Engine
 {
+	const bgfx::ViewId BaseViewId{ 0 };
+	static bgfx::ViewId s_ViewId = 1;
+
 	RenderingAPI Renderer::m_RenderingAPI = RenderingAPI::None;
 
 	void Renderer::Init(RenderingAPI api, Window* window)
@@ -59,11 +62,11 @@ namespace Engine
 
 		bgfx::init(init);
 
-		bgfx::setDebug(BGFX_DEBUG_STATS | BGFX_DEBUG_TEXT | BGFX_DEBUG_PROFILER);
+		//bgfx::setDebug(BGFX_DEBUG_STATS | BGFX_DEBUG_TEXT | BGFX_DEBUG_PROFILER);
 		ShaderManager::CompileShaders("Shaders");
 
-		bgfx::setViewRect(0, 0, 0, init.resolution.width, init.resolution.height);
-		bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0);
+		bgfx::setViewRect(BaseViewId, 0, 0, init.resolution.width, init.resolution.height);
+		bgfx::setViewClear(BaseViewId, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0);
 
 		RenderCommand::Init();
 		RenderCommand::SetClearColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
@@ -81,7 +84,12 @@ namespace Engine
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
 	{
 		RenderCommand::SetWindowSize(width, height);
-		RenderCommand::SetViewport(0, 0, width, height);
+		RenderCommand::SetViewport(BaseViewId, 0, 0, width, height);
+	}
+
+	bgfx::ViewId Renderer::AllocateViewId()
+	{
+		return s_ViewId++;
 	}
 
 }

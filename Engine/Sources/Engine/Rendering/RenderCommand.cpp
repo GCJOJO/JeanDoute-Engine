@@ -90,9 +90,9 @@ namespace Engine
 		s_program = ShaderManager::LoadProgram("cubes.vert", "cubes.frag");
 	}
 
-	void RenderCommand::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+	void RenderCommand::SetViewport(bgfx::ViewId viewId, uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 	{
-		bgfx::setViewRect(0, x, y, uint16_t(width), uint16_t(height));
+		bgfx::setViewRect(viewId, x, y, uint16_t(width), uint16_t(height));
 	}
 
 	void RenderCommand::SetWindowSize(uint32_t width, uint32_t height)
@@ -100,7 +100,7 @@ namespace Engine
 		bgfx::reset(width, height, BGFX_RESET_VSYNC | BGFX_RESET_HIDPI, bgfx::TextureFormat::RGBA8);
 	}
 
-	void RenderCommand::SetClearColor(const glm::vec4& color)
+	void RenderCommand::SetClearColor(const glm::vec4& color, const bgfx::ViewId& viewId)
 	{
 		uint32_t bgfxColor =
 			(uint8_t(color.r * 255.0f) << 24) |
@@ -108,12 +108,12 @@ namespace Engine
 			(uint8_t(color.b * 255.0f) << 8) |
 			(uint8_t(color.a * 255.0f));
 
-		bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, bgfxColor, 1.0f, 0);
+		bgfx::setViewClear(viewId, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, bgfxColor, 1.0f, 0);
 	}
 
-	void RenderCommand::BeginFrame()
+	void RenderCommand::BeginFrame(const bgfx::ViewId& viewId)
 	{
-		bgfx::touch(0);
+		bgfx::touch(viewId);
 	}
 
 	void RenderCommand::EndFrame()
@@ -121,14 +121,12 @@ namespace Engine
 		bgfx::frame();
 	}
 
-	void RenderCommand::SetCamera(glm::mat4 cameraViewMatrix, glm::mat4 cameraProjectionMatrix)
+	void RenderCommand::SetCamera(const bgfx::ViewId& viewId, glm::mat4 cameraViewMatrix, glm::mat4 cameraProjectionMatrix)
 	{
 		float* view = glm::value_ptr(cameraViewMatrix);
 		float* proj = glm::value_ptr(cameraProjectionMatrix);
-		bgfx::setViewTransform(0, view, proj);
+		bgfx::setViewTransform(viewId, view, proj);
 	}
-
-
 
 	void RenderCommand::DrawTestCubes(Timestep ts, Ref<ShaderProgram> shaderProgram)
 	{

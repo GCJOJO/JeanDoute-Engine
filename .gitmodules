@@ -56,3 +56,6 @@
 [submodule "Engine/vendor/Assimp"]
 	path = Engine/vendor/Assimp
 	url = https://github.com/GCJOJO/assimp.git
+[submodule "Engine/vendor/msdf-atlas-gen"]
+	path = Engine/vendor/msdf-atlas-gen
+	url = https://github.com/TheCherno/msdf-atlas-gen.git

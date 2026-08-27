@@ -5,6 +5,7 @@
 #include "Engine/Rendering/StaticMesh.h"
 #include "Engine/Assets/StaticMeshAsset.h"
 #include "Engine/Rendering/Texture.h"
+#include "Engine/Rendering/Framebuffer.h"
 #include "EditorCamera.h"
 
 namespace Engine
@@ -12,6 +13,8 @@ namespace Engine
 	class EditorLayer : public Layer 
 	{
 	public:
+		EditorLayer();
+
 		void OnAttach() override;
 		void OnDetach() override;
 
@@ -31,5 +34,13 @@ namespace Engine
 		Ref<StaticMesh> m_MonkeyMesh;
 
 		bgfx::UniformHandle m_TextureUniform;
+
+		Ref<Framebuffer> m_Framebuffer;
+
+		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+		glm::vec2 m_ViewportBounds[2];
+
+		bool m_ViewportFocused = false;
+		bool m_ViewportHovered = false;
 	};
 }
