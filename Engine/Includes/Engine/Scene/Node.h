@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/Core/UUID.h"
 #include "Engine/Types/StringName.h"
+#include "NodeRegistry.h"
 
 #include <concepts>
 
@@ -8,7 +9,7 @@ namespace Engine
 {
 	class SceneTree;
 
-	class Node
+	class Node : public AutoRegister<Node, Node>
 	{
 	public:
 		Node();

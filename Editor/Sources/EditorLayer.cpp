@@ -140,8 +140,6 @@ namespace Engine
 			//m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, SceneManager::GetCurrentScene().get());
 			//ENGINE_CORE_INFO("Hovered Entity ID : {}", pixelData);
 		}
-
-		
 	}
 
 	void EditorLayer::OnImGuiRender()

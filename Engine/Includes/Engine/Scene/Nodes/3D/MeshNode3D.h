@@ -8,7 +8,9 @@ namespace Engine
 	class StaticMeshAsset;
 	class ShaderProgram;
 
-	class MeshNode3D : public RenderableNode3D
+	class MeshNode3D : 
+		public RenderableNode3D,
+		public AutoRegister<MeshNode3D, MeshNode3D, RenderableNode3D, Node3D, Node>
 	{
 	public:
 		static void InitVertexLayout();

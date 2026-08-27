@@ -20,7 +20,6 @@ namespace Engine
 	{
 		m_Name = name;
 		m_StaticMesh = CreateRef<StaticMesh>(staticMeshAsset, shaderProgram);
-		Renderable3DRegistry::Get().Register(this);
 	}
 
 	MeshNode3D::~MeshNode3D()

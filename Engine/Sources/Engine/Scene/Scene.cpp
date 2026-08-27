@@ -17,7 +17,7 @@ namespace Engine
 
 	void Scene::UpdateScene(Timestep ts, int viewId)
 	{
-		for (auto& node : Renderable3DRegistry::Get().GetAll())
+		for (auto& node : NodeRegistry<RenderableNode3D>::Get().GetAll())
 			node->Render(viewId);
 	}
 

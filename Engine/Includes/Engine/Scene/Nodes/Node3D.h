@@ -4,7 +4,9 @@
 
 namespace Engine
 {
-	class Node3D : public Node
+	class Node3D :
+		public Node, 
+		public AutoRegister<Node3D, Node3D, Node>
 	{
 	public:
 		Transform3D& GetTransform() { return m_Transform; }
