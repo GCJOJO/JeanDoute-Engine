@@ -15,10 +15,23 @@ namespace Engine
 		return newScene;
 	}
 
+	void Scene::StartScene()
+	{
+		for (auto& node : NodeRegistry<Node>::GetAll())
+		{
+			node->Ready();
+		}
+	}
+
 	void Scene::UpdateScene(Timestep ts, int viewId)
 	{
-		for (auto& node : NodeRegistry<RenderableNode3D>::Get().GetAll())
+		for (auto& node : NodeRegistry<RenderableNode3D>::GetAll())
 			node->Render(viewId);
+	}
+
+	void Scene::StopScene()
+	{
+
 	}
 
 }

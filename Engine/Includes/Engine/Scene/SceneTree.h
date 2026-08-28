@@ -17,9 +17,30 @@ namespace Engine
 		void RegisterNode(Node* node);
 		void UnregisterNode(Node* node);
 		Node* GetNode(UUID id);
+		Node* GetNode(StringName name);
+		Node* GetNode(const std::string& name);
+
+		template<DerivedFromNode T>
+		T* GetNode(UUID id)
+		{
+			return static_cast<T>(GetNode(id));
+		}
+
+		template<DerivedFromNode T>
+		T* GetNode(StringName name)
+		{
+			return static_cast<T>(GetNode(name));
+		}
+
+		template<DerivedFromNode T>
+		T* GetNode(const std::string& name)
+		{
+			return static_cast<T>(GetNode(name));
+		}
 
 	private:
 		Scope<Node> m_Root;
 		std::unordered_map<UUID, Node*> m_Nodes;
+		std::unordered_map<StringName, Node*> m_NodeNames;
 	};
 }

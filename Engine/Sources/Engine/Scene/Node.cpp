@@ -50,6 +50,7 @@ namespace Engine
 
 	void Node::SetName(StringName newName)
 	{
+		SceneTree::Get().UnregisterNode(this);
 		if (m_ParentId)
 		{
 			Node* parent = SceneTree::Get().GetNode(m_ParentId);
@@ -61,6 +62,7 @@ namespace Engine
 		} 
 
 		m_Name = newName;
+		SceneTree::Get().RegisterNode(this);
 	}
 	
 	Node* Node::AddChild(Scope<Node> newChild)
@@ -134,6 +136,14 @@ namespace Engine
 		out << YAML::Key << "Id" << YAML::Value << GetId();
 		//out << YAML::Key << "Type" << YAML::Value << 
 		out << YAML::Key << "Name" << YAML::Value << GetName().ToString();
+
+		if (m_ScriptName)
+		{
+			out << YAML::Key << "Script" << YAML::Value << YAML::BeginMap;
+			out << YAML::Key << "Name" << YAML::Value << GetScriptName().ToString();
+			// Script Fields Values
+			out << YAML::EndMap;
+		}
 
 		out << YAML::EndMap;
 	}

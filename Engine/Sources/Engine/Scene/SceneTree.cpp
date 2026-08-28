@@ -28,17 +28,30 @@ namespace Engine
 	void SceneTree::RegisterNode(Node* node)
 	{
 		m_Nodes[node->GetId()] = node;
+		m_NodeNames[node->GetName()] = node;
 	}
 
 	void SceneTree::UnregisterNode(Node* node)
 	{
 		m_Nodes.erase(node->GetId());
+		m_NodeNames.erase(node->GetName());
 	}
 
 	Node* SceneTree::GetNode(UUID id)
 	{
 		auto it = m_Nodes.find(id);
 		return (it != m_Nodes.end()) ? it->second : nullptr;
+	}
+
+	Node* SceneTree::GetNode(StringName name)
+	{
+		auto it = m_NodeNames.find(name);
+		return (it != m_NodeNames.end()) ? it->second : nullptr;
+	}
+
+	Node* SceneTree::GetNode(const std::string& name)
+	{
+		return GetNode(StringName(name));
 	}
 
 }

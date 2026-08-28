@@ -26,6 +26,11 @@ namespace Engine
 
 
 		void OnEvent(Event& event) override;
+
+		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
+		bool OnWindowDrop(WindowDropEvent& e);
+		//void OnOverlayRender();
 	private:
 		void NewProject();
 		bool OpenProject();

@@ -185,10 +185,10 @@ namespace Engine
 
 		static Coral::ManagedAssembly* GetEngineAssembly();
 
-		static bool EntityClassExists(const std::string& fullClassName);
+		static bool NodeClassExists(const std::string& fullClassName);
 
-		static Ref<ScriptClass> GetEntityClass(const std::string& name);
-		static std::unordered_map<std::string, Ref<ScriptClass>> GetEntityClasses();
+		static Ref<ScriptClass> GetNodeClass(const std::string& name);
+		static std::unordered_map<std::string, Ref<ScriptClass>> GetNodeClasses();
 		static bool IsValidClass(const std::string& className);
 		static ScriptFieldMap& GetScriptFieldMap(Node* node);
 
@@ -201,7 +201,7 @@ namespace Engine
 		static void SetStopFunction(std::function<void()> newFunction);
 		static void SetTimersActive(bool active);
 
-		static Ref<ScriptInstance> GetEntityScriptInstance(UUID entityID);
+		static Ref<ScriptInstance> GetNodeScriptInstance(UUID entityID);
 
 		static Scene* GetSceneContext();
 

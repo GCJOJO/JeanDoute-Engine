@@ -157,7 +157,7 @@ namespace Engine
 		out << YAML::Key << "Scene" << YAML::Value << "Untitled";
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 		
-		for (const Node* node : NodeRegistry<Node>::Get().GetAll())
+		for (const Node* node : NodeRegistry<Node>::Get().GetNodes())
 		{
 			node->SaveNode(out);
 		}

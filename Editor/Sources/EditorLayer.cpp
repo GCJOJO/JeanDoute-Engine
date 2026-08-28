@@ -14,6 +14,8 @@
 #include "Engine/Assets/SceneImporter.h"
 #include "Editor/EditorConfig.h"
 
+#include "Engine/Core/Input.h"
+
 #include <bgfx/include/bgfx/bgfx.h>
 
 #include "imgui/imgui.h"
@@ -227,7 +229,7 @@ namespace Engine
 		{
 			if (ImGui::BeginMenu("File"))
 			{
-				/*if (ImGui::MenuItem("Open Project...", "Ctrl+O"))
+				if (ImGui::MenuItem("Open Project...", "Ctrl+O"))
 					OpenProject();
 
 				ImGui::Separator();
@@ -244,8 +246,8 @@ namespace Engine
 				if (ImGui::MenuItem("Save Scene As...", "Ctrl+Shift+S"))
 					SaveSceneAs();
 
-				if (ImGui::MenuItem("Export Project..."))
-					ExportProject();*/
+				//if (ImGui::MenuItem("Export Project..."))
+				//	ExportProject();
 
 				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
 				// which we can't undo at the moment without finer window depth/z control.
@@ -326,6 +328,94 @@ namespace Engine
 	void EditorLayer::OnEvent(Event& event)
 	{
 		m_EditorCamera.OnEvent(event);
+
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<KeyPressedEvent>(ENGINE_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(ENGINE_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
+		dispatcher.Dispatch<WindowDropEvent>(ENGINE_BIND_EVENT_FN(EditorLayer::OnWindowDrop));
+	}
+
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		// Shortcuts
+		if (e.IsRepeat()) return false;
+
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+		switch (e.GetKeyCode())
+		{
+		case (int)Key::N:
+			if (control)
+				NewScene();
+			break;
+		case (int)Key::O:
+			if (control)
+				OpenProject();
+			break;
+		case (int)Key::S:
+			if (control)
+			{
+				if (shift)
+					SaveSceneAs();
+				else
+					SaveScene();
+			}
+			break;
+
+			// Scene Commands
+		/*case (int)Key::D:
+			if (control)
+				OnDuplicateEntity();
+			break;
+
+			// Gizmos
+		case (int)Key::Q:
+			m_GizmoType = -1;
+			break;
+		case (int)Key::W:
+			m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		case (int)Key::E:
+			m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		case (int)Key::R:
+			if (control)
+				ScriptEngine::ReloadAssembly();
+			else
+				m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			break;*/
+
+		/*case (int)Key::Delete:
+		{
+			if (Application::Get().GetImGuiLayer()->GetActiveWidgetID() != 0)
+				break;
+
+			Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+			if (m_HoveredEntity)
+			{
+				m_SceneHierarchyPanel.SetSelectedEntity({});
+				SceneManager::GetCurrentScene()->DestroyEntity(m_HoveredEntity);
+			}
+			break;
+		}*/
+		}
+		return true;
+	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		/*if (e.GetMouseButton() == (int)MouseCode::ButtonLeft && m_ViewportHovered &&
+			!ImGuizmo::IsOver() && !Input::IsKeyPressed(KeyCode::LeftAlt))
+		{
+			m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+			return true;
+		}*/
+		return false;
+	}
+
+	bool EditorLayer::OnWindowDrop(WindowDropEvent& e)
+	{
+
 	}
 
 	void EditorLayer::NewProject()

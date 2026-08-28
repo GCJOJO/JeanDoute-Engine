@@ -65,12 +65,12 @@ namespace Engine
 		std::filesystem::path CoreAssemblyFilepath;
 		std::filesystem::path AppAssemblyFilepath;
 
-		ScriptClass EntityClass;
+		ScriptClass NodeClass;
 
 		std::unordered_map<std::string, Ref<ScriptClass>> NodeClasses;
-		std::unordered_map<UUID, Ref<ScriptInstance>> EntityInstances;
+		std::unordered_map<UUID, Ref<ScriptInstance>> NodeInstances;
 
-		std::unordered_map<UUID, ScriptFieldMap> EntityScriptFields;
+		std::unordered_map<UUID, ScriptFieldMap> NodeScriptFields;
 
 		Scope<filewatch::FileWatch<std::string>> AppAssemblyFileWatcher;
 		bool AssemblyReloadPending = false;
@@ -160,7 +160,7 @@ namespace Engine
 			return;
 		}
 
-		s_ScriptEngineData->EntityClass = ScriptClass("Engine.Entity", true);
+		s_ScriptEngineData->NodeClass = ScriptClass("Engine.Entity", true);
 		ScriptGlue::RegisterFunctions(*s_ScriptEngineData->EngineAssembly);
 		ScriptGlue::RegisterNodes();
 
@@ -244,12 +244,12 @@ namespace Engine
 
 	}
 
-	bool ScriptEngine::EntityClassExists(const std::string& fullClassName)
+	bool ScriptEngine::NodeClassExists(const std::string& fullClassName)
 	{
 		return s_ScriptEngineData->NodeClasses.find(fullClassName) != s_ScriptEngineData->NodeClasses.end();
 	}
 
-	Ref<ScriptClass> ScriptEngine::GetEntityClass(const std::string& name)
+	Ref<ScriptClass> ScriptEngine::GetNodeClass(const std::string& name)
 	{
 		if (s_ScriptEngineData->NodeClasses.find(name) == s_ScriptEngineData->NodeClasses.end())
 			return nullptr;
@@ -257,21 +257,21 @@ namespace Engine
 		return s_ScriptEngineData->NodeClasses.at(name);
 	}
 
-	std::unordered_map<std::string, Ref<ScriptClass>> ScriptEngine::GetEntityClasses()
+	std::unordered_map<std::string, Ref<ScriptClass>> ScriptEngine::GetNodeClasses()
 	{
 		return s_ScriptEngineData->NodeClasses;
 	}
 
 	bool ScriptEngine::IsValidClass(const std::string& className)
 	{
-		return GetEntityClasses().find(className) != GetEntityClasses().end();
+		return GetNodeClasses().find(className) != GetNodeClasses().end();
 	}
 
 	ScriptFieldMap& ScriptEngine::GetScriptFieldMap(Node* node)
 	{
 		ENGINE_CORE_ASSERT(node);
 		UUID entityId = node->GetId();
-		return s_ScriptEngineData->EntityScriptFields[entityId];
+		return s_ScriptEngineData->NodeScriptFields[entityId];
 	}
 
 	void ScriptEngine::OnRuntimeStart(Scene* scene)
@@ -284,7 +284,7 @@ namespace Engine
 	{
 		SetTimersActive(false);
 		s_ScriptEngineData->SceneContext = nullptr;
-		s_ScriptEngineData->EntityInstances.clear();
+		s_ScriptEngineData->NodeInstances.clear();
 		Coral::GC::Collect();
 	}
 
@@ -299,6 +299,21 @@ namespace Engine
 
 	void ScriptEngine::OnCreateNode(Node* node)
 	{
+		const std::string& className = node->GetScriptName().ToString();
+		if (ScriptEngine::NodeClassExists(className))
+		{
+			UUID nodeId = node->GetId();
+			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_ScriptEngineData->NodeClasses[className], node);
+			s_ScriptEngineData->NodeInstances[nodeId] = instance;
+
+			if (s_ScriptEngineData->NodeScriptFields.find(nodeId) != s_ScriptEngineData->NodeScriptFields.end())
+			{
+				// TODO
+			}
+
+			instance->InvokeOnCreate();
+		}
+
 		/*const auto& sc = entity.GetComponent<ScriptComponent>();
 		if (ScriptEngine::EntityClassExists(sc.ClassName))
 		{
@@ -348,19 +363,19 @@ namespace Engine
 	void ScriptEngine::OnUpdateNode(Node* node, Timestep ts)
 	{
 		UUID entityUUID = node->GetId();
-		if (s_ScriptEngineData->EntityInstances.find(entityUUID) != s_ScriptEngineData->EntityInstances.end())
+		if (s_ScriptEngineData->NodeInstances.find(entityUUID) != s_ScriptEngineData->NodeInstances.end())
 		{
-			Ref<ScriptInstance> instance = s_ScriptEngineData->EntityInstances[node->GetId()];
+			Ref<ScriptInstance> instance = s_ScriptEngineData->NodeInstances[node->GetId()];
 			instance->InvokeOnUpdate((float)ts);
 		}
 		else
 			ENGINE_CORE_ERROR("Couldn't find ScriptInstance for entity {}", node->GetName());
 	}
 
-	Ref<ScriptInstance> ScriptEngine::GetEntityScriptInstance(UUID entityID)
+	Ref<ScriptInstance> ScriptEngine::GetNodeScriptInstance(UUID entityID)
 	{
-		auto it = s_ScriptEngineData->EntityInstances.find(entityID);
-		if (it == s_ScriptEngineData->EntityInstances.end())
+		auto it = s_ScriptEngineData->NodeInstances.find(entityID);
+		if (it == s_ScriptEngineData->NodeInstances.end())
 			return nullptr;
 
 		return it->second;
@@ -379,8 +394,8 @@ namespace Engine
 
 	Coral::ManagedObject& ScriptEngine::GetManagedInstance(UUID id)
 	{
-		ENGINE_CORE_ASSERT(s_ScriptEngineData->EntityInstances.find(id) != s_ScriptEngineData->EntityInstances.end());
-		return s_ScriptEngineData->EntityInstances.at(id)->GetManagedObject();
+		ENGINE_CORE_ASSERT(s_ScriptEngineData->NodeInstances.find(id) != s_ScriptEngineData->NodeInstances.end());
+		return s_ScriptEngineData->NodeInstances.at(id)->GetManagedObject();
 	}
 
 	Coral::String ScriptEngine::CreateString(const std::string& string)
@@ -471,14 +486,14 @@ namespace Engine
 
 	void ScriptInstance::InvokeOnCreate()
 	{
-		if (m_ScriptClass->HasMethod("OnCreate", {}))
-			m_Instance.InvokeMethod("OnCreate");
+		if (m_ScriptClass->HasMethod("Ready", {}))
+			m_Instance.InvokeMethod("Ready");
 	}
 
 	void ScriptInstance::InvokeOnUpdate(float ts)
 	{
-		if (m_ScriptClass->HasMethod("OnUpdate", { ScriptFieldType::Float }))
-			m_Instance.InvokeMethod("OnUpdate", ts);
+		if (m_ScriptClass->HasMethod("Process", { ScriptFieldType::Float }))
+			m_Instance.InvokeMethod("Process", ts);
 	}
 
 	bool ScriptInstance::GetFieldValueInternal(const std::string& name, void* buffer)

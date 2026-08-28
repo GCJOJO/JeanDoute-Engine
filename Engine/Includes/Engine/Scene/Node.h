@@ -50,6 +50,9 @@ namespace Engine
 
 		void SaveNode(YAML::Emitter& out) const;
 
+		void SetScript(StringName script) { m_ScriptName = script; }
+		StringName GetScriptName() const { return m_ScriptName; }
+
 	protected:
 		UUID m_Id;
 		UUID m_ParentId{ UUID::EmptyHandle() };
@@ -57,6 +60,7 @@ namespace Engine
 		std::unordered_map<StringName, Node*> m_ChildrenNames{ };
 
 		StringName m_Name = "Node";
+		StringName m_ScriptName = "";
 	};
 
 	template<typename T>

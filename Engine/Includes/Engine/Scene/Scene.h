@@ -12,7 +12,9 @@ namespace Engine
 
 		static Ref<Scene> Copy(Ref<Scene> other);
 
+		void StartScene();
 		void UpdateScene(Timestep ts, int viewId);
+		void StopScene();
 
 		SceneTree& GetSceneTree() { return m_SceneTree; }
 

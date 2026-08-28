@@ -15,7 +15,8 @@ namespace Engine
 		void Register(T* node) { m_Nodes.push_back(node); }
 		void Unregister(T* node) { std::erase(m_Nodes, node); }
 
-		const std::vector<T*> GetAll() const { return m_Nodes; }
+		const std::vector<T*> GetNodes() const { return m_Nodes; }
+		static std::vector<T*> GetAll() { return Get().GetNodes(); }
 
 	private:
 		std::vector<T*> m_Nodes;
