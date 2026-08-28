@@ -10,6 +10,10 @@
 #include "Editor/Panels/SceneHierarchyPanel.h"
 #include "EditorCamera.h"
 
+#include "Engine/Events/KeyEvent.h"
+#include "Engine/Events/MouseEvent.h"
+#include "Engine/Events/ApplicationEvent.h"
+
 namespace Engine
 {
 	class EditorLayer : public Layer 

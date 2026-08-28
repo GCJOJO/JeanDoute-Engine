@@ -48,6 +48,11 @@ namespace Engine
 		//Free resources
 	}
 
+	Node* Node::GetParent() const
+	{
+		return SceneTree::Get().GetNode(GetParentId());
+	}
+
 	void Node::SetName(StringName newName)
 	{
 		SceneTree::Get().UnregisterNode(this);
@@ -134,6 +139,10 @@ namespace Engine
 	{
 		out << YAML::BeginMap;
 		out << YAML::Key << "Id" << YAML::Value << GetId();
+
+		if (m_ParentId)
+			out << YAML::Key << "Parent" << YAML::Value << GetParentId();
+
 		//out << YAML::Key << "Type" << YAML::Value << 
 		out << YAML::Key << "Name" << YAML::Value << GetName().ToString();
 

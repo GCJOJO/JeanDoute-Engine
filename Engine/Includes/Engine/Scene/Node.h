@@ -30,6 +30,8 @@ namespace Engine
 		virtual void OnDestroy() { }
 
 		const UUID& GetId() const { return m_Id; }
+		const UUID& GetParentId() const { return m_ParentId; }
+		Node* GetParent() const;
 		const StringName GetName() const { return m_Name; }
 
 		void SetName(StringName newName);

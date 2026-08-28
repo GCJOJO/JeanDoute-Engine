@@ -415,7 +415,7 @@ namespace Engine
 
 	bool EditorLayer::OnWindowDrop(WindowDropEvent& e)
 	{
-
+		return false;
 	}
 
 	void EditorLayer::NewProject()
