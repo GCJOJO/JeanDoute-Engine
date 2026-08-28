@@ -164,7 +164,7 @@ namespace Engine
 		ScriptGlue::RegisterFunctions(*s_ScriptEngineData->EngineAssembly);
 		ScriptGlue::RegisterNodes();
 
-		auto scriptModulePath = Project::GetActiveAssetDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
+		auto scriptModulePath = Project::GetActiveProjectDirectory() / Project::GetActive()->GetConfig().ScriptModulePath;
 		s_ScriptEngineData->AppAssembly = &LoadAssembly(scriptModulePath);
 		if (s_ScriptEngineData->AppAssembly->GetLoadStatus() != Coral::AssemblyLoadStatus::Success)
 		{

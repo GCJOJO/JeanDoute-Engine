@@ -49,12 +49,12 @@ namespace Engine
 		}
 	};
 
-	/*class Download
+	class Download
 	{
 	public:
 		static void DownloadFile(const std::string& url, const std::filesystem::path& outFilePath);
 		static void UnzipFile(const std::filesystem::path& zipFile, const std::filesystem::path& extractDirectory);
-	};*/
+	};
 
 	class Time
 	{

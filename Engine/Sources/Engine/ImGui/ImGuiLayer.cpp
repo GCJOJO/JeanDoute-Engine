@@ -112,6 +112,14 @@ namespace Engine
 	{
 		ENGINE_PROFILE_FUNCTION();
 
+		if (ImGui::GetDrawData())
+		{
+			int totalCmds = 0;
+			for (int i = 0; i < ImGui::GetDrawData()->CmdListsCount; i++)
+				totalCmds += ImGui::GetDrawData()->CmdLists[i]->CmdBuffer.Size;
+			ENGINE_CORE_WARN("Total draw commands: {}", totalCmds);
+		}
+
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());

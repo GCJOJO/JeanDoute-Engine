@@ -45,11 +45,14 @@ project "Engine"
 		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.libcurl}",
 		"%{IncludeDir.msdfgen}",
 		"%{IncludeDir.msdf_atlas_gen}",
+		"%{IncludeDir.minizip}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.VulkanSDK}",
 		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.zlib}",
 	}
 
 	links 
@@ -57,11 +60,13 @@ project "Engine"
 		"Assimp",
 		"bgfx",
 		"Coral.Native",
+		"curl-lib",
 		"GLFW",
 		"Glad",
 		"ImGui",
 		"msdf-atlas-gen",
 		"yaml-cpp",
+		"zlib",
 		
 		"opengl32.lib",
 		"%{LibraryDir.VulkanSDK}/vulkan-1.lib",
@@ -82,13 +87,13 @@ project "Engine"
 			"CURL_STATICLIB",
 		}
 
-		--[[links
+		links
 		{
 			"%{Library.WinSock}",
 			"%{Library.WinMM}",
 			"%{Library.WinVersion}",
 			"%{Library.BCrypt}",
-		}]]--
+		}
 
 		buildoptions
 		{

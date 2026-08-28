@@ -28,6 +28,7 @@ project "Editor"
 		"%{IncludeDir.filewatch}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGuizmo}",
+		"%{IncludeDir.libcurl}",
 		"%{IncludeDir.msdfgen}",
 		"%{IncludeDir.msdf_atlas_gen}",
 		"%{IncludeDir.yaml_cpp}",
@@ -40,7 +41,7 @@ project "Editor"
 		"yaml-cpp"
 	}
 
-	defines{
+	defines {
 		"BX_CONFIG_DEBUG"
 	}
 

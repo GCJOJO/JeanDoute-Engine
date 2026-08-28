@@ -12,6 +12,7 @@
 #include "Engine/Project/Project.h"
 #include "Engine/Assets/AssetManager.h"
 #include "Engine/Assets/SceneImporter.h"
+#include "Editor/EditorConfig.h"
 
 #include <bgfx/include/bgfx/bgfx.h>
 
@@ -22,7 +23,7 @@ namespace Engine
 	static Ref<Font> s_Font;
 	static float s_Time = 0.0f;
 
-	static std::filesystem::path s_CoreAssemblyPath;
+	static std::filesystem::path s_CoreAssemblyPath = Filesystem::GetExecutableDir() / "CSharp-Core.dll";
 
 	EditorLayer::EditorLayer() : Layer("Editor")
 	{
@@ -31,14 +32,8 @@ namespace Engine
 		SceneManager::Initialize(CreateRef<EditorSceneManager>());
 		SceneManager::NewScene();
 
-		s_CoreAssemblyPath = Filesystem::GetExecutableDir() / "CSharp-Core.dll";
-		ScriptEngine::Init(s_CoreAssemblyPath.string());
-
 		m_SceneHierarchyPanel = SceneHierarchyPanel();
-	}
 
-	void EditorLayer::OnAttach()
-	{
 		auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
 		if (commandLineArgs.Count > 1)
 		{
@@ -48,23 +43,26 @@ namespace Engine
 		else
 		{
 			// TODO : Prompt user to select a directory
-			// NewProject();
+			//NewProject();
 
 			// If no project is opened, close Editor
 			// NOTE: this is while we don't have a new project path
 
-			/*EditorConfig::Deserialize();
+			EditorConfig::Deserialize();
 
 			if (EditorConfig::LastProjectPath.has_extension() && EditorConfig::LastProjectPath.extension() == ".eproj")
 			{
 				if (OpenProject(EditorConfig::LastProjectPath))
 					return;
-			}*/
+			}
 
 			if (!OpenProject())
 				Application::Get().Close();
 		}
+	}
 
+	void EditorLayer::OnAttach()
+	{
 		Application& app = Application::Get();
 		Window& window = app.GetWindow();
 

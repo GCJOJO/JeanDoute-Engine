@@ -69,9 +69,7 @@ namespace Engine
 		bgfx::setViewRect(BaseViewId, 0, 0, init.resolution.width, init.resolution.height);
 		bgfx::setViewClear(BaseViewId, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0);
 
-		RenderCommand::Init();
 		RenderCommand::SetClearColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
-
 
 		StaticMesh::InitVertexLayout();
 	}

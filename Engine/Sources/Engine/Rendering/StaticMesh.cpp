@@ -95,10 +95,11 @@ namespace Engine
 
 	void StaticMesh::Render(const bgfx::ViewId& viewId, glm::mat4& modelMatrix)
 	{		
-		for (const auto& handles : m_MeshHandles)
+		RenderCommand::DrawMesh(viewId, *this, modelMatrix);
+		/*for (const auto& handles : m_MeshHandles)
 		{
 			RenderCommand::DrawMesh(viewId, handles.VerticesHandle, handles.IndicesHandle, m_ShaderProgram->GetProgramHandle(), modelMatrix);
-		}
+		}*/
 	}
 
 }

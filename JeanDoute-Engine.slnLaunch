@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "Editor",
+    "Projects": [
+      {
+        "Path": "Editor\\Editor.vcxproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "ProjectManager",
+    "Projects": [
+      {
+        "Path": "ProjectManager\\ProjectManager.vcxproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

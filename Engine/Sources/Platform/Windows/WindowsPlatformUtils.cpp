@@ -4,9 +4,10 @@
 
 #include <commdlg.h>
 #include <shlobj.h>
-//#include <curl/curl.h>
-//#include <miniunz.c>
-//#include <unzip.h>
+#include <curl/curl.h>
+#include <miniunz.c>
+#include <iowin32.c>
+#include <unzip.h>
 #include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
@@ -44,7 +45,7 @@ namespace Engine
 		return path;
 	}
 
-	/*
+	
 	void Download::DownloadFile(const std::string& url, const std::filesystem::path& outFilePath)
 	{
 		CURL* curl;
@@ -71,9 +72,9 @@ namespace Engine
 
 	void Download::UnzipFile(const std::filesystem::path& zipFile, const std::filesystem::path& extractDirectory)
 	{
-		std::filesystem::path currentDir = OS::GetCurrentDir();
+		std::filesystem::path currentDir = Filesystem::GetCurrentDir();
 
-		if (OS::ChangeDirectory(extractDirectory))
+		if (Filesystem::ChangeDirectory(extractDirectory))
 		{
 			unzFile file = NULL;
 
@@ -86,10 +87,10 @@ namespace Engine
 
 			unzClose(file);
 
-			OS::ChangeDirectory(currentDir);
+			Filesystem::ChangeDirectory(currentDir);
 		}
 	}
-	*/
+	
 	float Time::GetTime()
 	{
 		return (float)glfwGetTime();
