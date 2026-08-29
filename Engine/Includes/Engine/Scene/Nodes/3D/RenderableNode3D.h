@@ -9,6 +9,7 @@ namespace Engine
 		public Node3D, 
 		public AutoRegister<RenderableNode3D, RenderableNode3D, Node3D, Node>
 	{
+		REGISTER_NODE_CLASS(RenderableNode3D);
 	public:
 		virtual void Render(const bgfx::ViewId& viewId) { }
 

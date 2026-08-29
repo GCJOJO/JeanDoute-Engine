@@ -12,18 +12,25 @@ namespace Engine
 		public RenderableNode3D,
 		public AutoRegister<MeshNode3D, MeshNode3D, RenderableNode3D, Node3D, Node>
 	{
+		REGISTER_NODE_CLASS(MeshNode3D);
 	public:
 		static void InitVertexLayout();
 
+		MeshNode3D();
 		MeshNode3D(Ref<StaticMeshAsset> staticMeshAsset, Ref<ShaderProgram> shaderProgram);
 		MeshNode3D(StringName name, Ref<StaticMeshAsset> staticMeshAsset, Ref<ShaderProgram> shaderProgram);
 		virtual ~MeshNode3D() override;
 		
+		void SetMesh(Ref<StaticMeshAsset> staticMeshAsset, Ref<ShaderProgram> shaderProgram);
+
 		virtual void Render(const bgfx::ViewId& viewId) override;
 
 		virtual void OnReady() override;
 		virtual void OnUpdate(float dt) override;
 		virtual void OnDestroy() override;
+
+		virtual void SaveNode(YAML::Emitter& out) const override;
+		virtual void LoadNode(const YAML::Node& data) override;
 
 	private:
 		Ref<StaticMesh> m_StaticMesh;

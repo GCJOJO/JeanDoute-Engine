@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_set>
+
 namespace Engine
 {
 	template<typename T>
@@ -12,14 +14,24 @@ namespace Engine
 			return instance;
 		}
 
-		void Register(T* node) { m_Nodes.push_back(node); }
-		void Unregister(T* node) { std::erase(m_Nodes, node); }
+		void Register(T* node) 
+		{ 
+			auto [it, inserted] = m_Lookup.insert(node);
+			if(inserted)
+				m_Nodes.push_back(node); 
+		}
+		void Unregister(T* node) 
+		{ 
+			if(m_Lookup.erase(node) > 0)
+				std::erase(m_Nodes, node); 
+		}
 
 		const std::vector<T*> GetNodes() const { return m_Nodes; }
 		static std::vector<T*> GetAll() { return Get().GetNodes(); }
 
 	private:
 		std::vector<T*> m_Nodes;
+		std::unordered_set<T*> m_Lookup;
 	};
 
 	// Merci ClaudeSlop

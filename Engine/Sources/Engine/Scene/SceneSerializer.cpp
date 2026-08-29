@@ -201,7 +201,17 @@ namespace Engine
 		std::string sceneName = data["Scene"].as<std::string>();
 		ENGINE_CORE_TRACE("Deserializing scene '{0}'", sceneName);
 
-		auto entities = data["Entities"];
+		auto nodes = data["Nodes"];
+		if (nodes)
+		{
+			for (const auto& node : nodes)
+			{
+				StringName nodeType = node["Type"].as<std::string>();
+
+				Node* newNode = NodeFactory::Get().CreateNode(nodeType);
+				newNode->LoadNode(node);
+			}
+		}
 		/*if (entities)
 		{
 			for (auto entity : entities)

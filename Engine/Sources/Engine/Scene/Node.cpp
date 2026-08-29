@@ -143,7 +143,7 @@ namespace Engine
 		if (m_ParentId)
 			out << YAML::Key << "Parent" << YAML::Value << GetParentId();
 
-		//out << YAML::Key << "Type" << YAML::Value << 
+		out << YAML::Key << "Type" << YAML::Value << get_class_name().ToString();
 		out << YAML::Key << "Name" << YAML::Value << GetName().ToString();
 
 		if (m_ScriptName)
@@ -155,6 +155,20 @@ namespace Engine
 		}
 
 		out << YAML::EndMap;
+	}
+
+	void Node::LoadNode(const YAML::Node& data)
+	{
+		m_Id = data["Id"].as<uint64_t>();
+		m_Name = data["Name"].as<std::string>();
+		if (data["Parent"])
+			m_ParentId = data["Parent"].as<uint64_t>();
+
+		const auto& scriptData = data["Script"];
+		if (scriptData)
+		{
+			StringName scriptName = scriptData["Name"].as<std::string>();
+		}
 	}
 
 }

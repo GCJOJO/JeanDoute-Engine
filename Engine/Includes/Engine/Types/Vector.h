@@ -2,6 +2,9 @@
 
 #include <glm/glm.hpp>
 
+#define YAML_CPP_STATIC_DEFINE
+#include <yaml-cpp/yaml.h>
+
 namespace Engine
 {
 	struct Vec2
@@ -19,6 +22,7 @@ namespace Engine
 	{
 		float x, y, z;
 
+		Vec3() : x(0), y(0), z(0) { }
 		Vec3(float value) : x(value), y(value), z(value) { }
 		Vec3(float newX, float newY, float newZ) : x(newX), y(newY), z(newZ) { }
 		Vec3(const glm::vec3& vec) : x(vec.x), y(vec.y), z(vec.z) { }
@@ -230,6 +234,13 @@ namespace Engine
 	{
 		return os << vec.x << ", " << vec.y << ", " << vec.z;
 	}
+
+	inline YAML::Emitter& operator<<(YAML::Emitter& out, const Vec3& v)
+	{
+		out << YAML::Flow;
+		out << YAML::BeginSeq << v.x << v.y << v.z << YAML::EndSeq;
+		return out;
+	}
 }
 
 namespace std
@@ -245,3 +256,31 @@ namespace std
 }
 
 template <> struct fmt::formatter<Engine::Vec3> : fmt::ostream_formatter {};
+
+namespace YAML
+{
+	template<>
+	struct convert<Engine::Vec3>
+	{
+		static Node encode(const Engine::Vec3& rhs)
+		{
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			node.push_back(rhs.z);
+			node.SetStyle(EmitterStyle::Flow);
+			return node;
+		}
+
+		static bool decode(const Node& node, Engine::Vec3& rhs)
+		{
+			if (!node.IsSequence() || node.size() != 3)
+				return false;
+
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			rhs.z = node[2].as<float>();
+			return true;
+		}
+	};
+}

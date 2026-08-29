@@ -20,8 +20,10 @@ namespace Engine
 		virtual const bgfx::VertexBufferHandle& GetVertexBufferHandle(int meshId) override { return m_MeshHandles[meshId].VerticesHandle; }
 		virtual const bgfx::IndexBufferHandle& GetIndexBufferHandle(int meshId) override { return m_MeshHandles[meshId].IndicesHandle; }
 		virtual const Ref<ShaderProgram> GetShaderProgram() override { return m_ShaderProgram; }
+		Ref<StaticMeshAsset> GetStaticMeshAsset() const { return m_StaticMeshAsset; }
 		
 		virtual int GetMeshCount() override { return m_MeshHandles.size(); }
+
 	private:
 		struct MeshHandles
 		{

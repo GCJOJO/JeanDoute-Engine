@@ -8,9 +8,19 @@
 #define YAML_CPP_STATIC_DEFINE
 #include <yaml-cpp/yaml.h>
 #include "yaml-cpp/exceptions.h"
+#include "NodeFactory.h"
 
 namespace Engine
 {
+
+#define REGISTER_NODE_CLASS(ClassName)												\
+public:																				\
+	static StringName get_static_class_name() { return #ClassName; } 				\
+    virtual StringName get_class_name() const override { return #ClassName; }		\
+																					\
+private:																			\
+    static inline bool ClassName##_registered = NodeRegistrar<ClassName>::registered
+
 	class SceneTree;
 
 	class Node : public AutoRegister<Node, Node>
@@ -20,6 +30,8 @@ namespace Engine
 		Node(StringName name);
 		Node(StringName name, SceneTree& sceneTree);
 		virtual ~Node();
+
+		virtual StringName get_class_name() const { return {"Node"}; }
 
 		void Ready();
 		void Update(float dt);
@@ -50,7 +62,8 @@ namespace Engine
 		Node* GetChild(StringName childName);
 		void RemoveChild(Node* child);
 
-		void SaveNode(YAML::Emitter& out) const;
+		virtual void SaveNode(YAML::Emitter& out) const;
+		virtual void LoadNode(const YAML::Node& data);
 
 		void SetScript(StringName script) { m_ScriptName = script; }
 		StringName GetScriptName() const { return m_ScriptName; }
@@ -67,4 +80,11 @@ namespace Engine
 
 	template<typename T>
 	concept DerivedFromNode = std::derived_from<T, Node>;
+
+	static inline const bool NodeRegistered = [] {							
+		NodeFactory::Get().RegisterNodeClass(StringName("Node"), [] {		
+			return new Node();												
+			});																
+		return true;														
+		}();
 }
