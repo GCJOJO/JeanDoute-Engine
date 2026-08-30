@@ -26,8 +26,8 @@ namespace Engine
 				std::erase(m_Nodes, node); 
 		}
 
-		const std::vector<T*> GetNodes() const { return m_Nodes; }
-		static std::vector<T*> GetAll() { return Get().GetNodes(); }
+		const std::vector<T*>& GetNodes() const { return m_Nodes; }
+		static const std::vector<T*>& GetAll() { return Get().GetNodes(); }
 
 	private:
 		std::vector<T*> m_Nodes;

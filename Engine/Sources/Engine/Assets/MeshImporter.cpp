@@ -1,5 +1,6 @@
 #include "enginepch.h"
 #include "Engine/Assets/MeshImporter.h"
+#include "Engine/Project/Project.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -10,7 +11,7 @@ namespace Engine
 
 	Ref<StaticMeshAsset> MeshImporter::LoadStaticMesh(AssetHandle handle, const AssetMetadata& metadata)
 	{
-		return nullptr;
+		return ImportStaticMesh(Project::GetActiveAssetDirectory() / metadata.AssetPath);
 	}
 
 	Ref<StaticMeshAsset> MeshImporter::ImportStaticMesh(const std::filesystem::path& assetPath)

@@ -46,6 +46,8 @@ namespace Engine
 		void OpenScene(AssetHandle handle);
 		void SaveScene();
 		void SaveSceneAs();
+		
+		void ImportAssets(const std::filesystem::path& directory);
 
 		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
 

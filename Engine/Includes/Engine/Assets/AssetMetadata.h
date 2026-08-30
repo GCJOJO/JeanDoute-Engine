@@ -28,5 +28,10 @@ namespace Engine
 	
 	struct StaticMeshMetadata {};
 
+	struct MaterialMetadata
+	{
+
+	};
+
 	struct SceneMetadata {};
 }

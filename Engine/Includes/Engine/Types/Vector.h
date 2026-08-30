@@ -209,7 +209,7 @@ namespace Engine
 		Vec4(float newX, float newY, float newZ, float newW) : x(newX), y(newY), z(newZ), w(newW) {}
 		Vec4(const glm::vec4& vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w) {}
 
-		operator glm::vec4() const { return glm::vec4(x, y, z, w); }
+		operator glm::vec4() const { return {x, y, z, w}; }
 	};
 
 	struct Transform2D

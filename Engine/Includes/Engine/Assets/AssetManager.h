@@ -18,6 +18,14 @@ namespace Engine
 			return std::static_pointer_cast<T>(asset);
 		}
 
+		template<typename T>
+		static Ref<T> GetAsset(const std::filesystem::path& path)
+		{
+			// Get out project asset manager
+			Ref<Asset> asset = Project::GetActive()->GetAssetManager()->GetAsset(path);
+			return std::static_pointer_cast<T>(asset);
+		}
+
 		static bool IsAssetHandleValid(AssetHandle handle)
 		{
 			return Project::GetActive()->GetAssetManager()->IsAssetHandleValid(handle);

@@ -19,6 +19,8 @@ namespace Engine
 			Texture2D,
 			Shader,
 			StaticMesh,
+			Material,
+			MaterialInstance,
 		};
 
 		const AssetHandle& GetAssetHandle() const { return Handle; }

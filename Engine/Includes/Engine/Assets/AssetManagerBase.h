@@ -12,6 +12,7 @@ namespace Engine
 	{
 	public:
 		virtual Ref<Asset> GetAsset(AssetHandle handle) = 0;
+		virtual Ref<Asset> GetAsset(const std::filesystem::path& filepath) = 0;
 
 		virtual bool IsAssetHandleValid(AssetHandle handle) const = 0;
 		virtual bool IsAssetLoaded(AssetHandle handle) const = 0;

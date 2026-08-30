@@ -82,8 +82,11 @@ namespace Engine
 		static bool CompileShader(const std::filesystem::path& shaderFile);
 		static bool CompileShaders(const std::filesystem::path& shaderDirectory);
 				
+
 		static bgfx::ShaderHandle LoadShader(const std::string& shaderName);
+		static bgfx::ShaderHandle LoadShader(const std::filesystem::path& shaderPath);
 		static bgfx::ProgramHandle LoadProgram(const std::string& vertexShaderName, const std::string& fragmentShaderName);
+		static bgfx::ProgramHandle LoadProgram(const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragmentShaderPath);
 	};
 
 }

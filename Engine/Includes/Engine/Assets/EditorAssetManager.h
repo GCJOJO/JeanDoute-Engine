@@ -11,13 +11,15 @@ namespace Engine
 	{
 	public:
 		virtual Ref<Asset> GetAsset(AssetHandle handle) override;
+		virtual Ref<Asset> GetAsset(const std::filesystem::path& filepath) override;
 
 		virtual bool IsAssetHandleValid(AssetHandle handle) const override;
 		virtual bool IsAssetLoaded(AssetHandle handle) const override;
+		bool IsAssetLoaded(const std::filesystem::path& filepath) const;
 
 		virtual Asset::Type GetAssetType(AssetHandle handle) const override;
 
-		void ImportAsset(const std::filesystem::path& filepath);
+		Ref<Asset> ImportAsset(const std::filesystem::path& filepath);
 
 		const AssetMetadata& GetMetadata(AssetHandle handle) const;
 		const std::filesystem::path& GetFilePath(AssetHandle handle) const;
@@ -26,6 +28,8 @@ namespace Engine
 
 		void SerializeAssetRegistry();
 		bool DeserializeAssetRegistry();
+
+
 	private:
 		AssetRegistry m_AssetRegistry;
 		AssetMap m_LoadedAssets;

@@ -13,7 +13,8 @@ namespace Engine
 
 		const std::string& ToString() const;
 		explicit operator std::string() { return ToString(); }
-		explicit operator const char*() const { return ToString().c_str(); }
+		const char* c_str() const { return ToString().c_str(); }
+		explicit operator const char*() const { return c_str(); }
 		
 		operator bool() const { return !IsEmpty(); }
 

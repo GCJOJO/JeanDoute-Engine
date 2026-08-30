@@ -15,7 +15,8 @@ namespace Engine
 		{ ".scene", Asset::Type::Scene },
 		{ ".obj", Asset::Type::StaticMesh },
 		{ ".fbx", Asset::Type::StaticMesh },
-		{ ".gldt", Asset::Type::StaticMesh },
+		{ ".glb", Asset::Type::StaticMesh },
+		{ ".gltf", Asset::Type::StaticMesh },
 
 		{ ".png", Asset::Type::Texture2D },
 		{ ".jpg", Asset::Type::Texture2D },
@@ -65,6 +66,20 @@ namespace Engine
 		return asset;
 	}
 
+	Ref<Asset> EditorAssetManager::GetAsset(const std::filesystem::path& filepath)
+	{
+		if (IsAssetLoaded(filepath))
+		{
+			for (const auto& asset : m_AssetRegistry)
+			{
+				if (asset.second.AssetPath == filepath)
+					return GetAsset(asset.first);
+			}
+		}
+
+		return ImportAsset(filepath);
+	}
+
 	bool EditorAssetManager::IsAssetHandleValid(AssetHandle handle) const
 	{
 		return handle != 0 && m_AssetRegistry.find(handle) != m_AssetRegistry.end();
@@ -75,6 +90,17 @@ namespace Engine
 		return m_LoadedAssets.find(handle) != m_LoadedAssets.end();
 	}
 
+	bool EditorAssetManager::IsAssetLoaded(const std::filesystem::path& filepath) const
+	{
+		for (const auto& asset : m_AssetRegistry)
+		{
+			if (asset.second.AssetPath == filepath)
+				return true;
+		}
+
+		return false;
+	}
+
 	Asset::Type EditorAssetManager::GetAssetType(AssetHandle handle) const
 	{
 		if (!IsAssetHandleValid(handle))
@@ -82,20 +108,33 @@ namespace Engine
 		return m_AssetRegistry.at(handle).Type;
 	}
 
-	void EditorAssetManager::ImportAsset(const std::filesystem::path& filepath)
+	Ref<Asset> EditorAssetManager::ImportAsset(const std::filesystem::path& filepath)
 	{
+		if (IsAssetLoaded(filepath))
+			return nullptr;
+
 		AssetHandle handle; // Generate new handle
 		AssetMetadata metadata;
 		metadata.AssetPath = filepath;
+		try {
 		metadata.Type = GetTypeFromFileExtension(filepath.extension());
-		Ref<Asset> asset = AssetImporter::LoadAsset(handle, metadata);
-		asset->Handle = handle;
-		if (asset)
-		{
-			m_LoadedAssets[handle] = asset;
-			m_AssetRegistry[handle] = metadata;
-			SerializeAssetRegistry();
+			Ref<Asset> asset = AssetImporter::LoadAsset(handle, metadata);
+
+			if (asset)
+			{
+				asset->Handle = handle;
+				m_LoadedAssets[handle] = asset;
+				m_AssetRegistry[handle] = metadata;
+				SerializeAssetRegistry();
+				return asset;
+			}
 		}
+		catch (std::exception& e)
+		{
+			ENGINE_CORE_WARN("Unable to Import Asset {}\n{}", filepath.string(), e.what());
+		}
+
+		return nullptr;
 	}
 
 	const AssetMetadata& EditorAssetManager::GetMetadata(AssetHandle handle) const

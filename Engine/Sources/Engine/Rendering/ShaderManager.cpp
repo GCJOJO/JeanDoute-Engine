@@ -171,6 +171,17 @@ namespace Engine
 		return handle;
 	}
 
+	bgfx::ShaderHandle ShaderManager::LoadShader(const std::filesystem::path& shaderPath)
+	{
+		if (!std::filesystem::exists(shaderPath))
+			return BGFX_INVALID_HANDLE;
+
+		if (CompileShader(shaderPath))
+			return LoadShader(shaderPath.filename());
+		
+		return BGFX_INVALID_HANDLE;
+	}
+
 	bgfx::ProgramHandle ShaderManager::LoadProgram(const std::string& vertexShaderName, const std::string& fragmentShaderName)
 	{
 		bgfx::ShaderHandle vsh = LoadShader(vertexShaderName);
@@ -178,6 +189,14 @@ namespace Engine
 		if (!fragmentShaderName.empty())
 			fsh = LoadShader(fragmentShaderName);
 		
+		return bgfx::createProgram(vsh, fsh, true /* destroy shaders when program is destroyed */);
+	}
+
+	bgfx::ProgramHandle ShaderManager::LoadProgram(const std::filesystem::path& vertexShaderPath, const std::filesystem::path& fragmentShaderPath)
+	{
+		bgfx::ShaderHandle vsh = LoadShader(vertexShaderPath);
+		bgfx::ShaderHandle fsh = LoadShader(fragmentShaderPath);
+
 		return bgfx::createProgram(vsh, fsh, true /* destroy shaders when program is destroyed */);
 	}
 

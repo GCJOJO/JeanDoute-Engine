@@ -13,6 +13,7 @@
 #include "Engine/Assets/AssetManager.h"
 #include "Engine/Assets/SceneImporter.h"
 #include "Editor/EditorConfig.h"
+#include "Engine/Assets/EditorAssetManager.h"
 
 #include "Engine/Core/Input.h"
 
@@ -427,13 +428,14 @@ namespace Engine
 	{
 		if (auto project = Project::Load(path))
 		{
-			//EditorConfig::LastProjectPath = path;
-			//EditorConfig::Serialize();
+			EditorConfig::LastProjectPath = path;
+			EditorConfig::Serialize();
 
 			ScriptEngine::Init(s_CoreAssemblyPath.string());
 			//ScriptEngine::SetStopFunction([this]() { OnSceneStop();	});
 
 			AssetHandle startScene = Project::GetActive()->GetConfig().StartScene;
+			ImportAssets(Project::GetActiveAssetDirectory());
 			if (!startScene)
 				NewScene();
 			else
@@ -509,6 +511,24 @@ namespace Engine
 		{
 			SerializeScene(editorSceneManager->GetEditorScene(), filepath);
 			m_EditorScenePath = filepath;
+		}
+	}
+
+	void EditorLayer::ImportAssets(const std::filesystem::path& directory)
+	{
+		Ref<EditorAssetManager> assetManager = std::static_pointer_cast<EditorAssetManager>(Project::GetActive()->GetAssetManager());
+		for (const auto& file : std::filesystem::directory_iterator(directory))
+		{
+			const std::filesystem::path& filepath = directory / file;
+			ENGINE_CORE_INFO("Iterating over {}", filepath.string());
+			if (std::filesystem::is_directory(filepath))
+			{
+				ImportAssets(filepath);
+				continue;
+			}
+
+
+			assetManager->ImportAsset(filepath);
 		}
 	}
 
