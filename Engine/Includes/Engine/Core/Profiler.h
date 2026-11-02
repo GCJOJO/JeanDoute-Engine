@@ -131,7 +131,11 @@ namespace Engine {
 #define ENGINE_PROFILE_BEGIN_SESSION(name, filepath)    ::Engine::Profiler::Get().BeginSession(name, filepath)
 #define ENGINE_PROFILE_END_SESSION()                    ::Engine::Profiler::Get().EndSession();
 #define ENGINE_PROFILE_SCOPE(name)                      ::Engine::ProfilingTimer CONCAT(timer,__LINE__)(name)
+#if defined(_MSC_VER)
 #define ENGINE_PROFILE_FUNCTION()                       ENGINE_PROFILE_SCOPE(__FUNCSIG__)
+#else
+#define ENGINE_PROFILE_FUNCTION()                       ENGINE_PROFILE_SCOPE(__PRETTY_FUNCTION__)
+#endif
 #else
 #define ENGINE_PROFILE_BEGIN_SESSION(name, filepath)
 #define ENGINE_PROFILE_END_SESSION()

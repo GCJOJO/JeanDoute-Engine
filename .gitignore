@@ -27,6 +27,8 @@ Editor/Binaries/
 Runtime/assets/
 Runtime/Binaries/
 
+Scripts/__pycache__
+
 # File Types
 **/Makefile
 *.sln
@@ -43,6 +45,7 @@ Runtime/Binaries/
 **/EngineProfile-Runtime.json
 **/EngineProfile-Shutdown.json
 **/EngineProfile-Startup.json
+**/**.cmake
 
 Engine/vendor/VulkanSDK
 Editor/assets/cache

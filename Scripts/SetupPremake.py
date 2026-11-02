@@ -54,7 +54,7 @@ class PremakeConfiguration:
         print("Downloading {0:s} to {1:s}".format(f"{cls.premakeZipBaseUrl}-{premakePlatformFile}", premakePath))
         Utils.DownloadFile(f"{cls.premakeZipBaseUrl}-{premakePlatformFile}", premakePath)
         print("Extracting", premakePath)
-        Utils.UnzipFile(premakePath, deleteZipFile=True)
+        Utils.UnzipArchive(premakePath, deleteArchive=True)
         print(f"Premake {cls.premakeVersion} has been downloaded to '{cls.premakeDirectory}'")
 
         premakeLicensePath = f"{cls.premakeDirectory}/LICENSE.txt"

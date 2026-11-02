@@ -5,6 +5,8 @@ local BX_DIR   = path.getabsolute("Engine/vendor/bx")
 local BGFX_DIR = path.getabsolute("Engine/vendor/bgfx")
 local vswhere = path.getabsolute("vendor/vswhere.exe")
 
+require("vendor/premake/cmake-generator")
+
 local function genieExePath()
 	if os.target() == "windows" then
 		return path.join(BX_DIR, "tools/bin/windows/genie.exe")
@@ -127,8 +129,8 @@ group "Dependencies"
 	include "Engine/vendor/bgfx"
 	include "Engine/vendor/bimg"
 	include "Engine/vendor/bx"
-	include "Engine/vendor/coral/coral.native"
-	include "Engine/vendor/coral/coral.managed"
+	include "Engine/vendor/Coral/Coral.Native"
+	include "Engine/vendor/Coral/Coral.Managed"
 	include "Engine/vendor/curl"
 	include "Engine/vendor/GLFW"
 	include "Engine/vendor/Glad"

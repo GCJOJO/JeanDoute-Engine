@@ -30,7 +30,6 @@
 #error "Android is not supported !"
 #elif defined (__linux__)
 #define ENGINE_PLATFORM_LINUX
-#error "Linux is not supported !"
 #else
 #error "Unknown platform !"
 #endif
@@ -45,6 +44,8 @@
 #else
 #define ENGINE_API
 #endif
+#elif defined(ENGINE_PLATFORM_LINUX)
+#define ENGINE_API
 #else
 #error Engine only supports Windows
 #endif

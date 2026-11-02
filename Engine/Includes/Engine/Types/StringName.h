@@ -59,7 +59,7 @@ namespace std
 
 	//https://stackoverflow.com/questions/59909102/stdformat-of-user-defined-types
 	template <>
-	struct std::formatter<Engine::StringName> : std::formatter<std::string> {
+	struct formatter<Engine::StringName> : formatter<string> {
 		auto format(Engine::StringName s, format_context& ctx) const {
 			return formatter<string>::format(s.ToString(), ctx);
 		}

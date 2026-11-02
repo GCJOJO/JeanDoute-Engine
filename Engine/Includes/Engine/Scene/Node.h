@@ -1,9 +1,9 @@
 #pragma once
 #include "Engine/Core/UUID.h"
 #include "Engine/Types/StringName.h"
+#include "Engine/Core/Concepts.h"
 #include "NodeRegistry.h"
 
-#include <concepts>
 
 #define YAML_CPP_STATIC_DEFINE
 #include <yaml-cpp/yaml.h>
@@ -77,9 +77,6 @@ private:																			\
 		StringName m_Name = "Node";
 		StringName m_ScriptName = "";
 	};
-
-	template<typename T>
-	concept DerivedFromNode = std::derived_from<T, Node>;
 
 	static inline const bool NodeRegistered = [] {							
 		NodeFactory::Get().RegisterNodeClass(StringName("Node"), [] {		

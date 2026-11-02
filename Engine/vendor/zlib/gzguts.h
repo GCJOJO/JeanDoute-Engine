@@ -150,6 +150,11 @@
 #  define DEF_MEM_LEVEL  MAX_MEM_LEVEL
 #endif
 
+#ifdef _WIN32
+#else
+    #include <unistd.h>
+#endif
+
 /* default i/o buffer size -- double this for output when reading (this and
    twice this must be able to fit in an unsigned type) */
 #define GZBUFSIZE 8192
