@@ -51,8 +51,9 @@ namespace Engine
 			switch (renderer)
 			{
 			case bgfx::RendererType::Direct3D11:
-			case bgfx::RendererType::Direct3D12:
 				return { "windows", "vs_5_0", "ps_5_0" };
+			case bgfx::RendererType::Direct3D12:
+				return { "windows", "vs_6_2", "ps_6_2" };
 			case bgfx::RendererType::Metal:
 				return { "osx", "metal", "metal" };
 

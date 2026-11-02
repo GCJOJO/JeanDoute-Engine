@@ -1,0 +1,12 @@
+linux deps:
+	vulkan
+	sudo apt install libgl1-mesa-dev libegl1-mesa-dev
+	sudo apt install zlib1g-dev
+	sudo apt install libmbedtls-dev
+	sudo apt install \
+		libx11-dev \
+		libxcursor-dev \
+		libxrandr-dev \
+		libxinerama-dev \
+		libxi-dev \
+		libxxf86vm-dev

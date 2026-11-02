@@ -40,8 +40,14 @@ namespace Engine
 
 		try {
 			std::filesystem::create_directories(outPath.parent_path());
+			
+#if ENGINE_DEBUG
+			constexpr std::string_view rawCmd = R"("{}" -f "{}" -o "{}" --type {} --platform {} --varying {} -p {} -O0 -g)";
+#else 
+			constexpr std::string_view rawCmd = R"("{}" -f "{}" -o "{}" --type {} --platform {} --varying {} -p {} -O 3)";
+#endif
 
-			std::string cmd = std::format(R"("{}" -f "{}" -o "{}" --type {} --platform {} --varying {} -p {} -O 3)", 
+			std::string cmd = std::format(rawCmd, 
 				shadercExecutable.string(),
 				shaderFile.string(),
 				outPath.string(),
