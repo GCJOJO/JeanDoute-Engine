@@ -1,4 +1,5 @@
 #pragma once
+#include "Engine/Types/EngineObject.h"
 #include "Engine/Core/UUID.h"
 #include "Engine/Types/StringName.h"
 #include "NodeRegistry.h"
@@ -23,8 +24,9 @@ private:																			\
 
 	class SceneTree;
 
-	class Node : public AutoRegister<Node, Node>
+	class Node : public EngineObject, public AutoRegister<Node, Node>
 	{
+		ENGINE_CLASS(Node, EngineObject);
 	public:
 		Node();
 		Node(StringName name);
@@ -32,6 +34,14 @@ private:																			\
 		virtual ~Node();
 
 		virtual StringName get_class_name() const { return {"Node"}; }
+
+		void SetScript(Ref<Script> script);
+		Ref<Script> GetScript() const { return m_Script; }
+
+		Variant Call(StringName methodName, Variant* args, std::size_t argCount) override;
+		bool	Get(StringName propertyName, Variant& out) const override;
+		bool	Set(StringName propertyName, const Variant& value) override;
+		void	GetPropertyList(std::vector<const PropertyInfo*>& out) const override;
 
 		void Ready();
 		void Update(float dt);
@@ -76,6 +86,9 @@ private:																			\
 
 		StringName m_Name = "Node";
 		StringName m_ScriptName = "";
+	private:
+		Ref<Script>				m_Script;
+		Scope<ScriptInstance>	m_ScriptInstance = nullptr;
 	};
 
 	template<typename T>
