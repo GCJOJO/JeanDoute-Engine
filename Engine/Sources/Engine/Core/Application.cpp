@@ -8,6 +8,7 @@
 #include "Engine/Utils/PlatformUtils.h"
 #include "Engine/ImGui/ImGuiLayer.h"
 #include "Engine/Rendering/Renderer.h"
+#include "Engine/Reflection/Registry.h"
 
 namespace Engine
 {
@@ -33,6 +34,8 @@ namespace Engine
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
+
+		Registry::RegisterEngineClasses();
 	}
 
 	Application::~Application()

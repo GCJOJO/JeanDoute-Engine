@@ -19,17 +19,20 @@ namespace Engine
 #define ENGINE_CLASS(Self, SuperClass)														\
 	public:																					\
 		using Super = SuperClass;															\
-		static const char* StaticClassMeta() { return #Self; }								\
+		static const char* StaticClassName() { return #Self; }								\
 		const ClassInfo& GetClassMeta() const override										\
 		{																					\
-			static const ClassInfo* info = Registry::Get(#Self);							\
+			static const ClassInfo* info = &Registry::Get(#Self);							\
 			return *info;																	\
 		}	
 
 	class EngineObject
 	{
-		ENGINE_CLASS(EngineObject, nullptr);
 	public:
+		using Super = void;
+		static const char* StaticClassName() { return "EngineObject"; }
+		virtual const ClassInfo& GetClassMeta() const = 0;
+
 		EngineObject();
 		~EngineObject();
 
@@ -38,7 +41,6 @@ namespace Engine
 
 		ObjectId GetObjectId() const { return m_Id; }
 
-		virtual const ClassInfo& GetClassMeta() const = 0;
 		const StringName GetClassName() const { return GetClassMeta().Name; }
 		bool IsClass(std::string_view className) const;
 		bool IsClass(StringName className) const;

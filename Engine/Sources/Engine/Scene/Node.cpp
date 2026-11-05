@@ -1,6 +1,10 @@
 #include "enginepch.h"
 #include "Engine/Scene/Node.h"
 #include "Engine/Scene/SceneTree.h"
+#include "Engine/ScriptEngine/ScriptServer.h"
+#include "Engine/ScriptEngine/ScriptInstance.h"
+
+#include <vector>
 
 namespace Engine
 {
@@ -26,6 +30,9 @@ namespace Engine
 	Node::~Node()
 	{
 		SceneTree::Get().UnregisterNode(this);
+
+		if (m_ScriptInstance != nullptr)
+			ScriptServer::Get().UnregisterInstance(m_ScriptInstance.get());
 	}
 
 	void Node::Ready()
@@ -169,6 +176,48 @@ namespace Engine
 		{
 			StringName scriptName = scriptData["Name"].as<std::string>();
 		}
+	}
+
+	void Node::SetScript(Ref<Script> script)
+	{
+		if (script == nullptr)
+		{
+			if(m_ScriptInstance != nullptr)
+				ScriptServer::Get().UnregisterInstance(m_ScriptInstance.get());
+			return;
+		}
+
+		m_ScriptInstance = script->CreateInstance(this);
+		ScriptServer::Get().RegisterInstance(m_ScriptInstance.get());
+	}
+
+	Variant Node::Call(StringName methodName, Variant* args, std::size_t argCount)
+	{
+		Variant outResult{};
+		if (m_ScriptInstance->Call(methodName, args, argCount, outResult))
+			return outResult;
+		return {};
+	}
+
+	bool Node::Get(StringName propertyName, Variant& out) const
+	{
+		return m_ScriptInstance->Get(propertyName, out);
+	}
+
+	bool Node::Set(StringName propertyName, const Variant& value)
+	{
+		return m_ScriptInstance->Set(propertyName, value);
+	}
+
+	void Node::GetPropertyList(std::vector<const PropertyInfo*>& out) const
+	{
+		// TODO
+		out = {};
+	}
+
+	void Node::Notification(int what)
+	{
+
 	}
 
 }

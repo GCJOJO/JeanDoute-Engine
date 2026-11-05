@@ -1,5 +1,4 @@
 #pragma once
-
 #include <cstdint>
 
 namespace Engine
@@ -19,10 +18,16 @@ namespace Engine
 	{
 	public:
 		template<typename T>
-		T Get();
+		T Get() 
+		{
+
+		}
 
 		template<typename T>
-		void Set(T);
+		void Set(T) 
+		{
+
+		}
 
 	private:
 		VariantType m_Type;

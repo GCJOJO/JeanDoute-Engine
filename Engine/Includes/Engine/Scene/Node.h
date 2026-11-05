@@ -1,15 +1,16 @@
 #pragma once
-#include "Engine/Types/EngineObject.h"
+#include "NodeFactory.h"
+#include "NodeRegistry.h"
 #include "Engine/Core/UUID.h"
 #include "Engine/Types/StringName.h"
-#include "NodeRegistry.h"
+#include "Engine/Types/EngineObject.h"
+#include "Engine/Types/Resources/Script.h"
 
 #include <concepts>
 
 #define YAML_CPP_STATIC_DEFINE
 #include <yaml-cpp/yaml.h>
 #include "yaml-cpp/exceptions.h"
-#include "NodeFactory.h"
 
 namespace Engine
 {
@@ -26,7 +27,7 @@ private:																			\
 
 	class Node : public EngineObject, public AutoRegister<Node, Node>
 	{
-		ENGINE_CLASS(Node, EngineObject);
+		ENGINE_CLASS(Node, EngineObject)
 	public:
 		Node();
 		Node(StringName name);
@@ -42,6 +43,8 @@ private:																			\
 		bool	Get(StringName propertyName, Variant& out) const override;
 		bool	Set(StringName propertyName, const Variant& value) override;
 		void	GetPropertyList(std::vector<const PropertyInfo*>& out) const override;
+
+		void Notification(int what);
 
 		void Ready();
 		void Update(float dt);
