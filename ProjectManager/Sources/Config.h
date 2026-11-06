@@ -9,14 +9,14 @@ namespace Engine
 	{
 	public:
 		void Save();
-		static Ref<ProjectManagerConfig> Load();
+		static SharedPtr<ProjectManagerConfig> Load();
 
-		static Ref<ProjectManagerConfig> GetConfig() { return m_Config; };
+		static SharedPtr<ProjectManagerConfig> GetConfig() { return m_Config; };
 
 	public:
 		std::filesystem::path m_EditorPath;
 		std::vector<std::filesystem::path> m_RecentProjects;
 
-		inline static Ref<ProjectManagerConfig> m_Config;
+		inline static SharedPtr<ProjectManagerConfig> m_Config;
 	};
 }

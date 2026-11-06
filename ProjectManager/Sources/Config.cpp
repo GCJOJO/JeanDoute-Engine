@@ -43,9 +43,9 @@ namespace Engine
 	}
 
 
-	Ref<ProjectManagerConfig> ProjectManagerConfig::Load()
+	SharedPtr<ProjectManagerConfig> ProjectManagerConfig::Load()
 	{
-		Ref<ProjectManagerConfig> config = CreateRef<ProjectManagerConfig>();
+		SharedPtr<ProjectManagerConfig> config = CreateSharedPtr<ProjectManagerConfig>();
 
 		if (!std::filesystem::exists(configPath))
 		{

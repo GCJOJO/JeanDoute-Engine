@@ -11,8 +11,9 @@ namespace Engine
 		virtual std::vector<StringName> GetExtensions() const = 0;
 		
 		virtual bool Init() = 0;
-		virtual Ref<Script> LoadScript(const std::filesystem::path& path) = 0;
-		virtual Ref<Script> GetScriptByClassName(const StringName& className) const = 0;
+		virtual void Shutdown() = 0;
+		virtual SharedPtr<Script> LoadScript(const std::filesystem::path& path) = 0;
+		virtual SharedPtr<Script> GetScriptByClassName(const StringName& className) const = 0;
 
 		virtual void ReloadScripts() = 0;
 		

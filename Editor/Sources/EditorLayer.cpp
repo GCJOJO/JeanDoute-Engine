@@ -22,7 +22,7 @@
 
 namespace Engine
 {
-	static Ref<Font> s_Font;
+	static SharedPtr<Font> s_Font;
 	static float s_Time = 0.0f;
 
 	static std::filesystem::path s_CoreAssemblyPath = Filesystem::GetExecutableDir() / "CSharp-Core.dll";
@@ -31,7 +31,7 @@ namespace Engine
 	{
 		s_Font = Font::GetDefault();
 
-		SceneManager::Initialize(CreateRef<EditorSceneManager>());
+		SceneManager::Initialize(CreateSharedPtr<EditorSceneManager>());
 		SceneManager::NewScene();
 
 		m_SceneHierarchyPanel = SceneHierarchyPanel();
@@ -75,9 +75,9 @@ namespace Engine
 		std::filesystem::path fragmentShaderPath = "monkey.frag";
 		std::filesystem::path texturePath = "Assets/Textures/Bob.jpg";
 
-		m_VertexShader = CreateRef<Shader>(Shader::Type::Vertex, vertexShaderPath);
-		m_FragmentShader = CreateRef<Shader>(Shader::Type::Fragment, fragmentShaderPath);
-		m_ShaderProgram = CreateRef<ShaderProgram>(m_VertexShader, m_FragmentShader);
+		m_VertexShader = CreateSharedPtr<Shader>(Shader::Type::Vertex, vertexShaderPath);
+		m_FragmentShader = CreateSharedPtr<Shader>(Shader::Type::Fragment, fragmentShaderPath);
+		m_ShaderProgram = CreateSharedPtr<ShaderProgram>(m_VertexShader, m_FragmentShader);
 		m_BobTexture = TextureImporter::ImportTexture2D(texturePath);
 
 		m_MonkeyMeshAsset = std::static_pointer_cast<StaticMeshAsset>(AssetImporter::ImportAsset(Asset::Type::StaticMesh, "Assets/Meshes/Monkey.glb"));
@@ -105,7 +105,7 @@ namespace Engine
 		fbSpec.Width = window.GetWidth();
 		fbSpec.Height = window.GetHeight();
 
-		m_Framebuffer = CreateRef<Framebuffer>(fbSpec);
+		m_Framebuffer = CreateSharedPtr<Framebuffer>(fbSpec);
 
 		m_SceneHierarchyPanel.SetContext(SceneManager::GetCurrentScene());
 
@@ -482,8 +482,8 @@ namespace Engine
 
 		SceneManager::OpenScene(handle);
 
-		Ref<Scene> readOnlyScene = AssetManager::GetAsset<Scene>(handle);
-		Ref<Scene> newScene = Scene::Copy(readOnlyScene);
+		SharedPtr<Scene> readOnlyScene = AssetManager::GetAsset<Scene>(handle);
+		SharedPtr<Scene> newScene = Scene::Copy(readOnlyScene);
 
 		EditorSceneManager* editorSceneManager = (EditorSceneManager*)SceneManager::Get().get();
 		m_SceneHierarchyPanel.SetContext(editorSceneManager->GetEditorScene());
@@ -512,7 +512,7 @@ namespace Engine
 		}
 	}
 
-	void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
+	void EditorLayer::SerializeScene(SharedPtr<Scene> scene, const std::filesystem::path& path)
 	{
 		SceneImporter::SaveScene(scene, path);
 	}

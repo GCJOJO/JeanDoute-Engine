@@ -6,7 +6,7 @@ namespace Engine
 
 	EditorSceneManager::EditorSceneManager()
 	{
-		m_EditorScene = CreateRef<Scene>();
+		m_EditorScene = CreateSharedPtr<Scene>();
 		m_ActiveScene = m_EditorScene;
 	}
 
@@ -22,7 +22,7 @@ namespace Engine
 
 	void EditorSceneManager::NewSceneImpl()
 	{
-		m_EditorScene = CreateRef<Scene>();
+		m_EditorScene = CreateSharedPtr<Scene>();
 		m_ActiveScene = m_EditorScene;
 	}
 
@@ -36,7 +36,7 @@ namespace Engine
 
 	}
 
-	Ref<Scene> EditorSceneManager::GetCurrentSceneImpl()
+	SharedPtr<Scene> EditorSceneManager::GetCurrentSceneImpl()
 	{
 		return m_ActiveScene;
 	}

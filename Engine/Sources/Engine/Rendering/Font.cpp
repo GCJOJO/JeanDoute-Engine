@@ -15,7 +15,7 @@ namespace Engine
 {
 	const auto FONT_CACHE = Filesystem::GetUserDirectory() / "cache" / "font.cache";
 
-	static Ref<Texture2D> LoadCachedAtlas()
+	static SharedPtr<Texture2D> LoadCachedAtlas()
 	{
 		ENGINE_CORE_INFO("Loading Font Cache");
 
@@ -34,14 +34,14 @@ namespace Engine
 		spec.Format = ImageFormat::RGB8;
 		spec.GenerateMips = false;
 
-		Ref<Texture2D> texture = Texture2D::Create(spec);
+		SharedPtr<Texture2D> texture = Texture2D::Create(spec);
 		texture->SetData(textureData);
 
 		return texture;
 	}
 
 	template<typename T, typename S, int N, msdf_atlas::GeneratorFunction<S, N> GenFunc>
-	static Ref<Texture2D> CreateAndCacheAtlas(const std::string& fontName, float fontSize,
+	static SharedPtr<Texture2D> CreateAndCacheAtlas(const std::string& fontName, float fontSize,
 		const std::vector<msdf_atlas::GlyphGeometry>& glyphs, const msdf_atlas::FontGeometry& fontGeometry, int width, int height)
 	{
 		msdf_atlas::GeneratorAttributes attributes;
@@ -61,7 +61,7 @@ namespace Engine
 		spec.Format = ImageFormat::RGB8;
 		spec.GenerateMips = false;
 
-		Ref<Texture2D> texture = Texture2D::Create(spec);
+		SharedPtr<Texture2D> texture = Texture2D::Create(spec);
 		Buffer textureData = Buffer((void*)bitmap.pixels, bitmap.width * bitmap.height * 3);
 		texture->SetData(textureData);
 
@@ -192,11 +192,11 @@ namespace Engine
 		delete m_Data;
 	}
 
-	Ref<Font> Font::GetDefault()
+	SharedPtr<Font> Font::GetDefault()
 	{
-		static Ref<Font> DefaultFont;
+		static SharedPtr<Font> DefaultFont;
 		if (!DefaultFont)
-			DefaultFont = CreateRef<Font>("assets/fonts/opensans/OpenSans-Regular.ttf");
+			DefaultFont = CreateSharedPtr<Font>("assets/fonts/opensans/OpenSans-Regular.ttf");
 
 		return DefaultFont;
 	}

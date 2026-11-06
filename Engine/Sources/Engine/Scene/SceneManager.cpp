@@ -3,5 +3,5 @@
 
 namespace Engine
 {
-	Ref<SceneManager> SceneManager::m_SceneManager = nullptr;
+	SharedPtr<SceneManager> SceneManager::m_SceneManager = nullptr;
 }

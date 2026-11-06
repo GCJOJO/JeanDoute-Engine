@@ -23,45 +23,6 @@ namespace Engine
 		Node,
 	};
 
-	/*struct ScriptField
-	{
-		ScriptFieldType Type;
-		std::string Name;
-
-		Coral::FieldInfo CoralField;
-	};
-
-	// Script Field + Data Storage
-	struct ScriptFieldInstance
-	{
-		ScriptField Field;
-
-		ScriptFieldInstance()
-		{
-			memset(m_Buffer, 0, sizeof(m_Buffer));
-		}
-
-		template<typename T>
-		T GetValue()
-		{
-			static_assert(sizeof(T) <= 16, "Type too large !");
-			return *(T*)m_Buffer;
-		}
-
-		template<typename T>
-		void SetValue(T value)
-		{
-			static_assert(sizeof(T) <= 16, "Type too large !");
-			memcpy(m_Buffer, &value, sizeof(T));
-		}
-	private:
-		uint8_t m_Buffer[16];
-
-		friend class ScriptInstance;
-		friend class ScriptEngine;
-	};*/
-
-
 	struct ScriptField
 	{
 		ScriptFieldType Type;
@@ -128,12 +89,12 @@ namespace Engine
 	class ScriptInstance
 	{
 	public:
-		ScriptInstance(Ref<ScriptClass> scriptClass, Node* node);
+		ScriptInstance(SharedPtr<ScriptClass> scriptClass, Node* node);
 
 		void InvokeOnCreate();
 		void InvokeOnUpdate(float ts);
 
-		Ref<ScriptClass> GetScriptClass() { return m_ScriptClass; }
+		SharedPtr<ScriptClass> GetScriptClass() { return m_ScriptClass; }
 
 		template<typename T>
 		T GetFieldValue(const std::string& name)
@@ -162,7 +123,7 @@ namespace Engine
 		bool GetFieldValueInternal(const std::string& name, void* buffer);
 		bool SetFieldValueInternal(const std::string& name, const void* value);
 	private:
-		Ref<ScriptClass> m_ScriptClass;
+		SharedPtr<ScriptClass> m_ScriptClass;
 
 		Coral::ManagedObject m_Instance;
 
@@ -187,8 +148,8 @@ namespace Engine
 
 		static bool NodeClassExists(const std::string& fullClassName);
 
-		static Ref<ScriptClass> GetNodeClass(const std::string& name);
-		static std::unordered_map<std::string, Ref<ScriptClass>> GetNodeClasses();
+		static SharedPtr<ScriptClass> GetNodeClass(const std::string& name);
+		static std::unordered_map<std::string, SharedPtr<ScriptClass>> GetNodeClasses();
 		static bool IsValidClass(const std::string& className);
 		static ScriptFieldMap& GetScriptFieldMap(Node* node);
 
@@ -201,7 +162,7 @@ namespace Engine
 		static void SetStopFunction(std::function<void()> newFunction);
 		static void SetTimersActive(bool active);
 
-		static Ref<ScriptInstance> GetNodeScriptInstance(UUID entityID);
+		static SharedPtr<ScriptInstance> GetNodeScriptInstance(UUID entityID);
 
 		static Scene* GetSceneContext();
 

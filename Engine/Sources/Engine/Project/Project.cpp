@@ -14,15 +14,15 @@ namespace Engine
 		return GetAssetDirectory() / path;
 	}
 
-	Ref<Project> Project::New()
+	SharedPtr<Project> Project::New()
 	{
-		s_ActiveProject = CreateRef<Project>();
+		s_ActiveProject = CreateSharedPtr<Project>();
 		return s_ActiveProject;
 	}
 
-	Ref<Project> Project::Load(const std::filesystem::path& path)
+	SharedPtr<Project> Project::Load(const std::filesystem::path& path)
 	{
-		Ref<Project> project = CreateRef<Project>();
+		SharedPtr<Project> project = CreateSharedPtr<Project>();
 		ProjectSerializer serializer(project);
 		if (serializer.Deserialize(path))
 		{

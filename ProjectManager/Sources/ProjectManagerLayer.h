@@ -29,6 +29,6 @@ namespace Engine
 		bool InstallPremake();
 
 	private:
-		Ref<ProjectManagerConfig> m_Config;
+		SharedPtr<ProjectManagerConfig> m_Config;
 	};
 }

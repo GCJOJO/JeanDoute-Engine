@@ -4,12 +4,12 @@
 namespace Engine
 {
 
-	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
+	SceneHierarchyPanel::SceneHierarchyPanel(const SharedPtr<Scene>& context)
 	{
 		SetContext(context);
 	}
 
-	void SceneHierarchyPanel::SetContext(const Ref<Scene>& context)
+	void SceneHierarchyPanel::SetContext(const SharedPtr<Scene>& context)
 	{
 		m_Context = context;
 		m_SelectionContext = nullptr;

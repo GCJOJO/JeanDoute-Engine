@@ -36,7 +36,7 @@ namespace Engine
 		StaticMeshVertex::Init();
 	}
 
-	StaticMesh::StaticMesh(Ref<StaticMeshAsset> meshAsset, Ref<ShaderProgram> shaderProgram)
+	StaticMesh::StaticMesh(SharedPtr<StaticMeshAsset> meshAsset, SharedPtr<ShaderProgram> shaderProgram)
 		: m_StaticMeshAsset(meshAsset), m_ShaderProgram(shaderProgram)
 	{
 		RebuildBuffers();

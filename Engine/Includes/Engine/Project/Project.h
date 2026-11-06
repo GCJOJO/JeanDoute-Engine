@@ -59,13 +59,13 @@ namespace Engine
 
 		ProjectConfig& GetConfig() { return m_Config; }
 
-		static Ref<Project> GetActive() { return s_ActiveProject; }
+		static SharedPtr<Project> GetActive() { return s_ActiveProject; }
 		std::shared_ptr<AssetManagerBase> GetAssetManager() { return m_AssetManager; }
 		std::shared_ptr<RuntimeAssetManager> GetRuntimeAssetManager() { return std::static_pointer_cast<RuntimeAssetManager>(m_AssetManager); }
 		std::shared_ptr<EditorAssetManager> GetEditorAssetManager() { return std::static_pointer_cast<EditorAssetManager>(m_AssetManager); }
 
-		static Ref<Project> New();
-		static Ref<Project> Load(const std::filesystem::path& path);
+		static SharedPtr<Project> New();
+		static SharedPtr<Project> Load(const std::filesystem::path& path);
 		static bool SaveActive(const std::filesystem::path& path);
 
 	private:
@@ -73,6 +73,6 @@ namespace Engine
 		std::filesystem::path m_ProjectDirectory;
 		std::shared_ptr<AssetManagerBase> m_AssetManager;
 
-		inline static Ref<Project> s_ActiveProject;
+		inline static SharedPtr<Project> s_ActiveProject;
 	};
 }

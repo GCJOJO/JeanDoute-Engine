@@ -47,23 +47,23 @@ namespace Engine
 		void SaveScene();
 		void SaveSceneAs();
 
-		void SerializeScene(Ref<Scene> scene, const std::filesystem::path& path);
+		void SerializeScene(SharedPtr<Scene> scene, const std::filesystem::path& path);
 
 	private:
 		std::filesystem::path m_EditorScenePath;
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 
 		EditorCamera m_EditorCamera;
-		Ref<Shader> m_VertexShader;
-		Ref<Shader> m_FragmentShader;
-		Ref<ShaderProgram> m_ShaderProgram;
-		Ref<Texture2D> m_BobTexture;
-		Ref<StaticMeshAsset> m_MonkeyMeshAsset;
+		SharedPtr<Shader> m_VertexShader;
+		SharedPtr<Shader> m_FragmentShader;
+		SharedPtr<ShaderProgram> m_ShaderProgram;
+		SharedPtr<Texture2D> m_BobTexture;
+		SharedPtr<StaticMeshAsset> m_MonkeyMeshAsset;
 		MeshNode3D* m_MonkeyMesh;
 
 		bgfx::UniformHandle m_TextureUniform;
 
-		Ref<Framebuffer> m_Framebuffer;
+		SharedPtr<Framebuffer> m_Framebuffer;
 
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		glm::vec2 m_ViewportBounds[2];

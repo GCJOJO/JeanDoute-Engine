@@ -8,14 +8,14 @@
 namespace Engine
 {
 
-	MeshNode3D::MeshNode3D(Ref<StaticMeshAsset> staticMeshAsset, Ref<ShaderProgram> shaderProgram)
+	MeshNode3D::MeshNode3D(SharedPtr<StaticMeshAsset> staticMeshAsset, SharedPtr<ShaderProgram> shaderProgram)
 		: RenderableNode3D()
 	{
 		m_Name = "Mesh Node 3D";
 		SetMesh(staticMeshAsset, shaderProgram);
 	}
 
-	MeshNode3D::MeshNode3D(StringName name, Ref<StaticMeshAsset> staticMeshAsset, Ref<ShaderProgram> shaderProgram)
+	MeshNode3D::MeshNode3D(StringName name, SharedPtr<StaticMeshAsset> staticMeshAsset, SharedPtr<ShaderProgram> shaderProgram)
 		: RenderableNode3D()
 	{
 		m_Name = name;
@@ -32,9 +32,9 @@ namespace Engine
 
 	}
 
-	void MeshNode3D::SetMesh(Ref<StaticMeshAsset> staticMeshAsset, Ref<ShaderProgram> shaderProgram)
+	void MeshNode3D::SetMesh(SharedPtr<StaticMeshAsset> staticMeshAsset, SharedPtr<ShaderProgram> shaderProgram)
 	{
-		m_StaticMesh = CreateRef<StaticMesh>(staticMeshAsset, shaderProgram);
+		m_StaticMesh = CreateSharedPtr<StaticMesh>(staticMeshAsset, shaderProgram);
 	}
 
 	void MeshNode3D::Render(const bgfx::ViewId& viewId)

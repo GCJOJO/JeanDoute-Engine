@@ -7,6 +7,7 @@ namespace Engine
 	{
 	public:
 		RefCounted() = default;
+		virtual ~RefCounted() = default;
 
 		void Reference()	{ m_RefCounted.fetch_add(1, std::memory_order_relaxed); }
 		bool Unreference()	{ return m_RefCounted.fetch_sub(1, std::memory_order_acq_rel) == 1; }

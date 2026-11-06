@@ -26,7 +26,7 @@ namespace Engine
 		return Asset::Type::Shader;
 	}
 
-	ShaderProgram::ShaderProgram(Ref<Shader> vertexShader, Ref<Shader> fragmentShader)
+	ShaderProgram::ShaderProgram(SharedPtr<Shader> vertexShader, SharedPtr<Shader> fragmentShader)
 		: m_VertexShader(vertexShader), m_FragmentShader(fragmentShader)
 	{
 		m_ProgramHandle = bgfx::createProgram(m_VertexShader->GetShaderHandle(), m_FragmentShader->GetShaderHandle(), false);

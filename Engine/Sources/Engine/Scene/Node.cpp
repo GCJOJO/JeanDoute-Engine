@@ -178,7 +178,7 @@ namespace Engine
 		}
 	}
 
-	void Node::SetScript(Ref<Script> script)
+	void Node::SetScript(RefPtr<Script> script)
 	{
 		if (script == nullptr)
 		{

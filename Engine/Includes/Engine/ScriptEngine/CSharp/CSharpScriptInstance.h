@@ -4,12 +4,12 @@
 
 namespace Engine
 {
-	class CSharpScriptInstace : public ScriptInstance
+	class CSharpScriptInstance : public ScriptInstance
 	{
 	public:
-		CSharpScriptInstace(Ref<CSharpScript> script, Node* owner);
+		CSharpScriptInstance(SharedPtr<CSharpScript> script, Node* owner);
 
-		Ref<Script> GetScript() const override { return m_Script; }
+		SharedPtr<Script> GetScript() const override { return m_Script; }
 		Node* GetOwner() const override { return m_Owner; }
 
 
@@ -25,7 +25,7 @@ namespace Engine
 		void RestoreState(const ScriptState& state) override;
 
 	private:
-		Ref<CSharpScript> m_Script;
+		SharedPtr<CSharpScript> m_Script;
 		Node* m_Owner = nullptr;
 		Coral::ManagedObject m_Object;
 	};

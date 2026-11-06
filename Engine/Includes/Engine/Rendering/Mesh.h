@@ -10,7 +10,7 @@ namespace Engine
 	public:
 		virtual const bgfx::VertexBufferHandle& GetVertexBufferHandle(int meshId) = 0;
 		virtual const bgfx::IndexBufferHandle& GetIndexBufferHandle(int meshId) = 0;
-		virtual const Ref<ShaderProgram> GetShaderProgram() = 0;
+		virtual const SharedPtr<ShaderProgram> GetShaderProgram() = 0;
 
 		virtual int GetMeshCount() = 0;
 	};

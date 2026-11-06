@@ -67,8 +67,8 @@ namespace Engine
 
 		ScriptClass NodeClass;
 
-		std::unordered_map<std::string, Ref<ScriptClass>> NodeClasses;
-		std::unordered_map<UUID, Ref<ScriptInstance>> NodeInstances;
+		std::unordered_map<std::string, SharedPtr<ScriptClass>> NodeClasses;
+		std::unordered_map<UUID, SharedPtr<ScriptInstance>> NodeInstances;
 
 		std::unordered_map<UUID, ScriptFieldMap> NodeScriptFields;
 
@@ -235,7 +235,7 @@ namespace Engine
 			{
 				std::string typeName = std::string(appType->GetFullName());
 				//ENGINE_CORE_INFO("App Type {} is subclass of Engine.Entity", typeName);
-				s_ScriptEngineData->NodeClasses[appType->GetFullName()] = CreateRef<ScriptClass>(typeName);
+				s_ScriptEngineData->NodeClasses[appType->GetFullName()] = CreateSharedPtr<ScriptClass>(typeName);
 
 				/*for (const auto& method : appType->GetMethods())
 					ENGINE_CORE_INFO("App Type {} has method {}", typeName, std::string(method.GetName()));*/
@@ -249,7 +249,7 @@ namespace Engine
 		return s_ScriptEngineData->NodeClasses.find(fullClassName) != s_ScriptEngineData->NodeClasses.end();
 	}
 
-	Ref<ScriptClass> ScriptEngine::GetNodeClass(const std::string& name)
+	SharedPtr<ScriptClass> ScriptEngine::GetNodeClass(const std::string& name)
 	{
 		if (s_ScriptEngineData->NodeClasses.find(name) == s_ScriptEngineData->NodeClasses.end())
 			return nullptr;
@@ -257,7 +257,7 @@ namespace Engine
 		return s_ScriptEngineData->NodeClasses.at(name);
 	}
 
-	std::unordered_map<std::string, Ref<ScriptClass>> ScriptEngine::GetNodeClasses()
+	std::unordered_map<std::string, SharedPtr<ScriptClass>> ScriptEngine::GetNodeClasses()
 	{
 		return s_ScriptEngineData->NodeClasses;
 	}
@@ -303,7 +303,7 @@ namespace Engine
 		if (ScriptEngine::NodeClassExists(className))
 		{
 			UUID nodeId = node->GetId();
-			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_ScriptEngineData->NodeClasses[className], node);
+			SharedPtr<ScriptInstance> instance = CreateSharedPtr<ScriptInstance>(s_ScriptEngineData->NodeClasses[className], node);
 			s_ScriptEngineData->NodeInstances[nodeId] = instance;
 
 			if (s_ScriptEngineData->NodeScriptFields.find(nodeId) != s_ScriptEngineData->NodeScriptFields.end())
@@ -319,7 +319,7 @@ namespace Engine
 		{
 			UUID entityId = entity.GetUUID();
 
-			Ref<ScriptInstance> instance = CreateRef<ScriptInstance>(s_ScriptEngineData->EntityClasses[sc.ClassName], entity);
+			Ref<ScriptInstance> instance = CreateSharedPtr<ScriptInstance>(s_ScriptEngineData->EntityClasses[sc.ClassName], entity);
 			s_ScriptEngineData->EntityInstances[entityId] = instance;
 
 			// Copy Field values
@@ -365,14 +365,14 @@ namespace Engine
 		UUID entityUUID = node->GetId();
 		if (s_ScriptEngineData->NodeInstances.find(entityUUID) != s_ScriptEngineData->NodeInstances.end())
 		{
-			Ref<ScriptInstance> instance = s_ScriptEngineData->NodeInstances[node->GetId()];
+			SharedPtr<ScriptInstance> instance = s_ScriptEngineData->NodeInstances[node->GetId()];
 			instance->InvokeOnUpdate((float)ts);
 		}
 		else
 			ENGINE_CORE_ERROR("Couldn't find ScriptInstance for entity {}", node->GetName());
 	}
 
-	Ref<ScriptInstance> ScriptEngine::GetNodeScriptInstance(UUID entityID)
+	SharedPtr<ScriptInstance> ScriptEngine::GetNodeScriptInstance(UUID entityID)
 	{
 		auto it = s_ScriptEngineData->NodeInstances.find(entityID);
 		if (it == s_ScriptEngineData->NodeInstances.end())
@@ -477,7 +477,7 @@ namespace Engine
 		return false;
 	}
 
-	ScriptInstance::ScriptInstance(Ref<ScriptClass> scriptClass, Node* node)
+	ScriptInstance::ScriptInstance(SharedPtr<ScriptClass> scriptClass, Node* node)
 		: m_ScriptClass(scriptClass)
 	{
 		UUID entityId = node->GetId();

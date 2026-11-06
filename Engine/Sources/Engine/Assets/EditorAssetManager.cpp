@@ -40,7 +40,7 @@ namespace Engine
 		return out;
 	}
 
-	Ref<Asset> EditorAssetManager::GetAsset(AssetHandle handle)
+	SharedPtr<Asset> EditorAssetManager::GetAsset(AssetHandle handle)
 	{
 		// 1. Check is handle is valid
 		// 2. Check is asset needs load (and if so, load)
@@ -49,7 +49,7 @@ namespace Engine
 		if (!IsAssetHandleValid(handle))
 			return nullptr;
 
-		Ref<Asset> asset;
+		SharedPtr<Asset> asset;
 		if (IsAssetLoaded(handle))
 			asset = m_LoadedAssets.at(handle);
 		else
@@ -88,7 +88,7 @@ namespace Engine
 		AssetMetadata metadata;
 		metadata.AssetPath = filepath;
 		metadata.Type = GetTypeFromFileExtension(filepath.extension());
-		Ref<Asset> asset = AssetImporter::LoadAsset(handle, metadata);
+		SharedPtr<Asset> asset = AssetImporter::LoadAsset(handle, metadata);
 		asset->Handle = handle;
 		if (asset)
 		{

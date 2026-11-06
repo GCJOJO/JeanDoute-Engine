@@ -21,9 +21,10 @@ namespace Engine
 		std::vector<StringName> GetExtensions() const override { return { ".cs" }; }
 
 		bool Init() override;
+		void Shutdown();
 
-		Ref<Script> LoadScript(const std::filesystem::path& path) override;
-		Ref<Script> GetScriptByClassName(const StringName& className) const override;
+		SharedPtr<Script> LoadScript(const std::filesystem::path& path) override;
+		SharedPtr<Script> GetScriptByClassName(const StringName& className) const override;
 		void ReloadScripts() override;
 
 
@@ -32,23 +33,15 @@ namespace Engine
 		void Frame(Timestep ts) override;
 
 	private:
-		bool LoadCoreAssembly(const std::filesystem::path& path);
-		bool LoadAppAssembly(const std::filesystem::path& path);
+		bool InitCoral(const std::filesystem::path& coralDir);
 
 		void DiscoverScripts();
 		void RegisterInternalCalls();
 
+		void ReloadAssembly();
 		void OnAssemblyFileChanged(const std::string& path);
-		void OnManagedException(std::string_view message);
 
 	private:
-		Coral::HostInstance m_Host;
-		Coral::AssemblyLoadContext m_LoadContext;
-		Coral::ManagedAssembly* m_CoreAssembly = nullptr;
-		Coral::ManagedAssembly* m_AppAssembly = nullptr;
-
-		std::filesystem::path m_AppAssemblyPath;
-		Scope<filewatch::FileWatch<std::string>> m_AssemblyWatcher;
-		std::atomic<bool> m_ReloadPending{ false };
+		bool m_Initialized = false;
 	};
 }

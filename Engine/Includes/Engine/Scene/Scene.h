@@ -10,7 +10,7 @@ namespace Engine
 	public:
 		Scene();
 
-		static Ref<Scene> Copy(Ref<Scene> other);
+		static SharedPtr<Scene> Copy(SharedPtr<Scene> other);
 
 		void StartScene();
 		void UpdateScene(Timestep ts, int viewId);

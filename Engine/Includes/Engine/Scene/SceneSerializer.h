@@ -6,7 +6,7 @@ namespace Engine
 	class SceneSerializer
 	{
 	public:
-		SceneSerializer(const Ref<Scene>& scene) : m_Scene(scene) {};
+		SceneSerializer(const SharedPtr<Scene>& scene) : m_Scene(scene) {};
 
 		void Serialize(const std::filesystem::path& filepath);
 		void SerializeRuntime(const std::filesystem::path& filepath);
@@ -14,6 +14,6 @@ namespace Engine
 		bool Deserialize(const std::filesystem::path& filepath);
 		bool DeserializeRuntime(const std::filesystem::path& filepath);
 	private:
-		Ref<Scene> m_Scene;
+		SharedPtr<Scene> m_Scene;
 	};
 }

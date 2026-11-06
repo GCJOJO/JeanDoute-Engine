@@ -32,14 +32,14 @@ namespace Engine
 	class ShaderProgram
 	{
 	public:
-		ShaderProgram(Ref<Shader> vertexShader, Ref<Shader> fragmentShader);
+		ShaderProgram(SharedPtr<Shader> vertexShader, SharedPtr<Shader> fragmentShader);
 		~ShaderProgram();
 		
 		bgfx::ProgramHandle& GetProgramHandle() { return m_ProgramHandle; }
 
 	private:
-		Ref<Shader> m_VertexShader;
-		Ref<Shader> m_FragmentShader;
+		SharedPtr<Shader> m_VertexShader;
+		SharedPtr<Shader> m_FragmentShader;
 
 		bgfx::ProgramHandle m_ProgramHandle;
 	public:

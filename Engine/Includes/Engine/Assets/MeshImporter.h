@@ -11,7 +11,7 @@ namespace Engine
 	class MeshImporter
 	{
 	public:
-		static Ref<StaticMeshAsset> LoadStaticMesh(AssetHandle handle, const AssetMetadata& metadata);
-		static Ref<StaticMeshAsset> ImportStaticMesh(const std::filesystem::path& assetPath);
+		static SharedPtr<StaticMeshAsset> LoadStaticMesh(AssetHandle handle, const AssetMetadata& metadata);
+		static SharedPtr<StaticMeshAsset> ImportStaticMesh(const std::filesystem::path& assetPath);
 	};
 }

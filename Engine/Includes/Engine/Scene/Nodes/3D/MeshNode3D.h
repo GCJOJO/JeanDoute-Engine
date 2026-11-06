@@ -17,11 +17,11 @@ namespace Engine
 		static void InitVertexLayout();
 
 		MeshNode3D();
-		MeshNode3D(Ref<StaticMeshAsset> staticMeshAsset, Ref<ShaderProgram> shaderProgram);
-		MeshNode3D(StringName name, Ref<StaticMeshAsset> staticMeshAsset, Ref<ShaderProgram> shaderProgram);
+		MeshNode3D(SharedPtr<StaticMeshAsset> staticMeshAsset, SharedPtr<ShaderProgram> shaderProgram);
+		MeshNode3D(StringName name, SharedPtr<StaticMeshAsset> staticMeshAsset, SharedPtr<ShaderProgram> shaderProgram);
 		virtual ~MeshNode3D() override;
 		
-		void SetMesh(Ref<StaticMeshAsset> staticMeshAsset, Ref<ShaderProgram> shaderProgram);
+		void SetMesh(SharedPtr<StaticMeshAsset> staticMeshAsset, SharedPtr<ShaderProgram> shaderProgram);
 
 		virtual void Render(const bgfx::ViewId& viewId) override;
 
@@ -33,6 +33,6 @@ namespace Engine
 		virtual void LoadNode(const YAML::Node& data) override;
 
 	private:
-		Ref<StaticMesh> m_StaticMesh;
+		SharedPtr<StaticMesh> m_StaticMesh;
 	};
 }

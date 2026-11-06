@@ -8,9 +8,9 @@ namespace Engine
 	{
 	public:
 		SceneHierarchyPanel() = default;
-		SceneHierarchyPanel(const Ref<Scene>& context);
+		SceneHierarchyPanel(const SharedPtr<Scene>& context);
 
-		void SetContext(const Ref<Scene>& context);
+		void SetContext(const SharedPtr<Scene>& context);
 
 		void OnImGuiRender();
 
@@ -18,7 +18,7 @@ namespace Engine
 		void DrawNode(Node* node);
 
 	private:
-		Ref<Scene> m_Context = nullptr;
+		SharedPtr<Scene> m_Context = nullptr;
 		Node* m_SelectionContext = nullptr;
 	};
 }

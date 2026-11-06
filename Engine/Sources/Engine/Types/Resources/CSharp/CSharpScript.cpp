@@ -3,9 +3,9 @@
 
 namespace Engine
 {
-	Ref<CSharpScript> CSharpScript::Create(CSharpScriptLanguage* language, Coral::Type& type)
+	SharedPtr<CSharpScript> CSharpScript::Create(CSharpScriptLanguage* language, Coral::Type& type)
 	{
-		return CreateRef<CSharpScript>(language, type);
+		return CreateSharedPtr<CSharpScript>(language, type);
 	}
 
 	CSharpScript::CSharpScript(CSharpScriptLanguage* language, Coral::Type& type)

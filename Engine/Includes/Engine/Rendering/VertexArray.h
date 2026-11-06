@@ -24,24 +24,24 @@ namespace Engine
 				.end();
 		}
 
-		void AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
+		void AddVertexBuffer(const SharedPtr<VertexBuffer>& vertexBuffer)
 		{
 			m_Buffers.push_back(vertexBuffer);
 		}
 
-		void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
+		void SetIndexBuffer(const SharedPtr<IndexBuffer>& indexBuffer)
 		{
 			m_IndexBuffer = indexBuffer;
 		}
 
 		bgfx::VertexLayout& GetLayout() { return m_Layout; }
 
-		const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const { return m_Buffers; };
-		const Ref<IndexBuffer>& GetIndexBuffer() const { return m_IndexBuffer; };
+		const std::vector<SharedPtr<VertexBuffer>>& GetVertexBuffers() const { return m_Buffers; };
+		const SharedPtr<IndexBuffer>& GetIndexBuffer() const { return m_IndexBuffer; };
 
 	private:
-		std::vector<Ref<VertexBuffer>> m_Buffers;
-		Ref<IndexBuffer> m_IndexBuffer;
+		std::vector<SharedPtr<VertexBuffer>> m_Buffers;
+		SharedPtr<IndexBuffer> m_IndexBuffer;
 		bgfx::VertexLayout m_Layout;
 	};
 

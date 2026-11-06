@@ -46,7 +46,7 @@ namespace Engine
 	class Texture2D : public Texture
 	{
 	public:
-		static Ref<Texture2D> Create(const TextureSpecifications& specifications, Buffer data = Buffer());
+		static SharedPtr<Texture2D> Create(const TextureSpecifications& specifications, Buffer data = Buffer());
 		~Texture2D();
 
 		virtual Asset::Type GetType() const { return Asset::Type::Texture2D; }

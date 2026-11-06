@@ -8,12 +8,12 @@
 namespace Engine
 {
 
-	Ref<StaticMeshAsset> MeshImporter::LoadStaticMesh(AssetHandle handle, const AssetMetadata& metadata)
+	SharedPtr<StaticMeshAsset> MeshImporter::LoadStaticMesh(AssetHandle handle, const AssetMetadata& metadata)
 	{
 		return nullptr;
 	}
 
-	Ref<StaticMeshAsset> MeshImporter::ImportStaticMesh(const std::filesystem::path& assetPath)
+	SharedPtr<StaticMeshAsset> MeshImporter::ImportStaticMesh(const std::filesystem::path& assetPath)
 	{
 		Assimp::Importer importer;
 
@@ -31,7 +31,7 @@ namespace Engine
 			return nullptr;
 		}
 
-		Ref<StaticMeshAsset> mesh = CreateRef<StaticMeshAsset>();
+		SharedPtr<StaticMeshAsset> mesh = CreateSharedPtr<StaticMeshAsset>();
 		for (unsigned meshIndex = 0; meshIndex < scene->mNumMeshes; meshIndex++)
 		{
 			StaticMeshAsset::MeshData meshData{};

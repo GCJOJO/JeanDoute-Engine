@@ -9,9 +9,9 @@ namespace Engine
 		m_SceneTree.SetRoot(CreateScope<Node>("Root", m_SceneTree));
 	}
 
-	Ref<Scene> Scene::Copy(Ref<Scene> other)
+	SharedPtr<Scene> Scene::Copy(SharedPtr<Scene> other)
 	{
-		Ref<Scene> newScene = CreateRef<Scene>();
+		SharedPtr<Scene> newScene = CreateSharedPtr<Scene>();
 		return newScene;
 	}
 

@@ -235,7 +235,7 @@ group "")";
 
 		filepath.replace_extension(".eproj");
 
-		Ref<Project> newProject = Project::New();
+		SharedPtr<Project> newProject = Project::New();
 
 		std::filesystem::path projectDir = filepath.parent_path();
 

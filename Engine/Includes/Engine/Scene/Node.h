@@ -1,7 +1,9 @@
 #pragma once
 #include "NodeFactory.h"
 #include "NodeRegistry.h"
+#include "Engine/Core/Ref.h"
 #include "Engine/Core/UUID.h"
+#include "Engine/Types/Variant.h"
 #include "Engine/Types/StringName.h"
 #include "Engine/Types/EngineObject.h"
 #include "Engine/Types/Resources/Script.h"
@@ -36,8 +38,8 @@ private:																			\
 
 		virtual StringName get_class_name() const { return {"Node"}; }
 
-		void SetScript(Ref<Script> script);
-		Ref<Script> GetScript() const { return m_Script; }
+		void SetScript(RefPtr<Script> script);
+		RefPtr<Script> GetScript() const { return m_Script; }
 
 		Variant Call(StringName methodName, Variant* args, std::size_t argCount) override;
 		bool	Get(StringName propertyName, Variant& out) const override;
@@ -90,7 +92,7 @@ private:																			\
 		StringName m_Name = "Node";
 		StringName m_ScriptName = "";
 	private:
-		Ref<Script>				m_Script;
+		RefPtr<Script>			m_Script;
 		Scope<ScriptInstance>	m_ScriptInstance = nullptr;
 	};
 

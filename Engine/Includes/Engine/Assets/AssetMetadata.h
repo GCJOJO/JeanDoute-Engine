@@ -12,7 +12,7 @@ namespace Engine
 		std::filesystem::path AssetPath;
 
 		operator bool() const { return Type != Asset::Type::None; }
-		Ref<void> SpecificFileData{ nullptr };
+		SharedPtr<void> SpecificFileData{ nullptr };
 	public:
 		template <typename T>
 		T* GetSpecificMetaData()

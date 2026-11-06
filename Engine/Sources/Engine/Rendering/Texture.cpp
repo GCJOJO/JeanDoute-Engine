@@ -20,9 +20,9 @@ namespace Engine
 		return bgfx::TextureFormat::Unknown;
 	}
 
-	Ref<Texture2D> Texture2D::Create(const TextureSpecifications& specifications, Buffer data)
+	SharedPtr<Texture2D> Texture2D::Create(const TextureSpecifications& specifications, Buffer data)
 	{
-		Ref<Texture2D> newTexture = CreateRef<Texture2D>();
+		SharedPtr<Texture2D> newTexture = CreateSharedPtr<Texture2D>();
 		newTexture->m_Specifications = specifications;
 		
 		newTexture->m_TextureHandle = bgfx::createTexture2D(specifications.Width, specifications.Height, 

@@ -7,12 +7,12 @@ namespace Engine
 	class ProjectSerializer
 	{
 	public:
-		ProjectSerializer(Ref<Project> project);
+		ProjectSerializer(SharedPtr<Project> project);
 
 		bool Serialize(const std::filesystem::path& filepath);
 		bool Deserialize(const std::filesystem::path& filepath);
 
 	private:
-		Ref<Project> m_Project;
+		SharedPtr<Project> m_Project;
 	};
 }

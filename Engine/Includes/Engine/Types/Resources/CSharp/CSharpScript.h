@@ -10,7 +10,7 @@ namespace Engine
 	class CSharpScript : public Script 
 	{
 	public:
-		static Ref<CSharpScript> Create(CSharpScriptLanguage* language, Coral::Type& type);
+		static SharedPtr<CSharpScript> Create(CSharpScriptLanguage* language, Coral::Type& type);
 
 		CSharpScript(CSharpScriptLanguage* language, Coral::Type& type);
 
@@ -32,7 +32,7 @@ namespace Engine
 
 		Scope<ScriptInstance> CreateInstance(Node* owner) override 
 		{
-			return CreateScope<ScriptInstance>(Ref<CSharpScript>(this), owner->GetId());
+			return CreateScope<ScriptInstance>(SharedPtr<CSharpScript>(this), owner->GetId());
 		}
 
 		const ScriptMembers& GetMembers() const override { return m_Members; }

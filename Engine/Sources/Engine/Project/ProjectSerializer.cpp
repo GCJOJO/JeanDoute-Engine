@@ -10,7 +10,7 @@
 namespace Engine
 {
 
-	ProjectSerializer::ProjectSerializer(Ref<Project> project)
+	ProjectSerializer::ProjectSerializer(SharedPtr<Project> project)
 		: m_Project(project)
 	{
 

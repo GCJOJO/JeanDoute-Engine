@@ -13,7 +13,8 @@ namespace Engine
 	class ScriptServer : public EngineSingleton
 	{
 	public:
-		static ScriptServer& Get();
+		static ScriptServer& Get() { return m_Instance; }
+		static void Init();
 
 		void RegisterLanguage(Scope<ScriptLanguage> language);
 		ScriptLanguage* GetLanguage(const StringName& name) const;
@@ -24,7 +25,7 @@ namespace Engine
 		bool InitAll();
 		void ShutdownAll();
 
-		Ref<Script> LoadScript(const std::filesystem::path& path);
+		SharedPtr<Script> LoadScript(const std::filesystem::path& path);
 		
 		void RegisterInstance(ScriptInstance* instance);
 		void UnregisterInstance(ScriptInstance* instance);
@@ -34,9 +35,12 @@ namespace Engine
 		void Frame(Timestep ts);
 
 		void ReloadAll(bool keepState = true);
+		void RequestReload();
 
 	private:
-		std::vector<Scope<ScriptLanguage>> m_Languages;
-		std::unordered_map<StringName, ScriptLanguage*> m_ByExtensions;
+		static ScriptServer m_Instance;
+		std::vector<Scope<ScriptLanguage>> m_Languages{ };
+		std::unordered_map<StringName, ScriptLanguage*> m_ByExtensions{ };
+		std::atomic_bool m_ReloadRequested = { false };
 	};
 }

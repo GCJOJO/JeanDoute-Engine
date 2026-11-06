@@ -9,6 +9,7 @@
 #include "Engine/ImGui/ImGuiLayer.h"
 #include "Engine/Rendering/Renderer.h"
 #include "Engine/Reflection/Registry.h"
+#include "Engine/ScriptEngine/ScriptServer.h"
 
 namespace Engine
 {
@@ -36,6 +37,7 @@ namespace Engine
 		PushOverlay(m_ImGuiLayer);
 
 		Registry::RegisterEngineClasses();
+		ScriptServer::Init();
 	}
 
 	Application::~Application()

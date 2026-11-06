@@ -11,10 +11,10 @@ namespace Engine
 	{
 	public:
 		template<typename T>
-		static Ref<T> GetAsset(AssetHandle handle)
+		static SharedPtr<T> GetAsset(AssetHandle handle)
 		{
 			// Get out project asset manager
-			Ref<Asset> asset = Project::GetActive()->GetAssetManager()->GetAsset(handle);
+			SharedPtr<Asset> asset = Project::GetActive()->GetAssetManager()->GetAsset(handle);
 			return std::static_pointer_cast<T>(asset);
 		}
 

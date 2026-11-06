@@ -6,7 +6,7 @@
 
 namespace Engine
 {
-	using AssetImportFunction = std::function<Ref<Asset>(const std::filesystem::path&)>;
+	using AssetImportFunction = std::function<SharedPtr<Asset>(const std::filesystem::path&)>;
 	static std::map<Asset::Type, AssetImportFunction> s_AssetImportingFunctions =
 	{
 		{ Asset::Type::StaticMesh, MeshImporter::ImportStaticMesh },
@@ -14,7 +14,7 @@ namespace Engine
 		{ Asset::Type::Texture2D, TextureImporter::ImportTexture2D },
 	};
 
-	Ref<Asset> AssetImporter::ImportAsset(Asset::Type assetType, const std::filesystem::path& path)
+	SharedPtr<Asset> AssetImporter::ImportAsset(Asset::Type assetType, const std::filesystem::path& path)
 	{
 		if (s_AssetImportingFunctions.find(assetType) == s_AssetImportingFunctions.end())
 		{
@@ -25,7 +25,7 @@ namespace Engine
 		return s_AssetImportingFunctions.at(assetType)(path);
 	}
 
-	using AssetLoadFunction = std::function<Ref<Asset>(AssetHandle, const AssetMetadata&)>;
+	using AssetLoadFunction = std::function<SharedPtr<Asset>(AssetHandle, const AssetMetadata&)>;
 	static std::map<Asset::Type, AssetLoadFunction> s_AssetLoadingFunctions =
 	{
 		{ Asset::Type::Texture2D, TextureImporter::LoadTexture2D },
@@ -33,7 +33,7 @@ namespace Engine
 		{ Asset::Type::Scene, SceneImporter::LoadScene },
 	};
 
-	Ref<Asset> AssetImporter::LoadAsset(AssetHandle handle, const AssetMetadata& metadata)
+	SharedPtr<Asset> AssetImporter::LoadAsset(AssetHandle handle, const AssetMetadata& metadata)
 	{
 		if (s_AssetLoadingFunctions.find(metadata.Type) == s_AssetLoadingFunctions.end())
 		{

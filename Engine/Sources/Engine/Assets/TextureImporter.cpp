@@ -7,14 +7,14 @@
 
 namespace Engine
 {
-	Ref<Texture2D> TextureImporter::LoadTexture2D(AssetHandle handle, const AssetMetadata& metadata)
+	SharedPtr<Texture2D> TextureImporter::LoadTexture2D(AssetHandle handle, const AssetMetadata& metadata)
 	{
 		ENGINE_PROFILE_FUNCTION();
 
 		return ImportTexture2D(Project::GetActiveAssetDirectory() / metadata.AssetPath);
 	}
 
-	Ref<Texture2D> TextureImporter::ImportTexture2D(const std::filesystem::path& path)
+	SharedPtr<Texture2D> TextureImporter::ImportTexture2D(const std::filesystem::path& path)
 	{
 		ENGINE_PROFILE_FUNCTION();
 
@@ -50,7 +50,7 @@ namespace Engine
 			break;
 		}
 
-		Ref<Texture2D> texture = Texture2D::Create(spec, data);
+		SharedPtr<Texture2D> texture = Texture2D::Create(spec, data);
 		data.Release();
 		return texture;
 	}

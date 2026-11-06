@@ -6,24 +6,24 @@
 
 namespace Engine
 {
-	Ref<Scene> SceneImporter::LoadScene(AssetHandle handle, const AssetMetadata& metadata)
+	SharedPtr<Scene> SceneImporter::LoadScene(AssetHandle handle, const AssetMetadata& metadata)
 	{
 		ENGINE_PROFILE_FUNCTION();
 
 		return ImportScene(Project::GetActiveAssetDirectory() / metadata.AssetPath);
 	}
 
-	Ref<Scene> SceneImporter::ImportScene(const std::filesystem::path& path)
+	SharedPtr<Scene> SceneImporter::ImportScene(const std::filesystem::path& path)
 	{
 		ENGINE_PROFILE_FUNCTION();
 
-		Ref<Scene> scene = CreateRef<Scene>();
+		SharedPtr<Scene> scene = CreateSharedPtr<Scene>();
 		SceneSerializer serializer(scene);
 		serializer.Deserialize(path);
 		return scene;
 	}
 
-	void SceneImporter::SaveScene(Ref<Scene> scene, const std::filesystem::path& path)
+	void SceneImporter::SaveScene(SharedPtr<Scene> scene, const std::filesystem::path& path)
 	{
 		ENGINE_PROFILE_FUNCTION();
 

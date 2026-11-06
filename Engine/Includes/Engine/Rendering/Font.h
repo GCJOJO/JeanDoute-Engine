@@ -16,14 +16,14 @@ namespace Engine
 		~Font();
 
 		const MSDFData* GetMSDFData() const { return m_Data; }
-		Ref<Texture2D> GetAtlasTexture() const { return m_AtlasTexture; }
+		SharedPtr<Texture2D> GetAtlasTexture() const { return m_AtlasTexture; }
 		const std::string& GetFontName() const { return m_FontName; }
 
-		static Ref<Font> GetDefault();
+		static SharedPtr<Font> GetDefault();
 
 	private:
 		std::string m_FontName;
 		MSDFData* m_Data = nullptr;
-		Ref<Texture2D> m_AtlasTexture;
+		SharedPtr<Texture2D> m_AtlasTexture;
 	};
 }

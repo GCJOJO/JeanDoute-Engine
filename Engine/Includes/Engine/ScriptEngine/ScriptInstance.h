@@ -11,7 +11,7 @@ namespace Engine
 	public:
 		virtual ~ScriptInstance() = default;
 
-		virtual Ref<Script> GetScript() const = 0;
+		virtual SharedPtr<Script> GetScript() const = 0;
 		virtual Node* GetOwner() const = 0;
 
 		virtual bool HasMethod(const StringName& method) const = 0;
