@@ -16,7 +16,7 @@ namespace Engine
 	class CSharpScriptLanguage : public ScriptLanguage
 	{
 	public:
-		
+	
 		StringName GetName() const override { return "C#"; }
 		std::vector<StringName> GetExtensions() const override { return { ".cs" }; }
 
